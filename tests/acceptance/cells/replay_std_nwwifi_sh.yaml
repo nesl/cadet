@@ -1,0 +1,11 @@
+# replay.std.nwwifi.sh: replay x standalone x netwaggle-wifi x single_host.
+# Two sensor stations + the gateway station on one access point, at increasing
+# distances; run with `cadet emulate` in the Mininet-WiFi container.
+extends: ../bases/_replay.yaml
+experiment: {name: acc_replay_std_nwwifi_sh}
+connectors:
+  - {name: cell_ap, type: ap, position: "0,0,0", wifi: {ssid: cadet, mode: g, channel: 1, propagation_model: logDistance, propagation_exp: 3.5}}
+nodes:
+  - {name: sensor_1, host: localhost, role: client, device: cpu, connector: cell_ap, position: "8,0,0"}
+  - {name: sensor_2, host: localhost, role: client, device: cpu, connector: cell_ap, position: "20,0,0"}
+  - {name: gateway, host: 127.0.0.1, port: 15141, role: server, device: cpu, connector: cell_ap, position: "0,1,0"}

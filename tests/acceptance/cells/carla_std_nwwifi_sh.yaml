@@ -1,0 +1,10 @@
+# carla.std.nwwifi.sh: carla x standalone x netwaggle-wifi x single_host.
+# Ego client + detector server as stations on one access point; needs a CARLA
+# server AND the Mininet-WiFi container -- run with `cadet emulate`.
+extends: ../bases/_carla_std.yaml
+experiment: {name: acc_carla_std_nwwifi_sh}
+connectors:
+  - {name: cell_ap, type: ap, position: "0,0,0", wifi: {ssid: cadet, mode: g, channel: 1, propagation_model: logDistance, propagation_exp: 3.5}}
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu, connector: cell_ap, position: "8,0,0"}
+  - {name: server, host: 127.0.0.1, port: 15043, role: server, device: gpu, connector: cell_ap, position: "0,1,0"}

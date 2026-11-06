@@ -1,0 +1,23 @@
+# The placement sweep: the same dataset and model served on each of the three
+# tiers in turn, over one fixed access link, so the run-to-run difference is the
+# serving tier's compute cost alone (the stub infer_ms per tier). The full tier,
+# compute AND its own network, is what the standalone device/edge/cloud configs
+# show; this sweep isolates the compute axis the way the distributed sensing example's placement axis does.
+extends: _base.yaml
+
+experiment: {name: dataset_vlm_sweep, max_active_s: 600.0}
+
+links:
+  - name: uplink
+    from: dataset
+    to: server
+    direction: both
+    network:
+      mode: delay
+      distribution: {kind: lognormal, p50_ms: 8.0, p99_ms: 25.0}
+      loss: 0.0
+      bandwidth_mbps: 24.0
+
+sweep:
+  axes:
+    app.params.placement: [device, edge, cloud]

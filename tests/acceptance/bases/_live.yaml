@@ -1,0 +1,11 @@
+# Acceptance base: live source (network stream), standalone single model (reference, stub).
+# url is an environment property; a tree with no stream reports blocked (no live source).
+extends: ../../../examples/reference/_base.yaml
+experiment: {name: acc_live, app: reference, repetitions: 1, seed: 0, max_active_s: 180.0}
+# netwaggle cells override url to the bypass gateway 10.61.0.254 (host reachable
+# from inside the emulated namespace); see scripts/acceptance/run_matrix + matrix.
+source: {kind: live, url: "rtsp://127.0.0.1:8554/cadet", fps: 10.0, limit: 40}
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu}
+  - {name: server, host: 127.0.0.1, port: 15042, role: server, device: cpu}
+metrics: {collectors: [cpu, gpu, energy, bandwidth]}

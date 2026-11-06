@@ -1,0 +1,14 @@
+# Copy to local.yaml and fill in. The acceptance matrix's distributed cells
+# place a node on a second machine; the spec carries the placeholder
+# `edge-host`, and the real address is supplied here or by
+# $CADET_SECOND_MACHINE.
+#
+# host         the address this machine reaches the second one at.
+# user         the account to ssh as, if not the spec's default.
+# ssh_identity the key that reaches it, if not the spec's default.
+# venv         the virtual environment an ssh_venv-placed role runs in.
+second_machine:
+  host: 203.0.113.10
+  user: cadet
+  ssh_identity: ~/.ssh/cadet_acceptance
+  venv: /opt/cadet/venv

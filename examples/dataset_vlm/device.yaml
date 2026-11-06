@@ -1,0 +1,21 @@
+# On-device serving: the model runs on the same constrained node that holds the
+# data, so the link is a loopback and the inference cost is the device tier's.
+# The slow device compute is what the edge and cloud tiers trade network for.
+extends: _base.yaml
+
+experiment: {name: dataset_vlm_device, max_active_s: 300.0}
+
+app:
+  plugin: dataset_vlm
+  params: {placement: device}
+
+links:
+  - name: uplink
+    from: dataset
+    to: server
+    direction: both
+    network:
+      mode: delay
+      distribution: {kind: lognormal, p50_ms: 0.5, p99_ms: 2.0}
+      loss: 0.0
+      bandwidth_mbps: 1000.0

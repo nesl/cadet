@@ -1,0 +1,3 @@
+# replay.std.none.sh: replay x standalone x network:none x single_host.
+extends: ../bases/_replay.yaml
+experiment: {name: acc_replay_std_none_sh}

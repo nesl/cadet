@@ -1,0 +1,100 @@
+# The same five-sensor cell and the same placement sweep as `edge_5.yaml`, on
+# the packet-level backend instead of the message-level one. It exists to be
+# compared with that config: the topology, the sensor count and the swept axes
+# are identical, and the median access delay of each condition is the same.
+#
+# **The tails are not the same, and cannot be.** `edge_5.yaml` states each
+# condition as a lognormal p50/p99, and netem's jitter is symmetric about the
+# delay, so the widest tail it can represent is p99 = p50 x 1.98. Every one of
+# edge_5's three conditions is outside that - its good link alone asks for
+# p50 8 ms with p99 25 ms, which needs 17.3 ms of jitter on an 8 ms delay - and
+# CADET refuses each of them by name rather than quietly shaping something else.
+# So the conditions here hold the p50 and set the p99 at what the kernel can
+# actually do. A p50 read against edge_5's is like for like; a p99 is not, and
+# the difference is the backend's and not the configuration's.
+#
+# What the change of layer does to a number, which is the reason to run both.
+# `delay` holds whole application messages in the sending process, so the
+# configured distribution is reproduced exactly and `loss` drops a message,
+# which is then never answered. `netem` shapes packets, so the transport's
+# reaction is included: TCP retransmits a lost packet instead of losing the
+# message, and a small write can wait on an outstanding ACK. Expect higher
+# latency than `delay` at the same median and *fewer* unanswered frames,
+# because configured loss becomes retransmission latency rather than a message
+# that never arrives.
+#
+# A jittered netem link is only installed behind a `rate`, because the kernel
+# reorders jittered packets without one; every condition below sets a bandwidth,
+# so that holds. See `cadet/network/shaping.py` for both rules.
+#
+# Every node is containerised, which is not a style choice. A qdisc needs the
+# sending node's own network namespace: a `local` node is the host, so shaping
+# one would shape this machine's real interface and would need privilege the
+# account running the experiment should not have. `direction: both` makes the
+# gateway a sender too, so it is containerised for the same reason.
+extends: _base.yaml
+
+experiment: {name: sensing_netem_5, max_active_s: 600.0}
+
+nodes:
+  - {name: sensor_1, host: localhost, role: client, device: cpu, launcher: docker}
+  - {name: sensor_2, host: localhost, role: client, device: cpu, launcher: docker}
+  - {name: sensor_3, host: localhost, role: client, device: cpu, launcher: docker}
+  - {name: sensor_4, host: localhost, role: client, device: cpu, launcher: docker}
+  - {name: sensor_5, host: localhost, role: client, device: cpu, launcher: docker}
+  - {name: gateway, host: 127.0.0.1, port: 15110, role: server, device: cpu, launcher: docker}
+
+# The access quality a plain run uses; the sweep below replaces the whole list,
+# for the reason edge_5.yaml gives - the cell is one access network and the
+# server applies the path into the gateway to every inbound connection, so a
+# per-sensor parameter would not be read.
+links:
+  - name: uplink_sensor_1
+    from: sensor_1
+    to: gateway
+    direction: both
+    network: &good
+      mode: netem
+      distribution: {kind: lognormal, p50_ms: 8.0, p99_ms: 15.0}
+      loss: 0.0
+      bandwidth_mbps: 24.0
+  - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both, network: *good}
+  - {name: uplink_sensor_3, from: sensor_3, to: gateway, direction: both, network: *good}
+  - {name: uplink_sensor_4, from: sensor_4, to: gateway, direction: both, network: *good}
+  - {name: uplink_sensor_5, from: sensor_5, to: gateway, direction: both, network: *good}
+
+sweep:
+  axes:
+    app.params.placement: [sensor, gateway]
+    links:
+      - - {name: uplink_sensor_1, from: sensor_1, to: gateway, direction: both, network: *good}
+        - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both, network: *good}
+        - {name: uplink_sensor_3, from: sensor_3, to: gateway, direction: both, network: *good}
+        - {name: uplink_sensor_4, from: sensor_4, to: gateway, direction: both, network: *good}
+        - {name: uplink_sensor_5, from: sensor_5, to: gateway, direction: both, network: *good}
+      - - name: uplink_sensor_1
+          from: sensor_1
+          to: gateway
+          direction: both
+          network: &contested
+            mode: netem
+            distribution: {kind: lognormal, p50_ms: 35.0, p99_ms: 68.0}
+            loss: 0.02
+            bandwidth_mbps: 6.0
+        - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both, network: *contested}
+        - {name: uplink_sensor_3, from: sensor_3, to: gateway, direction: both, network: *contested}
+        - {name: uplink_sensor_4, from: sensor_4, to: gateway, direction: both, network: *contested}
+        - {name: uplink_sensor_5, from: sensor_5, to: gateway, direction: both, network: *contested}
+      - - name: uplink_sensor_1
+          from: sensor_1
+          to: gateway
+          direction: both
+          network: &severe
+            mode: netem
+            distribution: {kind: lognormal, p50_ms: 90.0, p99_ms: 175.0}
+            loss: 0.08
+            bandwidth_mbps: 1.5
+        - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both, network: *severe}
+        - {name: uplink_sensor_3, from: sensor_3, to: gateway, direction: both, network: *severe}
+        - {name: uplink_sensor_4, from: sensor_4, to: gateway, direction: both, network: *severe}
+        - {name: uplink_sensor_5, from: sensor_5, to: gateway, direction: both, network: *severe}

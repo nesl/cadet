@@ -1,0 +1,6 @@
+# carla.pipe.delay.sh: carla x av_pipeline x network:delay x single_host.
+extends: ../bases/_carla_pipe.yaml
+experiment: {name: acc_carla_pipe_delay_sh}
+links:
+  - {name: frames_link, from: client, to: server, direction: both,
+     network: {mode: delay, distribution: {kind: lognormal, p50_ms: 8.0, p99_ms: 25.0}, loss: 0.0, bandwidth_mbps: 24.0}}

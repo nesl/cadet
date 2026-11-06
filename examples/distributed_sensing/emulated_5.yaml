@@ -1,0 +1,62 @@
+# The same five-sensor cell on the emulated-network backend, over a wired
+# medium. Each node gets its own network namespace in a Mininet topology and the
+# shaping is a real qdisc on a real virtual link, so this is the third layer the
+# example can be measured at: `edge_5.yaml` holds whole messages in the sending
+# process, `netem_5.yaml` shapes packets on a container's interface, and this
+# shapes packets on an emulated link between emulated hosts.
+#
+# Wired on purpose, and the reason is about the machine rather than the
+# experiment. The wireless medium needs `mac80211_hwsim`, which the emulation
+# container loads into the *host* kernel - a global change on a shared machine,
+# and one whose teardown is known to be awkward. A wired medium needs only
+# openvswitch, ifb and sch_netem, which an ordinary Linux host that has run a
+# container already has loaded. So this config verifies the emulated layer
+# without touching the host's wireless stack. `wifi_5.yaml` remains topology
+# verified and not run; see the README.
+#
+# How to run it. `cadet run` would leave these links unshaped, because this
+# backend shapes in the kernel rather than in the transport, so it must be
+# `cadet emulate` inside the emulation container:
+#
+#   docker build -f docker/netwaggle.Dockerfile -t cadet-netwaggle:dev .
+#   docker run -d --name cadet-netwaggle --privileged \
+#       -v /lib/modules:/lib/modules:ro cadet-netwaggle:dev sleep infinity
+#   docker exec cadet-netwaggle cadet emulate examples/distributed_sensing/emulated_5.yaml \
+#       --app-module examples.distributed_sensing.app
+#
+# The container is privileged because Mininet drives netlink and the OVS
+# datapath. That is the backend's requirement and not this config's; the
+# `delay` and `netem` forms of the same cell need no such thing, which is one
+# of the things running all three makes visible.
+#
+# The distributions are the kernel-representable ones from `netem_5.yaml` and
+# for the same reason: this backend also installs a netem qdisc, so a lognormal
+# tail wider than p50 x 1.98 is refused here too. A p50 is comparable across all
+# three backends; a p99 is comparable between the two kernel ones only.
+extends: _base.yaml
+
+experiment: {name: sensing_emulated_5, max_active_s: 600.0}
+
+nodes:
+  - {name: sensor_1, host: localhost, role: client, device: cpu}
+  - {name: sensor_2, host: localhost, role: client, device: cpu}
+  - {name: sensor_3, host: localhost, role: client, device: cpu}
+  - {name: sensor_4, host: localhost, role: client, device: cpu}
+  - {name: sensor_5, host: localhost, role: client, device: cpu}
+  - {name: gateway, host: 127.0.0.1, port: 15110, role: server, device: cpu}
+
+links:
+  - name: uplink_sensor_1
+    from: sensor_1
+    to: gateway
+    direction: both
+    network: &access
+      mode: netwaggle
+      medium: wired
+      distribution: {kind: lognormal, p50_ms: 35.0, p99_ms: 68.0}
+      loss: 0.02
+      bandwidth_mbps: 6.0
+  - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both, network: *access}
+  - {name: uplink_sensor_3, from: sensor_3, to: gateway, direction: both, network: *access}
+  - {name: uplink_sensor_4, from: sensor_4, to: gateway, direction: both, network: *access}
+  - {name: uplink_sensor_5, from: sensor_5, to: gateway, direction: both, network: *access}

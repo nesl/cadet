@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<scenarios>
+    <scenario name="V2VBrakingScenario_1" type="V2VBrakingScenario" town="Town05">
+        <!--ego_vehicle x="71.530029" y="306.419983" z="0.500000" yaw="0" model="vehicle.tesla.modelx" /-->
+        <weather cloudiness="0" precipitation="0" precipitation_deposits="0"
+                 wind_intensity="0" sun_azimuth_angle="0" sun_altitude_angle="75" />
+    </scenario>
+    <scenario name="V2VBrakingScenario_2" type="V2VBrakingScenario" town="Town03">
+        <ego_vehicle x="71.530029" y="306.419983" z="0.500000" yaw="0" model="vehicle.tesla.modelx" />
+        <weather cloudiness="0" precipitation="0" precipitation_deposits="0"
+                 wind_intensity="0" sun_azimuth_angle="0" sun_altitude_angle="75" />
+    </scenario>
+    <scenario name="V2VBrakingScenario_3" type="V2VBrakingScenario" town="Town02">
+        <ego_vehicle x="71.530029" y="306.419983" z="0.500000" yaw="0" model="vehicle.tesla.modelx" />
+        <weather cloudiness="0" precipitation="0" precipitation_deposits="0"
+                 wind_intensity="0" sun_azimuth_angle="0" sun_altitude_angle="75" />
+    </scenario>
+</scenarios>
+

@@ -1,0 +1,30 @@
+# Multi-sensor two-channel config: ego + infrastructure cameras to one server.
+# Models the V2I two-camera topology without requiring an app plugin.
+# Passes cadet validate.
+extends: ../../configs/base.yaml
+
+experiment: {name: snippet_multi_sensor, app: reference, repetitions: 1}
+source: {kind: synthetic, count: 8, width: 64, height: 48}
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu}
+  - {name: server, host: 127.0.0.1, port: 15015, role: server, device: cpu}
+channels:
+  - name: sensor_a
+    from: client
+    to: server
+    device_id: sensor_a
+  - name: sensor_b
+    from: client
+    to: server
+    device_id: sensor_b
+links:
+  - name: sensor_a_link
+    from: client
+    to: server
+    network:
+      mode: delay
+      distribution:
+        kind: constant
+        value_ms: 20.0
+      loss: 0.0
+app: {plugin: reference, params: {model_kind: stub}}

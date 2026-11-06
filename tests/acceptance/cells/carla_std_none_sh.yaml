@@ -1,0 +1,3 @@
+# carla.std.none.sh: carla x standalone x network:none x single_host.
+extends: ../bases/_carla_std.yaml
+experiment: {name: acc_carla_std_none_sh}

@@ -1,0 +1,119 @@
+# Open-loop emergency-braking experiment (reproduces the default braking matrix).
+#
+# What this is: a single-vehicle open-loop braking run on the cloud tier. The
+# ego drives at a target speed, streams camera frames to a detection server, and
+# brakes on command. The sweep reproduces the original vehicle x object matrix.
+#
+# How to use: `cadet validate examples/braking/flat/openloop_braking.yaml`. Override any
+# field with `--set`, e.g. `--set source.carla.host=<HOST_IP>`.
+extends: ../../../configs/base.yaml
+
+experiment:
+  name: openloop_braking
+  app: braking
+  repetitions: 10
+  seed: 0
+
+source:
+  kind: carla
+  fps: 10
+  camera:
+    # Matches the original open-loop client: 800x600 sensor at 60 deg FOV.
+    width: 800
+    height: 600
+    fov: 60.0
+  scenario:
+    ego_vehicle: audi.tt
+    target_object: car
+    ego_speed: 40mph
+    # The role name the scenario gives the vehicle it drives. This scenario
+    # spawns its own ego through ScenarioRunner's actor provider, whose default
+    # role name is "scenario" - so that, and not the schema default "hero", is
+    # what identifies the ego here. ScenarioRunner separately spawns the ego
+    # declared in the scenario's config file and tags that one "hero"; this
+    # scenario never drives it, and at the config file's spawn point in Town05
+    # it falls through the map. Both are faithful to the original, which spawns
+    # the same two vehicles the same way.
+    ego_role_name: scenario
+  weather: clear
+
+  carla:
+    host: CARLA_HOST   # placeholder; pass real IP via --set source.carla.host=<HOST_IP>
+    port: 2000
+    timeout: 10
+models:
+  # The original braking scripts ran without model warm-up; set true to warm
+  # the model.
+  warmup: false
+  detector: yolo
+  tracker: sort
+  predictor: linear
+  model: yolo11x         # active logical detector model (must be a registry key)
+  # Device is derived from the server node that hosts the model (device: gpu).
+  registry:
+    yolo11x:
+      per_device:
+        gpu: yolo11x.pt
+        edge: yolo11x.engine
+        hailo: yolo11x.hef
+    coco_labels:
+      per_device:
+        gpu: coco.names
+        edge: coco.names
+        hailo: coco.names
+
+nodes:
+  - name: client
+    host: localhost      # client does not listen; no port needed
+    launcher: local
+    role: client
+    device: cpu
+  - name: server
+    host: localhost
+    port: 10000
+    launcher: local
+    role: server
+    device: gpu
+    gpu_index: 0      # explicit: run the detector on GPU 0 (free); CARLA owns GPU 1
+    # The original server's fixed 13 ms cost per request. Compute, not network:
+    # charged once per request on top of the detector's own time.
+    extra_processing_ms: 13.0
+
+channels:
+  - name: frames
+    from: client
+    to: server
+    max_queue: 2
+    send_meta: false
+    stop_on_brake: true
+
+links:
+  # A real network path from the vehicle to the detection server. The shape is a
+  # normal distribution: mean 30 ms gives p50 30 ms, and a 30 ms standard
+  # deviation puts p99 at mean + 2.33 sd, so roughly 100 ms. Expressible by
+  # every backend, since netem takes a mean and a jitter.
+  #
+  # Pick the backend per run, e.g.
+  #   --set links.0.network.mode=netem
+  #   --set links.0.network.mode=netwaggle   (needs cadet emulate)
+  - name: frames_link
+    from: client
+    to: server
+    direction: forward
+    network:
+      mode: delay
+      distribution:
+        kind: normal
+        mean_ms: 30.0
+        std_ms: 30.0
+      loss: 0.0
+
+app:
+  plugin: braking        # brake controllers / thresholds use the braking defaults
+
+sweep:
+  axes:
+    source.scenario.ego_vehicle: [audi.tt, carlamotors.carlacola, kawasaki.ninja]
+    source.scenario.target_object: [car, person, bike]
+
+# outputs / transport / metrics inherited from configs/base.yaml.

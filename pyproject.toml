@@ -1,0 +1,94 @@
+# Packaging and tooling for CADET.
+#
+# Provides the `cadet` console script (cadet.cli:main) so `cadet validate ...`
+# works after `pip install -e .`, and configures pytest to find the package from
+# the repo root. Runtime pins live in requirements.txt; the minimal deps here are
+# just what the config/CLI layer needs.
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cadet"
+version = "0.0.0"
+description = "CADET: modular platform for evaluating distributed cooperative autonomy"
+# The range that has actually been run, not an aspiration: 3.8 (the image's
+# version, and what the CARLA client egg needs) and 3.13 (a current laptop),
+# both from a fresh clone. The upper bound is the newest tested rather than
+# open-ended, so a future release is a deliberate check and not a surprise.
+requires-python = ">=3.8,<3.14"
+dependencies = [
+    "pydantic>=2,<3",
+    "PyYAML>=5.4",
+]
+
+[project.optional-dependencies]
+# What the examples that need no simulator need, and nothing else. This is what
+# the README's quickstart installs, so it has to resolve on a current
+# interpreter: lower bounds rather than the exact pins in requirements.txt,
+# which are the versions the simulator stack was built against and have no
+# wheels for a recent Python. `pip install -e .` alone gives the config and CLI
+# layer, which is enough to validate a config and not to run one.
+examples = [
+    "numpy>=1.24",
+    "opencv-python-headless>=4.9",
+    # examples/distributed_sensing/placement_sweep.py draws the crossover with it. Without it
+    # the wrapper still writes its table and its sidecars and says the plot was
+    # skipped - which is the right degradation and the wrong default, because
+    # the plot is the thing the wrapper exists to produce.
+    "matplotlib>=3.5",
+    # cadet/metrics/cpu.py imports it when the `cpu` collector is enabled, and
+    # a collector that was asked for and cannot read fails the run on purpose -
+    # so a config naming `cpu` is unrunnable from a fresh clone without it. The
+    # `gpu` and `energy` collectors need host tooling (NVML or nvidia-smi)
+    # instead, which no extra can supply.
+    "psutil>=5.9",
+]
+# Light deps to run lint + the unit/reference-e2e suite without the ML stack
+# (the tests use the stub model, so torch/ultralytics/carla are not needed).
+test = [
+    "numpy==1.24.4",
+    "opencv-python-headless==4.9.0.80",
+    "filterpy==1.4.5",
+    # cadet/roles/client_visualizer.py imports it; the braking apps render the
+    # original's per-tick window by default.
+    "pygame==2.5.2",
+    # cadet/metrics/cpu.py imports it when the `cpu` collector is enabled. The
+    # collector's own tests use a fake reader, so this is here for a live run
+    # from the test environment rather than for the suite.
+    "psutil==7.2.2",
+    "pytest>=7",
+    "ruff==0.17.3",
+]
+
+[project.scripts]
+cadet = "cadet.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["cadet*"]
+
+[tool.ruff]
+# Framework and tests are the formatted/linted surface. examples/av_pipeline is
+# vendored from ERDOS Pylot and kept close to upstream, so it is excluded.
+line-length = 100
+target-version = "py38"
+extend-exclude = ["examples/av_pipeline"]
+
+[tool.ruff.lint]
+# pyflakes (F), pycodestyle (E/W), isort (I). pyupgrade is intentionally omitted:
+# the code targets 3.8 and uses str.format deliberately.
+select = ["E", "F", "W", "I"]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests import example app modules for their registration side effect.
+"tests/**" = ["F401", "E402"]
+# The reference generator embeds the Markdown it emits, and a table row cannot be
+# wrapped without breaking the table. Line length is not meaningful for that text.
+"scripts/gen_config_reference.py" = ["E501"]
+
+[tool.pytest.ini_options]
+# "." for the cadet/examples packages; "tests" so tests/unit and tests/e2e can
+# import the shared tests/conftest.py helpers (EXAMPLE_CONFIGS, BRAKING_CONFIG).
+pythonpath = [".", "tests"]
+testpaths = ["tests"]

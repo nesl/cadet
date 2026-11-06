@@ -1,0 +1,7 @@
+# synth.std.none.dist: synthetic x standalone x network:none x distributed_hil.
+extends: ../bases/_synth.yaml
+experiment: {name: acc_synth_std_none_dist}
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu}
+  - {name: server, host: edge-host, port: 15041, role: server, device: cpu, gpu_index: 0, launcher: ssh_venv, user: cadet, ssh_identity: ~/.ssh/cadet_acceptance, venv: /opt/cadet/venv}
+metrics: {collectors: [cpu, gpu, energy, bandwidth, clock_offset]}

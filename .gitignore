@@ -1,0 +1,46 @@
+# --- external build artifacts ---
+# Nothing is staged into the build context any more: the image copies the CARLA
+# client egg straight out of the pinned official server image. *.egg stays
+# ignored so a stray local copy cannot be committed by accident.
+*.egg
+
+# --- model / engine weights ---
+*.pt
+*.hef
+*.onnx
+*.engine
+
+# --- datasets ---
+datasets/
+**/datasets/
+
+# --- run outputs ---
+outputs/
+**/outputs/
+
+# --- python caches / byte-compiled ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# --- virtual environments (anchored to repo root so docs/env/ is kept) ---
+/.venv/
+/venv/
+/env/
+/ENV/
+**/yolo11/
+
+# Orchestrator run-state (cadet status/down)
+.cadet/
+
+# Sphinx build output
+docs/_build/
+
+# Assembled GitHub Pages tree (scripts/release/build_docs_site.sh)
+/_site/
+
+# The acceptance matrix's local settings: the address of the second machine a
+# distributed cell runs on, which is a property of the machine running the
+# matrix and never of the repository.
+/tests/acceptance/local.yaml

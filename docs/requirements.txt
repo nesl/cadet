@@ -1,0 +1,40 @@
+# Dependencies for building the CADET documentation site, and nothing else.
+#
+# What this is for
+#   The site build creates an empty virtual environment and installs exactly
+#   this file into it, so the published site is built from a known set and
+#   never from whatever happens to be on the machine.
+#
+# What it contains
+#   The Sphinx toolchain the docs use (the theme, the Markdown parser and the
+#   type-hint renderer named in docs/source/conf.py), plus the two runtime
+#   dependencies of the `cadet` package itself. Those two are needed because
+#   the API pages are produced by autodoc, which imports the package. The
+#   heavy dependencies are NOT here and are not needed: conf.py mocks the
+#   simulator client, torch, torchvision, ultralytics, cv2, open3d, filterpy,
+#   lapsolver and numpy, so the site builds with no simulator, no GPU, no
+#   container image and nothing downloaded beyond these wheels.
+#
+# How to configure it
+#   Pins are upper-bounded on the major version so a new major release is a
+#   deliberate check rather than a surprise. Add a package here only when
+#   conf.py grows an extension that needs it. The theme is deliberately left
+#   unpinned: it is released under a calendar version, and the project keeps
+#   date-like strings out of its files.
+
+sphinx>=7.2,<9
+furo
+myst-parser>=2,<5
+sphinx-autodoc-typehints>=1.25,<4
+
+# Imported by autodoc when it imports the `cadet` package. These mirror the
+# base dependencies in pyproject.toml and are the only ones not mocked.
+pydantic>=2,<3
+PyYAML>=5.4
+
+# Imported at module level by the example app plugins that the documentation
+# snippets name, which `cadet validate` loads while the build checks them. The
+# model backends those plugins can use are imported lazily, inside the call
+# that needs one, so none of the ML or simulator stack is pulled in here.
+typing-extensions>=4
+numpy>=1.24

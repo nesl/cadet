@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<scenarios>
+    <scenario name="Custom_1" type="CustomScenario" town="Town01">
+        <ego_vehicle x="396" y="175" z="0.3" yaw="-90" model="vehicle.lincoln.mkz2017" />
+        <weather cloudiness="0" precipitation="0" precipitation_deposits="0" wind_intensity="0" sun_azimuth_angle="0" sun_altitude_angle="75" />
+    </scenario>
+    
+    <scenario name="Custom_2" type="CustomScenario" town="Town02">
+        <ego_vehicle x="28.7" y="302.5" z="0.4" yaw="180" model="vehicle.lincoln.mkz2017" />
+        <weather cloudiness="0" precipitation="0" precipitation_deposits="0" wind_intensity="0" sun_azimuth_angle="0" sun_altitude_angle="75" />
+    </scenario>
+
+    <scenario name="Custom_3" type="CustomScenario" town="Town03">
+        <ego_vehicle x="120" y="193" z="3" yaw="180" model="vehicle.lincoln.mkz2017" />
+        <weather cloudiness="0" precipitation="0" precipitation_deposits="0" wind_intensity="0" sun_azimuth_angle="0" sun_altitude_angle="75" />
+    </scenario>
+    
+    <scenario name="Custom_4" type="CustomScenario" town="Town04">
+        <ego_vehicle x="-337  " y="435.8" z="5.5" yaw="0" model="vehicle.lincoln.mkz2017" />
+        <weather cloudiness="0" precipitation="0" precipitation_deposits="0" wind_intensity="0" sun_azimuth_angle="0" sun_altitude_angle="75" />
+    </scenario>
+    
+    <scenario name="Custom_5" type="CustomScenario" town="Town05">
+        <ego_vehicle x="170.6" y="-182" z="0" yaw="-136" model="vehicle.lincoln.mkz2017" />
+        <weather cloudiness="0" precipitation="0" precipitation_deposits="0" wind_intensity="0" sun_azimuth_angle="0" sun_altitude_angle="75" />
+    </scenario>
+    
+    <scenario name="Custom_6" type="CustomScenario" town="Town06">
+        <ego_vehicle x="-9.33" y="74.75" z="0" yaw="89.5" model="vehicle.lincoln.mkz2017" />
+        <weather cloudiness="0" precipitation="0" precipitation_deposits="0" wind_intensity="0" sun_azimuth_angle="0" sun_altitude_angle="75" />
+    </scenario>
+
+    <scenario name="Custom_7" type="CustomScenario" town="Town02">
+        <ego_vehicle x="28.7" y="302.5" z="0.4" yaw="180" model="vehicle.lincoln.mkz2017" />
+        <weather cloudiness="0" precipitation="0" precipitation_deposits="0" wind_intensity="0" sun_azimuth_angle="0" sun_altitude_angle="75" />
+    </scenario>
+
+</scenarios>

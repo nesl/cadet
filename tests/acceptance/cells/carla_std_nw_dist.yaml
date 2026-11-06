@@ -1,0 +1,18 @@
+# carla.std.nw.dist: carla x standalone x network:netwaggle x distributed_hil.
+# Same newest-frame inbound bound as carla.std.nw.sh (see its comment): under the
+# 6 Mbps emulated link the flat server must decide on fresh frames, matching the
+# pipeline's latest_only, or the detector never triggers within the 100 m run.
+extends: ../bases/_carla_std.yaml
+experiment: {name: acc_carla_std_nw_dist}
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu}
+  - {name: server, host: edge-host, port: 15043, role: server, device: gpu, gpu_index: 0, launcher: ssh_docker, user: cadet, ssh_identity: ~/.ssh/cadet_acceptance, container: cadet:dev, enforce_queue_policy: true}
+channels:
+  # The example's own channel, with only the queue bound changed: naming a new
+  # channel replaces the list, which silently dropped the example's
+  # stop_on_brake and renamed the path the run's own logs refer to.
+  - {name: frames, from: client, to: server, max_queue: 1, send_meta: false, stop_on_brake: true}
+links:
+  - {name: frames_link, from: client, to: server, direction: both,
+     network: {mode: netwaggle, medium: wired, distribution: {kind: lognormal, p50_ms: 35.0, p99_ms: 68.0}, loss: 0.02, bandwidth_mbps: 6.0}}
+metrics: {collectors: [cpu, gpu, energy, bandwidth, clock_offset]}

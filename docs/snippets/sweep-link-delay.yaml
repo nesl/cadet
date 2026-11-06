@@ -1,0 +1,24 @@
+# Sweep example: constant delay values. Generates 4 run configs.
+# Use as a template; replace with lognormal or netem fields as needed.
+# Passes cadet validate.
+extends: ../../configs/base.yaml
+
+experiment: {name: snippet_sweep_delay, app: reference, repetitions: 1}
+source: {kind: synthetic, count: 8, width: 64, height: 48}
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu}
+  - {name: server, host: 127.0.0.1, port: 15016, role: server, device: cpu}
+links:
+  - name: inference_link
+    from: client
+    to: server
+    network:
+      mode: delay
+      distribution:
+        kind: constant
+        value_ms: 20.0
+      loss: 0.0
+sweep:
+  axes:
+    links[0].network.distribution.value_ms: [10, 20, 40, 80]
+app: {plugin: reference, params: {model_kind: stub}}

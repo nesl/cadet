@@ -1,0 +1,3 @@
+# live.std.none.sh: live x standalone x network:none x single_host.
+extends: ../bases/_live.yaml
+experiment: {name: acc_live_std_none_sh}

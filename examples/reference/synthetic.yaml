@@ -1,0 +1,6 @@
+# Reference app over a synthetic source — used by the end-to-end tests. The client
+# sends generated frames, the server runs a stub model and replies to every frame,
+# the client logs per-frame round-trip latency. Everything is inherited from the
+# reference base; this file only names the experiment — the ~minimal config.
+extends: _base.yaml
+experiment: {name: ref_synth}

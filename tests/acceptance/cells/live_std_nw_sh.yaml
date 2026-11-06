@@ -1,0 +1,7 @@
+# live.std.nw.sh: live x standalone x network:netwaggle x single_host.
+extends: ../bases/_live.yaml
+experiment: {name: acc_live_std_nw_sh}
+links:
+  - {name: frames_link, from: client, to: server, direction: both,
+     network: {mode: netwaggle, medium: wired, distribution: {kind: lognormal, p50_ms: 35.0, p99_ms: 68.0}, loss: 0.02, bandwidth_mbps: 6.0}}
+source: {url: "rtsp://10.61.0.254:8554/cadet"}

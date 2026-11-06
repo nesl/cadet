@@ -1,0 +1,11 @@
+# Acceptance base: synthetic source, standalone single model (reference app, stub).
+# Runs with no simulator, no GPU required by the model. Cells extend this and add
+# only their network link and, for distributed cells, the remote server node.
+extends: ../../../examples/reference/_base.yaml
+experiment: {name: acc_synth, app: reference, repetitions: 1, seed: 0, max_active_s: 120.0}
+source: {kind: synthetic, count: 40, width: 64, height: 48, fps: 20.0}
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu}
+  - {name: server, host: 127.0.0.1, port: 15041, role: server, device: cpu}
+# The device collectors acceptance check (b) requires; queue is always-on.
+metrics: {collectors: [cpu, gpu, energy, bandwidth]}

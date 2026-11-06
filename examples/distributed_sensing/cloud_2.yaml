@@ -1,0 +1,80 @@
+# Detector placement in the cloud for a 2-sensor cell: each sensor's frames
+# cross the access link to the gateway and the backhaul to the cloud as one
+# composed path, and the detector runs on the cloud node. The gateway is a
+# waypoint, because a composed path runs nothing on the nodes it passes through.
+#
+# The swept axis is the access-link quality, the same three qualities the edge
+# configs use, so the placements are comparable at each quality. The backhaul is
+# fixed and declared once per sensor: a link belongs to one route, so N composed
+# paths need N backhaul declarations.
+extends: _base.yaml
+
+experiment: {name: sensing_cloud_2, max_active_s: 600.0}
+app: {params: {placement: cloud}}
+
+nodes:
+  - {name: sensor_1, host: localhost, role: client, device: cpu}
+  - {name: sensor_2, host: localhost, role: client, device: cpu}
+  - {name: gateway, host: 127.0.0.1, role: waypoint}
+  - {name: cloud, host: 127.0.0.1, port: 15120, role: server, device: cpu}
+
+# The access quality a plain run uses; the sweep below replaces the whole list.
+links:
+  - name: uplink_sensor_1
+    from: sensor_1
+    to: gateway
+    direction: both
+    network: &good
+      mode: delay
+      distribution: {kind: lognormal, p50_ms: 8.0, p99_ms: 25.0}
+      loss: 0.0
+      bandwidth_mbps: 24.0
+  - name: backhaul_sensor_1
+    from: gateway
+    to: cloud
+    direction: both
+    network: &backhaul
+      mode: delay
+      distribution: {kind: lognormal, p50_ms: 25.0, p99_ms: 90.0}
+      loss: 0.005
+      bandwidth_mbps: 50.0
+  - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both, network: *good}
+  - {name: backhaul_sensor_2, from: gateway, to: cloud, direction: both, network: *backhaul}
+
+routes:
+  - {name: path_sensor_1, from: sensor_1, to: cloud, via: [gateway],
+     hops: [uplink_sensor_1, backhaul_sensor_1], realise: compose}
+  - {name: path_sensor_2, from: sensor_2, to: cloud, via: [gateway],
+     hops: [uplink_sensor_2, backhaul_sensor_2], realise: compose}
+
+sweep:
+  axes:
+    links:
+      - - {name: uplink_sensor_1, from: sensor_1, to: gateway, direction: both, network: *good}
+        - {name: backhaul_sensor_1, from: gateway, to: cloud, direction: both, network: *backhaul}
+        - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both, network: *good}
+        - {name: backhaul_sensor_2, from: gateway, to: cloud, direction: both, network: *backhaul}
+      - - name: uplink_sensor_1
+          from: sensor_1
+          to: gateway
+          direction: both
+          network: &contested
+            mode: delay
+            distribution: {kind: lognormal, p50_ms: 35.0, p99_ms: 160.0}
+            loss: 0.02
+            bandwidth_mbps: 6.0
+        - {name: backhaul_sensor_1, from: gateway, to: cloud, direction: both, network: *backhaul}
+        - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both, network: *contested}
+        - {name: backhaul_sensor_2, from: gateway, to: cloud, direction: both, network: *backhaul}
+      - - name: uplink_sensor_1
+          from: sensor_1
+          to: gateway
+          direction: both
+          network: &severe
+            mode: delay
+            distribution: {kind: lognormal, p50_ms: 90.0, p99_ms: 500.0}
+            loss: 0.08
+            bandwidth_mbps: 1.5
+        - {name: backhaul_sensor_1, from: gateway, to: cloud, direction: both, network: *backhaul}
+        - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both, network: *severe}
+        - {name: backhaul_sensor_2, from: gateway, to: cloud, direction: both, network: *backhaul}

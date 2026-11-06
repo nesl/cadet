@@ -1,0 +1,3 @@
+# carla.pipe.none.sh: carla x av_pipeline x network:none x single_host.
+extends: ../bases/_carla_pipe.yaml
+experiment: {name: acc_carla_pipe_none_sh}

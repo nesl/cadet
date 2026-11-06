@@ -1,0 +1,7 @@
+# synth.pipe.none.dist: synthetic x av_pipeline x network:none x distributed_hil.
+extends: ../bases/_ol_synth.yaml
+experiment: {name: acc_synth_pipe_none_dist}
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu}
+  - {name: server, host: edge-host, port: 15345, role: server, device: cpu, gpu_index: 0, launcher: ssh_docker, user: cadet, ssh_identity: ~/.ssh/cadet_acceptance, container: cadet:dev}
+metrics: {collectors: [cpu, gpu, energy, bandwidth, clock_offset]}

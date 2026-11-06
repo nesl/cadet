@@ -1,0 +1,3 @@
+# dataset.std.none.sh: dataset x standalone x network:none x single_host.
+extends: ../bases/_dataset.yaml
+experiment: {name: acc_dataset_std_none_sh}

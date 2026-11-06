@@ -1,0 +1,22 @@
+# Netwaggle wired-medium link: constant delay over a Mininet-WiFi wired link.
+# Requires cadet emulate (privileged container, Mininet-WiFi).
+# Passes cadet validate.
+extends: ../../configs/base.yaml
+
+experiment: {name: snippet_netwaggle_wired, app: reference, repetitions: 1}
+source: {kind: synthetic, count: 8, width: 64, height: 48}
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu}
+  - {name: server, host: 127.0.0.1, port: 15014, role: server, device: cpu}
+links:
+  - name: inference_link
+    from: client
+    to: server
+    network:
+      mode: netwaggle
+      medium: wired           # wired Mininet link (default)
+      distribution:
+        kind: constant
+        value_ms: 20.0
+      loss: 0.0
+app: {plugin: reference, params: {model_kind: stub}}

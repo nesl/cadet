@@ -1,0 +1,105 @@
+# `edge_5.yaml` with one setting changed: the processing node enforces a
+# freshness policy on its inbound queue instead of keeping every frame.
+#
+# Why it is a separate config rather than a swept axis. The two settings are not
+# two points on one scale - they are a deviation from the original's behaviour
+# and the original's behaviour - so each wants its own matrix to be read against
+# the other's, cell for cell. Run both and compare:
+#
+#   cadet sweep examples/distributed_sensing/edge_5.yaml  --app-module examples.distributed_sensing.app
+#   cadet sweep examples/distributed_sensing/queue_5.yaml --app-module examples.distributed_sensing.app
+#
+# What the setting is. `nodes[*].enforce_queue_policy` defaults to false, which
+# is the original server's unbounded FIFO: every frame that arrives is queued
+# and answered, however stale it has become. With five or ten sensors feeding
+# one gateway that queue is what the latency figure mostly measures - the
+# gateway's own detector cost is 40 ms and its median end-to-end latency at five
+# sensors is over a second, which is queueing and not compute.
+#
+# True makes the node honour the policy of the path into it. This is a flat app
+# rather than a placed pipeline, so the policy comes from the `channels` entry
+# below: `max_queue: 1` is a bounded queue that drops the oldest frame, so the
+# node always works on the newest one it has.
+#
+# What to expect, and it is a trade and not an improvement: latency down,
+# because nothing waits behind a queue of stale frames; frames answered down,
+# because a dropped frame is never answered. Which of those matters is the
+# experiment's question, not the framework's, which is exactly why the default
+# is the original's and this is opt-in.
+#
+# The channel carries no data here. A `channels` entry is a direct path between
+# two nodes with no network emulation, and the frames travel over the `links`
+# below; it is present so the flat config has a queue policy to state, which is
+# where `_inbound_max_pending` reads it from.
+extends: _base.yaml
+
+experiment: {name: sensing_queue_5, max_active_s: 600.0}
+
+nodes:
+  - {name: sensor_1, host: localhost, role: client, device: cpu}
+  - {name: sensor_2, host: localhost, role: client, device: cpu}
+  - {name: sensor_3, host: localhost, role: client, device: cpu}
+  - {name: sensor_4, host: localhost, role: client, device: cpu}
+  - {name: sensor_5, host: localhost, role: client, device: cpu}
+  - name: gateway
+    host: 127.0.0.1
+    port: 15110
+    role: server
+    device: cpu
+    # The one line this config exists for.
+    enforce_queue_policy: true
+
+# Where the policy is stated. max_queue: 1 means "work on the newest frame".
+channels:
+  - {name: into_gateway, from: sensor_1, to: gateway, max_queue: 1}
+
+links:
+  - name: uplink_sensor_1
+    from: sensor_1
+    to: gateway
+    direction: both
+    network: &good
+      mode: delay
+      distribution: {kind: lognormal, p50_ms: 8.0, p99_ms: 25.0}
+      loss: 0.0
+      bandwidth_mbps: 24.0
+  - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both, network: *good}
+  - {name: uplink_sensor_3, from: sensor_3, to: gateway, direction: both, network: *good}
+  - {name: uplink_sensor_4, from: sensor_4, to: gateway, direction: both, network: *good}
+  - {name: uplink_sensor_5, from: sensor_5, to: gateway, direction: both, network: *good}
+
+sweep:
+  axes:
+    app.params.placement: [sensor, gateway]
+    links:
+      - - {name: uplink_sensor_1, from: sensor_1, to: gateway, direction: both, network: *good}
+        - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both, network: *good}
+        - {name: uplink_sensor_3, from: sensor_3, to: gateway, direction: both, network: *good}
+        - {name: uplink_sensor_4, from: sensor_4, to: gateway, direction: both, network: *good}
+        - {name: uplink_sensor_5, from: sensor_5, to: gateway, direction: both, network: *good}
+      - - name: uplink_sensor_1
+          from: sensor_1
+          to: gateway
+          direction: both
+          network: &contested
+            mode: delay
+            distribution: {kind: lognormal, p50_ms: 35.0, p99_ms: 160.0}
+            loss: 0.02
+            bandwidth_mbps: 6.0
+        - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both, network: *contested}
+        - {name: uplink_sensor_3, from: sensor_3, to: gateway, direction: both, network: *contested}
+        - {name: uplink_sensor_4, from: sensor_4, to: gateway, direction: both, network: *contested}
+        - {name: uplink_sensor_5, from: sensor_5, to: gateway, direction: both, network: *contested}
+      - - name: uplink_sensor_1
+          from: sensor_1
+          to: gateway
+          direction: both
+          network: &severe
+            mode: delay
+            distribution: {kind: lognormal, p50_ms: 90.0, p99_ms: 500.0}
+            loss: 0.08
+            bandwidth_mbps: 1.5
+        - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both, network: *severe}
+        - {name: uplink_sensor_3, from: sensor_3, to: gateway, direction: both, network: *severe}
+        - {name: uplink_sensor_4, from: sensor_4, to: gateway, direction: both, network: *severe}
+        - {name: uplink_sensor_5, from: sensor_5, to: gateway, direction: both, network: *severe}

@@ -1,0 +1,18 @@
+# The quick config: two sensors, a generated source, the in-process delay
+# backend, and the detector on the gateway. No simulator, no download and no
+# GPU, so this is the config the unit test and CI run.
+extends: _base.yaml
+
+experiment: {name: sensing_quick, max_active_s: 120.0}
+
+links:
+  - name: uplink_sensor_1
+    from: sensor_1
+    to: gateway
+    direction: both
+    network: &access
+      mode: delay
+      distribution: {kind: lognormal, p50_ms: 8.0, p99_ms: 25.0}
+      loss: 0.0
+      bandwidth_mbps: 24.0
+  - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both, network: *access}

@@ -1,0 +1,53 @@
+# Backend-comparison config: one experiment, three link backends.
+#
+# What this is: the reference client/server over a synthetic source with a single
+# emulated link, used to measure configured-versus-measured latency for each
+# backend. The backend is chosen on the command line so the experiment itself is
+# identical across all three:
+#
+#   cadet run     examples/reference/backends.yaml --set links.0.network.mode=delay
+#   cadet run     examples/reference/backends.yaml --set links.0.network.mode=netem
+#   cadet emulate examples/reference/backends.yaml --set links.0.network.mode=netwaggle
+#
+# The second shape in the accuracy table swaps the distribution:
+#   --set links.0.network.distribution.kind=normal \
+#   --set links.0.network.distribution.mean_ms=50 \
+#   --set links.0.network.distribution.std_ms=8 \
+#   --set links.0.network.loss=0.01
+#
+# `netwaggle` needs the emulation container (privileged, Mininet-WiFi); the other
+# two run anywhere. `netem` needs NET_ADMIN to install the qdisc.
+extends: _base.yaml
+
+experiment: {name: backends, app: reference, repetitions: 1, seed: 0}
+
+# Enough frames that p99 is a real percentile rather than one sample, and paced
+# so the pipeline never saturates: with fps 0 the source outruns the server and
+# the measured latency becomes queue wait, not link delay.
+source: {kind: synthetic, count: 200, fps: 20.0, width: 64, height: 48}
+
+# Warmup off: the first-call stall is a model property and would land in p99,
+# obscuring the link latency this config exists to measure.
+models: {warmup: false}
+
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu}
+  - {name: server, host: 127.0.0.1, port: 15040, role: server, device: cpu}
+
+# The channel is declared but is not the measured path; it stands for framework
+# plumbing, and no backend may shape it. The teardown and bypass checks in the
+# report verify that separately, at the network level.
+channels:
+  - {name: plumbing, from: client, to: server}
+
+links:
+  - name: frames_link
+    from: client
+    to: server
+    direction: forward          # shape requests only, so measured RTT is 1x
+    network:
+      mode: delay               # overridden per backend on the command line
+      distribution: {kind: constant, value_ms: 60.0}
+      loss: 0.0
+
+app: {plugin: reference, params: {model_kind: stub, process_ms: 0.0}}

@@ -1,0 +1,10 @@
+# live.pipe.delay.dist: live x av_pipeline x network:delay x distributed_hil.
+extends: ../bases/_ol_live.yaml
+experiment: {name: acc_live_pipe_delay_dist}
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu}
+  - {name: server, host: edge-host, port: 15348, role: server, device: cpu, gpu_index: 0, launcher: ssh_docker, user: cadet, ssh_identity: ~/.ssh/cadet_acceptance, container: cadet:dev}
+links:
+  - {name: frames_link, from: client, to: server, direction: both,
+     network: {mode: delay, distribution: {kind: lognormal, p50_ms: 8.0, p99_ms: 25.0}, loss: 0.0, bandwidth_mbps: 24.0}}
+metrics: {collectors: [cpu, gpu, energy, bandwidth, clock_offset]}

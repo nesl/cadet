@@ -1,0 +1,11 @@
+# Concurrent-load config: a `load` node drives N synthetic clients at a rate into
+# one server. Pair with server_metrics.csv to see queue wait vs load. Extends the
+# reference base and replaces the nodes (server + load generator, no single client).
+extends: _base.yaml
+experiment: {name: load_test}
+models: {warmup: false}
+nodes:
+  - {name: server, host: 127.0.0.1, port: 15030, role: server, device: cpu}
+  - {name: gen, host: localhost, role: load, clients: 4, rate_hz: 100.0, arrival: constant, frames: 20}
+channels: []
+app: {plugin: reference, params: {model_kind: stub, process_ms: 3.0}}

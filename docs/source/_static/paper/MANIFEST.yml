@@ -1,0 +1,50 @@
+figures:
+  paper-fig1a-architecture.png:
+    source: pptx
+    pptx_file: CADET-ICRA.pptx
+    pptx_media: image6.png
+    expected_dims:
+    - 5079
+    - 4817
+    expected_sha256: 67aa237ab212b2aa9dbf226fd6d326a0230c1623cc304e41c11900966bff9456
+  paper-fig1b-netwaggle.png:
+    source: pptx
+    pptx_file: CADET-ICRA.pptx
+    pptx_media: image7.png
+    expected_dims:
+    - 3604
+    - 3767
+    expected_sha256: 7352bb823bdb913ac0c794c3d8ff55b2748a642f323b1b216b6d4df56b9ec120
+  paper-fig2-carla-captures.png:
+    source: pdf
+    pdf_file: ICRA26_ICRA_CADET.pdf
+    pdf_page: 4
+    pdf_image_index: 0
+    expected_dims:
+    - 2596
+    - 1940
+    expected_sha256: 02b5663bf746574a73df83edff70413bb0b2e827e497f5e72aa9dba18bb406eb
+  paper-fig3-v2v-gap.png:
+    source: pptx
+    pptx_file: CADET-ICRA.pptx
+    pptx_media: image11.png
+    expected_dims:
+    - 1849
+    - 1359
+    expected_sha256: ffd2a0ed1e6ca560eeb3b17e61393b50cbb51a6533dd8c9d33c00b9c8b8cd3a1
+  paper-fig4a-v2i-latency.png:
+    source: pptx
+    pptx_file: CADET-ICRA.pptx
+    pptx_media: image15.png
+    expected_dims:
+    - 2117
+    - 1557
+    expected_sha256: 97006f5643ac5f7918cbee46c6c1174c438754fc5fcab7c7bbb8c0f991eb23a4
+  paper-fig5-vlm.png:
+    source: pptx
+    pptx_file: CADET-ICRA.pptx
+    pptx_media: image18.png
+    expected_dims:
+    - 2117
+    - 1560
+    expected_sha256: 62d91d6525254825993ef23d557b9b866dae2186c49d3258e3abae613970a264

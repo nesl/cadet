@@ -1,0 +1,22 @@
+# Valid netem-link snippet: 30 ms mean lognormal, bandwidth_mbps required.
+# p99 = 30 * exp(1.282 * 0.23) ≈ 42 ms, well within 2 * p50 = 60 ms.
+# bandwidth_mbps is required to prevent packet reordering.
+extends: ../../configs/base.yaml
+
+experiment: {name: snippet_netem, app: reference, repetitions: 1}
+source: {kind: synthetic, count: 8, width: 64, height: 48}
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu}
+  - {name: server, host: 127.0.0.1, port: 15012, role: server, device: cpu}
+links:
+  - name: inference_link
+    from: client
+    to: server
+    network:
+      mode: netem
+      distribution:
+        kind: lognormal
+        p50_ms: 30.0
+        p99_ms: 51.6
+      bandwidth_mbps: 10.0
+app: {plugin: reference, params: {model_kind: stub}}

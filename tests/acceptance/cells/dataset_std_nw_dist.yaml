@@ -1,0 +1,10 @@
+# dataset.std.nw.dist: dataset x standalone x network:netwaggle x distributed_hil.
+extends: ../bases/_dataset.yaml
+experiment: {name: acc_dataset_std_nw_dist}
+nodes:
+  - {name: dataset, host: localhost, role: client, device: cpu}
+  - {name: server, host: edge-host, port: 15341, role: server, device: cpu, gpu_index: 0, launcher: ssh_docker, user: cadet, ssh_identity: ~/.ssh/cadet_acceptance, container: cadet:dev}
+links:
+  - {name: uplink, from: dataset, to: server, direction: both,
+     network: {mode: netwaggle, medium: wired, distribution: {kind: lognormal, p50_ms: 35.0, p99_ms: 68.0}, loss: 0.02, bandwidth_mbps: 6.0}}
+metrics: {collectors: [cpu, gpu, energy, bandwidth, clock_offset]}

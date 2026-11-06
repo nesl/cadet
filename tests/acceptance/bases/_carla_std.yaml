@@ -1,0 +1,28 @@
+# Acceptance base: CARLA source, standalone detector (braking flat app).
+# Needs a reachable CARLA server; a tree with none reports blocked (no CARLA).
+extends: ../../../examples/braking/flat/openloop_braking.yaml
+experiment: {name: acc_carla_std, app: braking, repetitions: 1, seed: 0, max_active_s: 120.0}
+# Pin the scenario's town and the ego the client attaches to, so every CARLA cell
+# (single_host AND distributed) uses exactly the same scenario/spawn/town and the
+# client finds the ScenarioRunner ego by role_name ("hero") rather than by
+# blueprint -- which is placement- and timing-independent. Without ego_role_name
+# the client matches the ego by vehicle model and, under a distributed/delayed
+# start, can attach to the wrong actor (camera elsewhere, ego never driven).
+source:
+  scenario:
+    map: Town05
+    # "scenario", not "hero": the braking scenario drives the ego it spawns
+    # itself, which carries ScenarioRunner's default role name. The "hero" the
+    # config file declares is spawned too and never driven - at this spawn
+    # point in Town05 it falls through the map, which is what a client
+    # attaching to it recorded: 1987 frames of a vehicle in freefall, no brake.
+    ego_role_name: scenario
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu}
+  - {name: server, host: 127.0.0.1, port: 15043, role: server, device: gpu}
+metrics: {collectors: [cpu, gpu, energy, bandwidth]}
+# Collapse the braking example sweep (vehicle x object) to one acceptance run.
+sweep:
+  axes:
+    source.scenario.ego_vehicle: [audi.tt]
+    source.scenario.target_object: [car]

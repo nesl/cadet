@@ -1,0 +1,3 @@
+# replay.pipe.none.sh: replay x av_pipeline x network:none x single_host.
+extends: ../bases/_ol_replay.yaml
+experiment: {name: acc_replay_pipe_none_sh}

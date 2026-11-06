@@ -1,0 +1,53 @@
+# Single-host CADET deployment: a CARLA simulator and a CADET client on one
+# machine, on a private Docker network. CADET reaches CARLA by service name
+# (carla-sim) — NO host networking, no hard-coded IPs.
+#
+#   docker compose -f docker/compose.single-host.yml up --build
+#
+# The simulator uses the official image in offscreen mode. GPU access for the sim
+# is provided via the `deploy.resources` reservation (needs the NVIDIA container
+# runtime); drop it to run the sim on CPU (slow).
+services:
+  carla-sim:
+    image: carlasim/carla:0.9.10
+    command: ["./CarlaUE4.sh", "-RenderOffScreen", "-nosound", "-carla-rpc-port=2000"]
+    networks: [cadet-net]
+    # Expose the RPC port only inside the private network (no host ports needed).
+    expose:
+      - "2000"
+      - "2001"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  cadet:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    depends_on: [carla-sim]
+    networks: [cadet-net]
+    # Example: validate the braking config against the sim reached by service
+    # name. --app-module because the app lives in examples/ and the framework
+    # does not import example code by itself. A CARLA `run` needs a
+    # ScenarioRunner tree, which this stack does not carry: mount one and name
+    # it, or use scripts/cadet (see examples/braking/flat/README.md).
+    command: >
+      validate examples/braking/flat/openloop_braking.yaml
+      --app-module examples.braking.flat.app
+    environment:
+      # CARLA is reached by the compose service name on the private network.
+      - CADET_CARLA_HOST=carla-sim
+    # Results stay in a named volume (never committed).
+    volumes:
+      - cadet-outputs:/app/outputs
+
+networks:
+  cadet-net:
+    driver: bridge
+
+volumes:
+  cadet-outputs:

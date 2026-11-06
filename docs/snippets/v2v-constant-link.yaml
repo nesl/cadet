@@ -1,0 +1,20 @@
+# V2V DSRC baseline: constant 20 ms message-level delay (802.11p).
+# Passes cadet validate.
+extends: ../../configs/base.yaml
+
+experiment: {name: snippet_v2v_constant, app: reference, repetitions: 1}
+source: {kind: synthetic, count: 8, width: 64, height: 48}
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu}
+  - {name: server, host: 127.0.0.1, port: 15013, role: server, device: cpu}
+links:
+  - name: ego_to_server
+    from: client
+    to: server
+    network:
+      mode: delay
+      distribution:
+        kind: constant
+        value_ms: 20.0     # DSRC 802.11p baseline
+      loss: 0.0
+app: {plugin: reference, params: {model_kind: stub}}

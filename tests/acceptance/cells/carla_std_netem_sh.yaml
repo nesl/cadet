@@ -1,0 +1,9 @@
+# carla.std.netem.sh: carla x standalone x network:netem x single_host.
+extends: ../bases/_carla_std.yaml
+experiment: {name: acc_carla_std_netem_sh}
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu, launcher: docker}
+  - {name: server, host: 127.0.0.1, port: 15043, role: server, device: gpu, launcher: docker}
+links:
+  - {name: frames_link, from: client, to: server, direction: both,
+     network: {mode: netem, distribution: {kind: lognormal, p50_ms: 8.0, p99_ms: 15.0}, loss: 0.0, bandwidth_mbps: 24.0}}

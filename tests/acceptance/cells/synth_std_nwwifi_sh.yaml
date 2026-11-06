@@ -1,0 +1,11 @@
+# synth.std.nwwifi.sh: synthetic x standalone x netwaggle-wifi x single_host.
+# Real Mininet-WiFi cell: client + server are stations on one access point; the
+# cell is shaped by the propagation model, so run with `cadet emulate` inside the
+# privileged Mininet-WiFi container (a plain `cadet run` leaves it unshaped).
+extends: ../bases/_synth.yaml
+experiment: {name: acc_synth_std_nwwifi_sh}
+connectors:
+  - {name: cell_ap, type: ap, position: "0,0,0", wifi: {ssid: cadet, mode: g, channel: 1, propagation_model: logDistance, propagation_exp: 3.5}}
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu, connector: cell_ap, position: "8,0,0"}
+  - {name: server, host: 127.0.0.1, port: 15041, role: server, device: cpu, connector: cell_ap, position: "0,1,0"}

@@ -1,0 +1,272 @@
+# CADET four-layer acceptance matrix (paper Fig. 1).
+#
+# This file is the SPEC. It defines every acceptance cell as a point in the
+# four-layer product space
+#
+#     source x processing x network x infrastructure
+#
+# together with the checks each cell must pass. `scripts/acceptance/run_matrix.py`
+# reads this file, materialises each cell by launching its config, runs the
+# checks, and writes acceptance_report.{md,json}. Nothing here is code-specific:
+# a cell names an existing example app and an on-disk config (<= ~25 lines,
+# assembled with `extends:` from shared bases), so the matrix exercises the real
+# examples rather than a parallel app.
+#
+# A combination that is not valid is NOT silently omitted: it appears with
+# status `na` and a `reason`, and the report renders it as "n/a" in its cell.
+# A combination that is valid but not yet runnable on this tree appears with
+# status `pending` and a `reason` (the Wi-Fi cells, blocked on the host's
+# Mininet-WiFi fix).
+#
+# CARLA covers the full 16: {av_pipeline, standalone} x {none, delay, netem,
+# netwaggle} x {single_host, distributed_hil}. The other sources carry the
+# standalone processing tier across the same network x infra product; the
+# av_pipeline tier is n/a for them (see validity_rules).
+
+# ---------------------------------------------------------------------------
+# layers: the four axes, their values, and what each value means here.
+# ---------------------------------------------------------------------------
+layers:
+  source:
+    carla:     {desc: "CARLA simulator (+ ScenarioRunner scenario)", kind: carla}
+    replay:    {desc: "deterministic replay of a folder of images or a video file", kind: replay, media: [images, video]}
+    live:      {desc: "live capture from a camera device or a network stream", kind: live}
+    synthetic: {desc: "generated frames, no files/hardware", kind: synthetic}
+    dataset:   {desc: "deterministic dataset replay for model eval (VQA / COCO-style detection)", kind: dataset, tasks: [vqa, detection]}
+  processing:
+    av_pipeline: {desc: "the staged perception->decision pipeline (cadet/pipeline, @register_stage). CLOSED-LOOP on CARLA (detection->ROI gate->brake control actuates the sim); OPEN-LOOP on every other source (detection->ROI gate->brake decision logged per frame, scored against ground truth where the source carries it, no actuation sink). Open-loop stages: examples/av_pipeline/openloop.py."}
+    standalone:  {desc: "a single model served over the wire: a detector for image sources, a VLM for the dataset source"}
+  network:
+    none:      {desc: "no shaping; frames traverse the plain transport", backend: transport}
+    delay:     {desc: "in-process, message-level delay line (loss/bandwidth/distribution)", backend: transport, privilege: none}
+    netem:     {desc: "packet-level tc/netem on each sender's namespace", backend: cadet/network/netem.py, privilege: NET_ADMIN, needs: "containerised senders (launcher: docker)"}
+    netwaggle: {desc: "Mininet emulation; wired medium (per-sensor emulated links)", backend: cadet/network/netwaggle, run_with: "cadet emulate", needs: "privileged Mininet-WiFi container"}
+    netwaggle_wifi: {desc: "Mininet-WiFi shared-medium cell (star: stations on one access point, shaped by the propagation model, no per-link qdisc)", backend: cadet/network/netwaggle, run_with: "cadet emulate", needs: "privileged Mininet-WiFi container (hwsim)"}
+  infrastructure:
+    single_host:     {desc: "every node is a process/container on this machine (launcher: local, or docker for netem)"}
+    distributed_hil: {desc: "a real second machine (host `edge-host`) carries the server node", via: [ssh_docker, ssh_venv], note: "realised one cell each by ssh_docker and ssh_venv; remaining distributed cells use ssh_docker (the proven path)"}
+
+# ---------------------------------------------------------------------------
+# validity_rules: why some (source x processing) combinations are n/a.
+# ---------------------------------------------------------------------------
+validity_rules:
+  - id: emulation-is-one-machine
+    applies_to: "network=netwaggle AND infra=distributed_hil"
+    verdict: na
+    reason: >
+      Mininet emulates a single host: its emulated hosts are network namespaces
+      of one machine's emulation container, joined by veth pairs that exist only
+      there. A role on a second machine is reached through the real network
+      instead, so there is no arrangement in which it is a host on that
+      emulation - the two tiers describe different machines carrying the same
+      link. Distributed HIL therefore shapes with `netem` inside each node's
+      own container, or with `delay` in the transport, and the emulated medium
+      stays a single-host tier.
+  - id: every-source-every-core
+    applies_to: "all source x processing"
+    verdict: valid
+    reason: >
+      A standing requirement: every source runs under every processing core. The
+      only thing a non-simulator source cannot do is CLOSE the loop (it accepts
+      no control), so the AV pipeline runs OPEN-LOOP there: detection -> ROI gate
+      -> brake decision is logged per frame as a decision record, with no
+      actuation sink, and scored against ground truth where the source carries it
+      (the dataset detection task does; replay/live/synthetic do not, so their
+      `correct` column is blank). The open-loop terminus is examples/av_pipeline/
+      openloop.py (stub_detector + decision_log). No combination is n/a.
+  - id: carla-closed-loop
+    applies_to: "source=carla AND processing=av_pipeline"
+    verdict: valid
+    reason: >
+      CARLA is the one source that closes the loop, so its av_pipeline cells use
+      the closed-loop braking stages (cadet.pipeline.stages.braking) that actuate
+      the sim -- not the open-loop terminus. CARLA carries both processing tiers
+      across the full network x infra product: the mandated 16.
+  - id: gt-scoring-where-present
+    applies_to: "processing=av_pipeline AND source=dataset"
+    verdict: valid
+    reason: >
+      The dataset detection task carries gt_boxes per frame; the open-loop
+      decision stage reads them (forwarded via the pipeline app's
+      forward_meta_keys hook) and records whether each brake decision was correct
+      (a target is in the ROI per GT iff the gate fired). decisions_<node>.csv
+      ends with a decision_accuracy line.
+
+# ---------------------------------------------------------------------------
+# checks: what every runnable cell is held to. run_matrix.py implements each.
+# ---------------------------------------------------------------------------
+checks:
+  a_completes_and_tears_down:
+    desc: "run reaches a recorded end reason and tears down cleanly"
+    pass_when:
+      - "run.json exists with status in {complete} and a non-empty reason/detail"
+      - "no CADET-owned leftover process, container, network or staging dir remains (locally; and on `edge-host` for distributed cells)"
+  b_metrics_well_formed:
+    desc: "the run's metrics, logs and provenance are present and parse"
+    pass_when:
+      - "per-frame latency log <run_id>_latency_location_log.csv present and parses with a header + >=1 row"
+      - "link_report_<node>.json present for every client, with a `measured` latency block, for every emulated link/route"
+      - "each requested collector (gpu, cpu, energy, bandwidth) wrote <collector>_<node>.csv per node that requested it; queue = server_metrics_<node>.csv present"
+      - "device_summary.json present with one entry per node (the per-node summary)"
+      - "run.json carries provenance: cadet.commit and cadet.dirty, and the image each containerised node ran (tag, digest and recorded commit)"
+      - "each role log under logs/ is present and contains no uncaught traceback"
+  c_fm_analysis:
+    desc: "the foundation-model interface answers correctly about the run"
+    requires: "analysis.backend=openai_chat with a reachable endpoint; a model served locally is enough"
+    pass_when:
+      - "`cadet summarize <run>` returns 0 and non-empty prose"
+      - "`cadet ask <run> \"what was the median end-to-end latency and which node used the most energy?\"` returns 0"
+      - "the answer's latency figure is within tolerance of the value computed offline by `cadet summarize --context-only` (abs 5 ms or 10% rel, whichever larger), and names the same highest-energy node"
+    offline_fallback: >
+      When no endpoint is configured, run_matrix records this check as
+      `blocked (no FM endpoint)` but still verifies the GROUND TRUTH the answer
+      must match exists and is well-formed, by parsing `cadet summarize
+      --context-only` (median e2e latency + per-node energy). A later run with
+      CADET_FM_API_KEY + analysis.endpoint set turns this green without any
+      config change.
+  d_dashboard_renders:
+    desc: "the dashboard renders the run without a server"
+    pass_when:
+      - "cadet.dashboard.runs.read_run(<run>) + cadet.dashboard.render.run_view(record, root) returns HTML (>0 bytes) with the run_id in it, no exception"
+
+# ---------------------------------------------------------------------------
+# defaults applied to every cell unless the cell overrides them.
+# ---------------------------------------------------------------------------
+defaults:
+  repetitions: 1
+  checks: [a_completes_and_tears_down, b_metrics_well_formed, c_fm_analysis, d_dashboard_renders]
+  collectors: [cpu, gpu, energy, bandwidth, queue]   # queue is always-on; the rest are requested in the cell base
+  # The placeholder every distributed cell's server node carries. The real
+  # address is a property of whoever runs the matrix, not of the spec, so it is
+  # supplied by $CADET_SECOND_MACHINE or by the untracked
+  # tests/acceptance/local.yaml; see tests/acceptance/README.md.
+  second_machine: edge-host
+
+# ---------------------------------------------------------------------------
+# cells: the product space. `config` is relative to the repo root. `app_module`
+# / `stage_module` are the import args the launcher needs. `status`: valid |
+# na | pending. For distributed cells, `launcher` records which mechanism
+# realises the tier.
+#
+# The cell files themselves are generated-and-reviewed thin `extends:` configs;
+# their line counts are recorded by run_matrix.py in the report (all <= 25).
+# ---------------------------------------------------------------------------
+cells:
+
+  # ===== CARLA -- the mandated 16 (2 processing x 4 network x 2 infra) =====
+  # av_pipeline = the braking stage pipeline; standalone = the braking flat app.
+  # All CARLA cells need a reachable CARLA server + ScenarioRunner, so on a tree
+  # without one they report `blocked (no CARLA)`; the matrix entry is still valid.
+
+  - {id: carla.pipe.none.sh,     source: carla, processing: av_pipeline, network: none,      infra: single_host,     status: valid, app: pipeline, stage_module: cadet.pipeline.stages.braking, config: tests/acceptance/cells/carla_pipe_none_sh.yaml}
+  - {id: carla.pipe.delay.sh,    source: carla, processing: av_pipeline, network: delay,     infra: single_host,     status: valid, app: pipeline, stage_module: cadet.pipeline.stages.braking, config: tests/acceptance/cells/carla_pipe_delay_sh.yaml}
+  - {id: carla.pipe.netem.sh,    source: carla, processing: av_pipeline, network: netem,     infra: single_host,     status: valid, app: pipeline, stage_module: cadet.pipeline.stages.braking, config: tests/acceptance/cells/carla_pipe_netem_sh.yaml}
+  - {id: carla.pipe.nw.sh,       source: carla, processing: av_pipeline, network: netwaggle,  infra: single_host,     status: valid, app: pipeline, stage_module: cadet.pipeline.stages.braking, config: tests/acceptance/cells/carla_pipe_nw_sh.yaml, run_with: emulate}
+  - {id: carla.pipe.none.dist,   source: carla, processing: av_pipeline, network: none,      infra: distributed_hil, launcher: ssh_docker, status: valid, app: pipeline, stage_module: cadet.pipeline.stages.braking, config: tests/acceptance/cells/carla_pipe_none_dist.yaml}
+  - {id: carla.pipe.delay.dist,  source: carla, processing: av_pipeline, network: delay,     infra: distributed_hil, launcher: ssh_docker, status: valid, app: pipeline, stage_module: cadet.pipeline.stages.braking, config: tests/acceptance/cells/carla_pipe_delay_dist.yaml}
+  - {id: carla.pipe.netem.dist,  source: carla, processing: av_pipeline, network: netem,     infra: distributed_hil, launcher: ssh_docker, status: valid, app: pipeline, stage_module: cadet.pipeline.stages.braking, config: tests/acceptance/cells/carla_pipe_netem_dist.yaml}
+  - {id: carla.pipe.nw.dist,     source: carla, processing: av_pipeline, network: netwaggle,  infra: distributed_hil, launcher: ssh_docker, status: na, rule: emulation-is-one-machine, app: pipeline, stage_module: cadet.pipeline.stages.braking, config: tests/acceptance/cells/carla_pipe_nw_dist.yaml, run_with: emulate}
+
+  - {id: carla.std.none.sh,      source: carla, processing: standalone,  network: none,      infra: single_host,     status: valid, app: braking, app_module: examples.braking.flat.app, config: tests/acceptance/cells/carla_std_none_sh.yaml}
+  - {id: carla.std.delay.sh,     source: carla, processing: standalone,  network: delay,     infra: single_host,     status: valid, app: braking, app_module: examples.braking.flat.app, config: tests/acceptance/cells/carla_std_delay_sh.yaml}
+  - {id: carla.std.netem.sh,     source: carla, processing: standalone,  network: netem,     infra: single_host,     status: valid, app: braking, app_module: examples.braking.flat.app, config: tests/acceptance/cells/carla_std_netem_sh.yaml}
+  - {id: carla.std.nw.sh,        source: carla, processing: standalone,  network: netwaggle,  infra: single_host,     status: valid, app: braking, app_module: examples.braking.flat.app, config: tests/acceptance/cells/carla_std_nw_sh.yaml, run_with: emulate}
+  - {id: carla.std.none.dist,    source: carla, processing: standalone,  network: none,      infra: distributed_hil, launcher: ssh_docker,   status: valid, app: braking, app_module: examples.braking.flat.app, config: tests/acceptance/cells/carla_std_none_dist.yaml}
+  - {id: carla.std.delay.dist,   source: carla, processing: standalone,  network: delay,     infra: distributed_hil, launcher: ssh_docker, status: valid, app: braking, app_module: examples.braking.flat.app, config: tests/acceptance/cells/carla_std_delay_dist.yaml}
+  - {id: carla.std.netem.dist,   source: carla, processing: standalone,  network: netem,     infra: distributed_hil, launcher: ssh_docker, status: valid, app: braking, app_module: examples.braking.flat.app, config: tests/acceptance/cells/carla_std_netem_dist.yaml}
+  - {id: carla.std.nw.dist,      source: carla, processing: standalone,  network: netwaggle,  infra: distributed_hil, launcher: ssh_docker, status: na, rule: emulation-is-one-machine, app: braking, app_module: examples.braking.flat.app, config: tests/acceptance/cells/carla_std_nw_dist.yaml, run_with: emulate}
+
+  # ===== SYNTHETIC x standalone (reference app, stub model -- runs with no sim/GPU) =====
+  - {id: synth.std.none.sh,      source: synthetic, processing: standalone, network: none,     infra: single_host,     status: valid, app: reference, app_module: examples.reference.app, config: tests/acceptance/cells/synth_std_none_sh.yaml}
+  - {id: synth.std.delay.sh,     source: synthetic, processing: standalone, network: delay,    infra: single_host,     status: valid, app: reference, app_module: examples.reference.app, config: tests/acceptance/cells/synth_std_delay_sh.yaml}
+  - {id: synth.std.netem.sh,     source: synthetic, processing: standalone, network: netem,    infra: single_host,     status: valid, app: reference, app_module: examples.reference.app, config: tests/acceptance/cells/synth_std_netem_sh.yaml}
+  - {id: synth.std.nw.sh,        source: synthetic, processing: standalone, network: netwaggle, infra: single_host,     status: valid, app: reference, app_module: examples.reference.app, config: tests/acceptance/cells/synth_std_nw_sh.yaml, run_with: emulate}
+  - {id: synth.std.none.dist,    source: synthetic, processing: standalone, network: none,     infra: distributed_hil, launcher: ssh_venv,   status: valid, app: reference, app_module: examples.reference.app, config: tests/acceptance/cells/synth_std_none_dist.yaml}
+  - {id: synth.std.delay.dist,   source: synthetic, processing: standalone, network: delay,    infra: distributed_hil, launcher: ssh_docker, status: valid, app: reference, app_module: examples.reference.app, config: tests/acceptance/cells/synth_std_delay_dist.yaml}
+  - {id: synth.std.netem.dist,   source: synthetic, processing: standalone, network: netem,    infra: distributed_hil, launcher: ssh_docker, status: valid, app: reference, app_module: examples.reference.app, config: tests/acceptance/cells/synth_std_netem_dist.yaml}
+  - {id: synth.std.nw.dist,      source: synthetic, processing: standalone, network: netwaggle, infra: distributed_hil, launcher: ssh_docker, status: na, rule: emulation-is-one-machine, app: reference, app_module: examples.reference.app, config: tests/acceptance/cells/synth_std_nw_dist.yaml, run_with: emulate}
+
+  # ===== DATASET x standalone (dataset_vlm app, stub VLM -- runs with no sim/GPU) =====
+  - {id: dataset.std.none.sh,    source: dataset, processing: standalone, network: none,     infra: single_host,     status: valid, app: dataset_vlm, app_module: examples.dataset_vlm.app, config: tests/acceptance/cells/dataset_std_none_sh.yaml}
+  - {id: dataset.std.delay.sh,   source: dataset, processing: standalone, network: delay,    infra: single_host,     status: valid, app: dataset_vlm, app_module: examples.dataset_vlm.app, config: tests/acceptance/cells/dataset_std_delay_sh.yaml}
+  - {id: dataset.std.netem.sh,   source: dataset, processing: standalone, network: netem,    infra: single_host,     status: valid, app: dataset_vlm, app_module: examples.dataset_vlm.app, config: tests/acceptance/cells/dataset_std_netem_sh.yaml}
+  - {id: dataset.std.nw.sh,      source: dataset, processing: standalone, network: netwaggle, infra: single_host,     status: valid, app: dataset_vlm, app_module: examples.dataset_vlm.app, config: tests/acceptance/cells/dataset_std_nw_sh.yaml, run_with: emulate}
+  - {id: dataset.std.none.dist,  source: dataset, processing: standalone, network: none,     infra: distributed_hil, launcher: ssh_docker, status: valid, app: dataset_vlm, app_module: examples.dataset_vlm.app, config: tests/acceptance/cells/dataset_std_none_dist.yaml}
+  - {id: dataset.std.delay.dist, source: dataset, processing: standalone, network: delay,    infra: distributed_hil, launcher: ssh_docker, status: valid, app: dataset_vlm, app_module: examples.dataset_vlm.app, config: tests/acceptance/cells/dataset_std_delay_dist.yaml}
+  - {id: dataset.std.netem.dist, source: dataset, processing: standalone, network: netem,    infra: distributed_hil, launcher: ssh_docker, status: valid, app: dataset_vlm, app_module: examples.dataset_vlm.app, config: tests/acceptance/cells/dataset_std_netem_dist.yaml}
+  - {id: dataset.std.nw.dist,    source: dataset, processing: standalone, network: netwaggle, infra: distributed_hil, launcher: ssh_docker, status: na, rule: emulation-is-one-machine, app: dataset_vlm, app_module: examples.dataset_vlm.app, config: tests/acceptance/cells/dataset_std_nw_dist.yaml, run_with: emulate}
+
+  # ===== REPLAY x standalone (distributed sensing detector app over cached frames) =====
+  # Needs the frames fetched first (examples/distributed_sensing/fetch_frames.py). `media: images`
+  # here; the `video` media is the same source kind with a video path (recorded as a variant).
+  - {id: replay.std.none.sh,     source: replay, processing: standalone, network: none,     infra: single_host,     status: valid, media: images, app: distributed_sensing, app_module: examples.distributed_sensing.app, config: tests/acceptance/cells/replay_std_none_sh.yaml}
+  - {id: replay.std.delay.sh,    source: replay, processing: standalone, network: delay,    infra: single_host,     status: valid, media: images, app: distributed_sensing, app_module: examples.distributed_sensing.app, config: tests/acceptance/cells/replay_std_delay_sh.yaml}
+  - {id: replay.std.netem.sh,    source: replay, processing: standalone, network: netem,    infra: single_host,     status: valid, media: images, app: distributed_sensing, app_module: examples.distributed_sensing.app, config: tests/acceptance/cells/replay_std_netem_sh.yaml}
+  - {id: replay.std.nw.sh,       source: replay, processing: standalone, network: netwaggle, infra: single_host,     status: valid, media: images, app: distributed_sensing, app_module: examples.distributed_sensing.app, config: tests/acceptance/cells/replay_std_nw_sh.yaml, run_with: emulate}
+  - {id: replay.std.none.dist,   source: replay, processing: standalone, network: none,     infra: distributed_hil, launcher: ssh_docker, status: valid, media: images, app: distributed_sensing, app_module: examples.distributed_sensing.app, config: tests/acceptance/cells/replay_std_none_dist.yaml}
+  - {id: replay.std.delay.dist,  source: replay, processing: standalone, network: delay,    infra: distributed_hil, launcher: ssh_docker, status: valid, media: images, app: distributed_sensing, app_module: examples.distributed_sensing.app, config: tests/acceptance/cells/replay_std_delay_dist.yaml}
+  - {id: replay.std.netem.dist,  source: replay, processing: standalone, network: netem,    infra: distributed_hil, launcher: ssh_docker, status: valid, media: images, app: distributed_sensing, app_module: examples.distributed_sensing.app, config: tests/acceptance/cells/replay_std_netem_dist.yaml}
+  - {id: replay.std.nw.dist,     source: replay, processing: standalone, network: netwaggle, infra: distributed_hil, launcher: ssh_docker, status: na, rule: emulation-is-one-machine, media: images, app: distributed_sensing, app_module: examples.distributed_sensing.app, config: tests/acceptance/cells/replay_std_nw_dist.yaml, run_with: emulate}
+
+  # ===== LIVE x standalone (reference app over a stream URL) =====
+  # Needs a reachable stream (or a camera device). On a tree with neither, reports
+  # `blocked (no live source)`.
+  - {id: live.std.none.sh,       source: live, processing: standalone, network: none,     infra: single_host,     status: valid, app: reference, app_module: examples.reference.app, config: tests/acceptance/cells/live_std_none_sh.yaml}
+  - {id: live.std.delay.sh,      source: live, processing: standalone, network: delay,    infra: single_host,     status: valid, app: reference, app_module: examples.reference.app, config: tests/acceptance/cells/live_std_delay_sh.yaml}
+  - {id: live.std.netem.sh,      source: live, processing: standalone, network: netem,    infra: single_host,     status: valid, app: reference, app_module: examples.reference.app, config: tests/acceptance/cells/live_std_netem_sh.yaml}
+  - {id: live.std.nw.sh,         source: live, processing: standalone, network: netwaggle, infra: single_host,     status: valid, app: reference, app_module: examples.reference.app, config: tests/acceptance/cells/live_std_nw_sh.yaml, run_with: emulate}
+  - {id: live.std.none.dist,     source: live, processing: standalone, network: none,     infra: distributed_hil, launcher: ssh_docker, status: valid, app: reference, app_module: examples.reference.app, config: tests/acceptance/cells/live_std_none_dist.yaml}
+  - {id: live.std.delay.dist,    source: live, processing: standalone, network: delay,    infra: distributed_hil, launcher: ssh_docker, status: valid, app: reference, app_module: examples.reference.app, config: tests/acceptance/cells/live_std_delay_dist.yaml}
+  - {id: live.std.netem.dist,    source: live, processing: standalone, network: netem,    infra: distributed_hil, launcher: ssh_docker, status: valid, app: reference, app_module: examples.reference.app, config: tests/acceptance/cells/live_std_netem_dist.yaml}
+  - {id: live.std.nw.dist,       source: live, processing: standalone, network: netwaggle, infra: distributed_hil, launcher: ssh_docker, status: na, rule: emulation-is-one-machine, app: reference, app_module: examples.reference.app, config: tests/acceptance/cells/live_std_nw_dist.yaml, run_with: emulate}
+
+  # ===== av_pipeline OPEN-LOOP x {synthetic, dataset, replay, live} =====
+  # camera(client) -> stub_detector(server) -> decision_log(server), no actuation.
+  # stage_module: examples.av_pipeline.openloop. dataset scores decisions vs GT.
+  - {id: synth.pipe.none.sh,     source: synthetic, processing: av_pipeline, network: none,      infra: single_host,     status: valid, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/synth_pipe_none_sh.yaml}
+  - {id: synth.pipe.delay.sh,    source: synthetic, processing: av_pipeline, network: delay,     infra: single_host,     status: valid, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/synth_pipe_delay_sh.yaml}
+  - {id: synth.pipe.netem.sh,    source: synthetic, processing: av_pipeline, network: netem,     infra: single_host,     status: valid, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/synth_pipe_netem_sh.yaml}
+  - {id: synth.pipe.nw.sh,       source: synthetic, processing: av_pipeline, network: netwaggle,  infra: single_host,     status: valid, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/synth_pipe_nw_sh.yaml, run_with: emulate}
+  - {id: synth.pipe.none.dist,   source: synthetic, processing: av_pipeline, network: none,      infra: distributed_hil, launcher: ssh_docker, status: valid, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/synth_pipe_none_dist.yaml}
+  - {id: synth.pipe.delay.dist,  source: synthetic, processing: av_pipeline, network: delay,     infra: distributed_hil, launcher: ssh_docker, status: valid, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/synth_pipe_delay_dist.yaml}
+  - {id: synth.pipe.netem.dist,  source: synthetic, processing: av_pipeline, network: netem,     infra: distributed_hil, launcher: ssh_docker, status: valid, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/synth_pipe_netem_dist.yaml}
+  - {id: synth.pipe.nw.dist,     source: synthetic, processing: av_pipeline, network: netwaggle,  infra: distributed_hil, launcher: ssh_docker, status: na, rule: emulation-is-one-machine, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/synth_pipe_nw_dist.yaml, run_with: emulate}
+
+  - {id: dataset.pipe.none.sh,   source: dataset, processing: av_pipeline, network: none,      infra: single_host,     status: valid, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/dataset_pipe_none_sh.yaml}
+  - {id: dataset.pipe.delay.sh,  source: dataset, processing: av_pipeline, network: delay,     infra: single_host,     status: valid, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/dataset_pipe_delay_sh.yaml}
+  - {id: dataset.pipe.netem.sh,  source: dataset, processing: av_pipeline, network: netem,     infra: single_host,     status: valid, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/dataset_pipe_netem_sh.yaml}
+  - {id: dataset.pipe.nw.sh,     source: dataset, processing: av_pipeline, network: netwaggle,  infra: single_host,     status: valid, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/dataset_pipe_nw_sh.yaml, run_with: emulate}
+  - {id: dataset.pipe.none.dist, source: dataset, processing: av_pipeline, network: none,      infra: distributed_hil, launcher: ssh_docker, status: valid, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/dataset_pipe_none_dist.yaml}
+  - {id: dataset.pipe.delay.dist,source: dataset, processing: av_pipeline, network: delay,     infra: distributed_hil, launcher: ssh_docker, status: valid, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/dataset_pipe_delay_dist.yaml}
+  - {id: dataset.pipe.netem.dist,source: dataset, processing: av_pipeline, network: netem,     infra: distributed_hil, launcher: ssh_docker, status: valid, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/dataset_pipe_netem_dist.yaml}
+  - {id: dataset.pipe.nw.dist,   source: dataset, processing: av_pipeline, network: netwaggle,  infra: distributed_hil, launcher: ssh_docker, status: na, rule: emulation-is-one-machine, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/dataset_pipe_nw_dist.yaml, run_with: emulate}
+
+  - {id: replay.pipe.none.sh,    source: replay, processing: av_pipeline, network: none,      infra: single_host,     status: valid, media: images, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/replay_pipe_none_sh.yaml}
+  - {id: replay.pipe.delay.sh,   source: replay, processing: av_pipeline, network: delay,     infra: single_host,     status: valid, media: images, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/replay_pipe_delay_sh.yaml}
+  - {id: replay.pipe.netem.sh,   source: replay, processing: av_pipeline, network: netem,     infra: single_host,     status: valid, media: images, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/replay_pipe_netem_sh.yaml}
+  - {id: replay.pipe.nw.sh,      source: replay, processing: av_pipeline, network: netwaggle,  infra: single_host,     status: valid, media: images, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/replay_pipe_nw_sh.yaml, run_with: emulate}
+  - {id: replay.pipe.none.dist,  source: replay, processing: av_pipeline, network: none,      infra: distributed_hil, launcher: ssh_docker, status: valid, media: images, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/replay_pipe_none_dist.yaml}
+  - {id: replay.pipe.delay.dist, source: replay, processing: av_pipeline, network: delay,     infra: distributed_hil, launcher: ssh_docker, status: valid, media: images, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/replay_pipe_delay_dist.yaml}
+  - {id: replay.pipe.netem.dist, source: replay, processing: av_pipeline, network: netem,     infra: distributed_hil, launcher: ssh_docker, status: valid, media: images, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/replay_pipe_netem_dist.yaml}
+  - {id: replay.pipe.nw.dist,    source: replay, processing: av_pipeline, network: netwaggle,  infra: distributed_hil, launcher: ssh_docker, status: na, rule: emulation-is-one-machine, media: images, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/replay_pipe_nw_dist.yaml, run_with: emulate}
+
+  - {id: live.pipe.none.sh,      source: live, processing: av_pipeline, network: none,      infra: single_host,     status: valid, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/live_pipe_none_sh.yaml}
+  - {id: live.pipe.delay.sh,     source: live, processing: av_pipeline, network: delay,     infra: single_host,     status: valid, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/live_pipe_delay_sh.yaml}
+  - {id: live.pipe.netem.sh,     source: live, processing: av_pipeline, network: netem,     infra: single_host,     status: valid, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/live_pipe_netem_sh.yaml}
+  - {id: live.pipe.nw.sh,        source: live, processing: av_pipeline, network: netwaggle,  infra: single_host,     status: valid, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/live_pipe_nw_sh.yaml, run_with: emulate}
+  - {id: live.pipe.none.dist,    source: live, processing: av_pipeline, network: none,      infra: distributed_hil, launcher: ssh_docker, status: valid, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/live_pipe_none_dist.yaml}
+  - {id: live.pipe.delay.dist,   source: live, processing: av_pipeline, network: delay,     infra: distributed_hil, launcher: ssh_docker, status: valid, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/live_pipe_delay_dist.yaml}
+  - {id: live.pipe.netem.dist,   source: live, processing: av_pipeline, network: netem,     infra: distributed_hil, launcher: ssh_docker, status: valid, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/live_pipe_netem_dist.yaml}
+  - {id: live.pipe.nw.dist,      source: live, processing: av_pipeline, network: netwaggle,  infra: distributed_hil, launcher: ssh_docker, status: na, rule: emulation-is-one-machine, app: pipeline, stage_module: examples.av_pipeline.openloop, config: tests/acceptance/cells/live_pipe_nw_dist.yaml, run_with: emulate}
+
+  # ===== netwaggle Wi-Fi cells (real Mininet-WiFi: stations on an AP) =====
+  # A shared-medium cell: every node is a station on one access point (connectors:
+  # cell_ap), shaped by the propagation model, not by a per-link qdisc. No `links`.
+  # Run with `cadet emulate` inside the privileged Mininet-WiFi container, from
+  # the host's own network namespace: mac80211_hwsim creates its radios in the
+  # initial namespace, and a container with one of its own sees none of them.
+  # One per source family (single_host).
+  - {id: carla.std.nwwifi.sh,   source: carla,     processing: standalone, network: netwaggle_wifi, infra: single_host, status: valid, app: braking,     app_module: examples.braking.flat.app, config: tests/acceptance/cells/carla_std_nwwifi_sh.yaml, run_with: emulate}
+  - {id: synth.std.nwwifi.sh,   source: synthetic, processing: standalone, network: netwaggle_wifi, infra: single_host, status: valid, app: reference,   app_module: examples.reference.app,    config: tests/acceptance/cells/synth_std_nwwifi_sh.yaml, run_with: emulate}
+  - {id: dataset.std.nwwifi.sh, source: dataset,   processing: standalone, network: netwaggle_wifi, infra: single_host, status: valid, app: dataset_vlm, app_module: examples.dataset_vlm.app,  config: tests/acceptance/cells/dataset_std_nwwifi_sh.yaml, run_with: emulate}
+  - {id: replay.std.nwwifi.sh,  source: replay,    processing: standalone, network: netwaggle_wifi, infra: single_host, status: valid, media: images, app: distributed_sensing, app_module: examples.distributed_sensing.app, config: tests/acceptance/cells/replay_std_nwwifi_sh.yaml, run_with: emulate}

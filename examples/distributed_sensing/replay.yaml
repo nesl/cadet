@@ -1,0 +1,9 @@
+# The five-sensor edge sweep over cached frames instead of generated ones. Run
+# `python examples/distributed_sensing/fetch_frames.py` first: it writes the images this config
+# reads into a folder that .gitignore excludes. The frames are what make the
+# bytes-per-link axis meaningful, because a generated frame is one flat colour
+# and compresses to a few hundred bytes.
+extends: edge_5.yaml
+
+experiment: {name: sensing_edge_5_replay}
+source: {kind: replay, path: datasets/distributed_sensing/coco-val2017, fps: 10.0, limit: 20}

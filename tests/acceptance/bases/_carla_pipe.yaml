@@ -1,0 +1,25 @@
+# Acceptance base: CARLA source, av_pipeline (braking stage pipeline).
+# Launch with --stage-module cadet.pipeline.stages.braking. Needs a CARLA server.
+extends: ../../../examples/braking/pipeline/openloop_braking.yaml
+experiment: {name: acc_carla_pipe, app: pipeline, repetitions: 1, seed: 0, max_active_s: 120.0}
+# Same scenario/town/ego pinning as _carla_std: the pipeline client attaches to
+# the ScenarioRunner ego by role_name ("hero"), so single_host and distributed
+# cells drive the same scenario regardless of placement/timing. See _carla_std.
+source:
+  scenario:
+    map: Town05
+    # "scenario", not "hero": the braking scenario drives the ego it spawns
+    # itself, which carries ScenarioRunner's default role name. The "hero" the
+    # config file declares is spawned too and never driven - at this spawn
+    # point in Town05 it falls through the map, which is what a client
+    # attaching to it recorded: 1987 frames of a vehicle in freefall, no brake.
+    ego_role_name: scenario
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu}
+  - {name: server, host: 127.0.0.1, port: 15044, role: server, device: gpu}
+metrics: {collectors: [cpu, gpu, energy, bandwidth]}
+# Collapse the braking example sweep (vehicle x object) to one acceptance run.
+sweep:
+  axes:
+    source.scenario.ego_vehicle: [audi.tt]
+    source.scenario.target_object: [car]

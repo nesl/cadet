@@ -1,0 +1,6 @@
+# dataset.std.nw.sh: dataset x standalone x network:netwaggle x single_host.
+extends: ../bases/_dataset.yaml
+experiment: {name: acc_dataset_std_nw_sh}
+links:
+  - {name: uplink, from: dataset, to: server, direction: both,
+     network: {mode: netwaggle, medium: wired, distribution: {kind: lognormal, p50_ms: 35.0, p99_ms: 68.0}, loss: 0.02, bandwidth_mbps: 6.0}}

@@ -1,0 +1,28 @@
+# The detection task on the stub model: the built-in detection set carries
+# ground-truth boxes, the stub model returns a fixed pair of boxes, and the
+# dataset node scores them by IoU (the COCO-style single-threshold match in
+# scoring.py). No download, no GPU; runs in seconds like `quick.yaml`.
+extends: _base.yaml
+
+experiment: {name: dataset_vlm_detection, max_active_s: 120.0}
+
+source: {kind: dataset, task: detection, count: 8, fps: 0.0}
+
+app:
+  plugin: dataset_vlm
+  params:
+    task: detection
+    model: stub
+    placement: edge
+    iou_thresh: 0.5
+
+links:
+  - name: uplink
+    from: dataset
+    to: server
+    direction: both
+    network:
+      mode: delay
+      distribution: {kind: lognormal, p50_ms: 8.0, p99_ms: 25.0}
+      loss: 0.0
+      bandwidth_mbps: 24.0

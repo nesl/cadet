@@ -1,0 +1,3 @@
+# live.pipe.none.sh: live x av_pipeline x network:none x single_host.
+extends: ../bases/_ol_live.yaml
+experiment: {name: acc_live_pipe_none_sh}

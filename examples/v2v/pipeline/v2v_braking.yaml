@@ -1,0 +1,140 @@
+# V2V braking experiment, pipeline form (same decisions as examples/v2v/v2v_braking.yaml).
+#
+# What this is: the staged/placeable form of the V2V follower-braking run. The
+# server runs perception + the TTC/distance gate (yolo_v2v -> v2v_ttc_gate); the
+# client runs the follower control stage (brake_controller) AND a client extension
+# that drives the scripted leader and runs the in-process intent shim - the same
+# mechanism as the flat app. One client drives both cars; the scenario only spawns
+# and idles them.
+#
+# How to use:
+#   cadet run examples/v2v/pipeline/v2v_braking.yaml \
+#     --stage-module cadet.pipeline.stages.v2v --model-dir <DIR>
+#
+# No simulator address to pass: this config launches its own server and reaches
+# it on the loopback. CADET_SCENARIO_RUNNER_DIR and CADET_CARLA_PYTHONAPI_DIR
+# say where this machine keeps the two trees the scenario container mounts.
+
+experiment:
+  name: v2v_braking_pipeline
+  app: pipeline
+  repetitions: 10
+  seed: 0
+
+source:
+  kind: carla
+  fps: 10
+  camera:
+    width: 800           # original V2V camera = visualizer 800x600 (ROI/focal depend on width)
+    height: 600
+    fov: 60.0
+  scenario:
+    map: Town05
+    name: V2VBrakingScenario_1
+    definition: examples/v2v/scenarios/v2v_braking.py
+    config_file: examples/v2v/scenarios/V2VBraking.xml
+    ego_vehicle: audi.tt      # follower (V2); the leader (V1) is spawned by the scenario
+    target_object: car
+    ego_speed: 20mph
+
+    runner:
+      path: /opt/scenario_runner
+      # The scenario driver runs in a container from this image, which
+      # carries ScenarioRunner's pinned dependencies; the tree above is
+      # mounted into it. Built by docker/Dockerfile (INSTALL_SIM=1).
+      image: cadet:dev
+  carla:
+    image: carlasim/carla:0.9.10.1
+    gpu_index: 1
+    quality: Low
+    offscreen: true
+    client_egg:
+      name: carla-0.9.10-py3.7-linux-x86_64.egg
+    port: 2000
+    timeout: 10
+models:
+  detector: yolo
+  tracker: sort
+  predictor: linear
+  model: yolo11x
+  registry:
+    yolo11x:
+      per_device:
+        gpu: yolo11x.pt
+        edge: yolo11x.engine
+        hailo: yolo11x.hef
+    coco_labels:
+      per_device:
+        gpu: coco.names
+        edge: coco.names
+        hailo: coco.names
+
+nodes:
+  - name: client
+    host: localhost
+    launcher: local
+    role: client
+    device: cpu
+  - name: server
+    host: localhost
+    port: 10000
+    launcher: local
+    role: server
+    device: gpu
+    gpu_index: 0           # detector on GPU 0; the simulator owns GPU 1
+    # Delay #1 of 2 (ego->server): the original per-frame time.sleep(nw_delay_s=0.02),
+    # reproduced as a blocking server delay (default server_delay_mode: blocking) so it
+    # also stretches the server's inter-frame dt (which feeds the TTC estimate).
+    extra_processing_ms: 20.0
+
+channels:
+  - name: frames
+    from: client
+    to: server
+    max_queue: 2
+    send_meta: true
+    stop_on_brake: true
+
+app:
+  plugin: pipeline
+  params:
+    # Delay #2 of 2 (leader->follower intent) + the leader drive are the client
+    # extension's in-process shim (the original default). extension_params are the
+    # V2V params (empty = original defaults: braking_mode v2v, v2v_delay_s 0.02, ...).
+    client_extension: examples.v2v.pipeline_ext:V2VPipelineExtension
+    extension_params: {}
+    # The original V2V client ran save_frames=False (render only, no per-frame PNG);
+    # match it so the pipeline loop is not slowed by disk I/O the original never did.
+    client_save_frames: false
+
+pipeline:
+  stages:
+    - {name: camera, impl: camera, node: client}
+    - {name: detect, impl: yolo_v2v, node: server, queue_policy: latest_only, params: {
+        target_classes: [car, motorcycle, bicycle, person],
+        roi: {cx_min: 300, cx_max: 500}, conf_thresh: 0.3,
+        car_width_m: 1.85, camera_fov_deg: 60.0}}
+    - name: decide
+      impl: v2v_ttc_gate
+      node: server
+      params:
+        ttc_thresh_s: 2.0
+        k_ttc_frames: 2
+        alpha_ttc: 0.30
+        d_thresh_m: 24.0
+        d_gate_after_s: 12.0
+    - name: control
+      impl: brake_controller
+      node: client
+      params:
+        ego_vehicle: audi.tt
+        ego_speed: 20mph
+        controllers:
+          audi.tt: {target_decel: 7.0, max_decel: 7.3, kp: 0.2, max_ramp: 0.05}
+          carlamotors.carlacola: {target_decel: 3.0, max_decel: 3.0, kp: 0.45, max_ramp: 0.15}
+          kawasaki.ninja: {target_decel: 6.0, max_decel: 6.0, kp: 0.2, max_ramp: 0.05}
+
+outputs:
+  root: outputs
+  naming: "{experiment}/{app}/{run_id}"
+  save: []

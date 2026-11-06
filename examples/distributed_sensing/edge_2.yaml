@@ -1,0 +1,58 @@
+# Detector placement at the edge of a 2-sensor cell: the detector runs on every
+# sensor, or on the gateway the sensors associate with. The sweep crosses those
+# two placements with three access-link qualities, so each run differs from its
+# neighbours along one axis and nothing else.
+#
+# The access links are declared one per sensor with identical parameters. The
+# cell is one access network, and the server runtime applies the path into the
+# gateway to every inbound connection, so a per-sensor parameter would not be
+# read. The swept value is therefore the whole `links` list: sweeping one link's
+# fields would leave the other entries stating a quality no run measured.
+extends: _base.yaml
+
+experiment: {name: sensing_edge_2, max_active_s: 600.0}
+
+nodes:
+  - {name: sensor_1, host: localhost, role: client, device: cpu}
+  - {name: sensor_2, host: localhost, role: client, device: cpu}
+  - {name: gateway, host: 127.0.0.1, port: 15110, role: server, device: cpu}
+
+# The access quality a plain run uses; the sweep below replaces the whole list.
+links:
+  - name: uplink_sensor_1
+    from: sensor_1
+    to: gateway
+    direction: both
+    network: &good
+      mode: delay
+      distribution: {kind: lognormal, p50_ms: 8.0, p99_ms: 25.0}
+      loss: 0.0
+      bandwidth_mbps: 24.0
+  - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both, network: *good}
+
+sweep:
+  axes:
+    app.params.placement: [sensor, gateway]
+    links:
+      - - {name: uplink_sensor_1, from: sensor_1, to: gateway, direction: both, network: *good}
+        - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both, network: *good}
+      - - name: uplink_sensor_1
+          from: sensor_1
+          to: gateway
+          direction: both
+          network: &contested
+            mode: delay
+            distribution: {kind: lognormal, p50_ms: 35.0, p99_ms: 160.0}
+            loss: 0.02
+            bandwidth_mbps: 6.0
+        - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both, network: *contested}
+      - - name: uplink_sensor_1
+          from: sensor_1
+          to: gateway
+          direction: both
+          network: &severe
+            mode: delay
+            distribution: {kind: lognormal, p50_ms: 90.0, p99_ms: 500.0}
+            loss: 0.08
+            bandwidth_mbps: 1.5
+        - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both, network: *severe}

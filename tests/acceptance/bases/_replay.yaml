@@ -1,0 +1,11 @@
+# Acceptance base: replay source (cached images), standalone detector (the
+# distributed sensing app, stub).
+# Fetch frames first: python examples/distributed_sensing/fetch_frames.py (writes datasets/distributed_sensing/...).
+extends: ../../../examples/distributed_sensing/_base.yaml
+experiment: {name: acc_replay, app: distributed_sensing, repetitions: 1, seed: 0, max_active_s: 180.0}
+source: {kind: replay, path: datasets/distributed_sensing/coco-val2017, fps: 10.0, limit: 20}
+nodes:
+  - {name: sensor_1, host: localhost, role: client, device: cpu}
+  - {name: sensor_2, host: localhost, role: client, device: cpu}
+  - {name: gateway, host: 127.0.0.1, port: 15141, role: server, device: cpu}
+metrics: {collectors: [cpu, gpu, energy, bandwidth]}

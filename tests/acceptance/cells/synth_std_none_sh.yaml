@@ -1,0 +1,3 @@
+# synth.std.none.sh: synthetic x standalone x network:none x single_host.
+extends: ../bases/_synth.yaml
+experiment: {name: acc_synth_std_none_sh}

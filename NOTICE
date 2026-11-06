@@ -1,0 +1,59 @@
+CADET
+
+This product includes software developed as part of the CADET project.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use these files except in compliance with the License. You may obtain a copy
+of the License at:
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+------------------------------------------------------------------------------
+Third-party / derived code
+------------------------------------------------------------------------------
+
+Portions of this software, in particular the autonomy pipeline under
+`examples/av_pipeline/pipeline/` (objects, camera, detection, perception,
+prediction, planning, control) and the helpers under
+`examples/av_pipeline/utils/`, are DERIVED FROM and MODIFIED versions of code
+from:
+
+    ERDOS Pylot
+    https://github.com/erdos-project/pylot
+    Copyright The ERDOS / Pylot Authors
+    Licensed under the Apache License, Version 2.0
+
+The code was re-structured into a standalone Python package, de-coupled from
+the ERDOS dataflow runtime, had import paths and hard-coded filesystem paths
+changed, and had unused code paths removed. These modifications are likewise
+released under the Apache License, Version 2.0. Each derived module also says so
+in its own docstring.
+
+    NOT derived: the staged-pipeline machinery under `cadet/pipeline/` is
+    original CADET code and shares nothing but a directory name with the
+    autonomy pipeline above. An earlier revision of this file named
+    `cadet/pipeline/` as the derived path, which was true before the derived
+    code was moved to `examples/av_pipeline/` and is why the distinction is
+    spelled out here.
+
+The network-emulation backend under `cadet/network/netwaggle/` is an ADAPTED
+version of the approach and implementation of:
+
+    NetWaggle / IoCT-Testbed-Simulation
+    https://github.com/nesl/IoCT-Testbed-Simulation
+    Copyright The NESL IoCT Testbed Authors
+
+It was restructured from a single operator-driven script into a library with an
+explicit lifecycle (build/start/stop/status) and no blocking CLI on the default
+path; process handling was corrected to use real process handles; an unshaped
+bypass interface per emulated host was added so framework plumbing does not
+cross the emulated network; link shaping was extended to per-direction delay,
+jitter, loss and bandwidth; and teardown was made bounded and self-cleaning.
+
+    The upstream repository carries no license file. Redistribution terms for
+    this adaptation are to be settled with its authors.
+
+This project also relies on separately-licensed external components that are
+NOT included here and retain their own licenses, including the CARLA simulator
+and its PythonAPI, the SORT and DeepSORT trackers, and the Frenet Optimal
+Trajectory planner. See each project for its respective license terms.

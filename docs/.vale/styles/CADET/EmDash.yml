@@ -1,0 +1,6 @@
+extends: occurrence
+message: "More than one em dash on this page. Rewrite as a comma, colon, or separate sentence."
+level: error
+max: 1
+token: '—'
+scope: text

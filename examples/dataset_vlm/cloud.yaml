@@ -1,0 +1,20 @@
+# Cloud serving: the model runs on a cloud accelerator reached over a WAN link.
+# The fastest compute, the most network in front of it.
+extends: _base.yaml
+
+experiment: {name: dataset_vlm_cloud, max_active_s: 300.0}
+
+app:
+  plugin: dataset_vlm
+  params: {placement: cloud}
+
+links:
+  - name: uplink
+    from: dataset
+    to: server
+    direction: both
+    network:
+      mode: delay
+      distribution: {kind: lognormal, p50_ms: 40.0, p99_ms: 160.0}
+      loss: 0.005
+      bandwidth_mbps: 50.0

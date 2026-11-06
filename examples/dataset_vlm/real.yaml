@@ -1,0 +1,45 @@
+# A real vision-language model served over a fetched dataset, cloud tier. This
+# config needs the dataset fetched first and a GPU for a model of any size, so it
+# is NOT run by CI; it documents the real path. No authentication token is used
+# or required: model_id must name an openly available model.
+#
+#   python examples/dataset_vlm/fetch_dataset.py --task vqa --limit 50
+#   cadet run examples/dataset_vlm/real.yaml --app-module examples.dataset_vlm.app
+extends: _base.yaml
+
+experiment: {name: dataset_vlm_real, max_active_s: 1800.0}
+
+# The fetched VQA subset: images under datasets/dataset_vlm/vqa with a manifest
+# fetch_dataset.py wrote. `path` is git-ignored; nothing is committed.
+source:
+  kind: dataset
+  task: vqa
+  path: datasets/dataset_vlm/vqa
+  limit: 50
+  fps: 0.0
+
+nodes:
+  - {name: dataset, host: localhost, role: client, device: cpu}
+  - {name: server, host: 127.0.0.1, port: 15310, role: server, device: gpu}
+
+app:
+  plugin: dataset_vlm
+  params:
+    task: vqa
+    model: hf
+    placement: cloud
+    # An openly available, small instruction-tuned VLM. Swap for any model your
+    # transformers install supports; no token is ever read.
+    model_id: HuggingFaceTB/SmolVLM-256M-Instruct
+    max_new_tokens: 8
+
+links:
+  - name: uplink
+    from: dataset
+    to: server
+    direction: both
+    network:
+      mode: delay
+      distribution: {kind: lognormal, p50_ms: 40.0, p99_ms: 160.0}
+      loss: 0.005
+      bandwidth_mbps: 50.0

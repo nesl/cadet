@@ -1,0 +1,8 @@
+# replay.std.delay.sh: replay x standalone x network:delay x single_host.
+extends: ../bases/_replay.yaml
+experiment: {name: acc_replay_std_delay_sh}
+links:
+  - {name: uplink_sensor_1, from: sensor_1, to: gateway, direction: both,
+     network: {mode: delay, distribution: {kind: lognormal, p50_ms: 8.0, p99_ms: 25.0}, loss: 0.0, bandwidth_mbps: 24.0}}
+  - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both,
+     network: {mode: delay, distribution: {kind: lognormal, p50_ms: 8.0, p99_ms: 25.0}, loss: 0.0, bandwidth_mbps: 24.0}}

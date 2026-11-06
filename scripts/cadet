@@ -1,0 +1,117 @@
+#!/usr/bin/env bash
+# Run the CADET CLI in a container that has everything one launch needs.
+#
+# What this is for:
+#     `cadet run` on a config that launches its own simulator needs three things
+#     at once: a docker client (it starts the CARLA server and the scenario),
+#     python3.8 with the CARLA client egg (the roles import it, and the egg is
+#     py3.7, which loads under 3.8 and under nothing newer), and this machine's
+#     own network namespace (the server publishes on the loopback, the one
+#     address the config, the roles and the readiness poll all agree on). The
+#     CADET image has all three, so the orchestrator runs in a container from it
+#     and drives the daemon of the machine it is on. This is the primary way to
+#     run, and it is what keeps the examples' `launcher: local` - one container
+#     holding orchestrator and roles together, as the original had it.
+#
+# What it contains:
+#     One `docker run`, with the arrangement the launch needs and nothing else:
+#     no privilege, no daemon, nothing built, nothing left behind (`--rm`).
+#
+# How it fits into CADET:
+#     A wrapper around the `cadet` console script, so every subcommand reaches
+#     it unchanged: `scripts/cadet run <config> ...` is `cadet run <config> ...`.
+#     The alternative is a host interpreter with roles placed in containers
+#     (`nodes[*].launcher: docker`), which needs no wrapper but a different
+#     topology; see docs.
+#
+# How to configure it:
+#     CADET_IMAGE                 image to run (default cadet:dev).
+#     CADET_NODE_IMAGE            image a placed node runs when its config
+#                                 names none. Passed through, so pinning both
+#                                 to an immutable tag pins the whole run.
+#     CADET_GPUS                  --gpus value (default all; empty disables).
+#     CADET_SCENARIO_RUNNER_DIR   host ScenarioRunner tree; mounted and passed.
+#     CADET_CARLA_PYTHONAPI_DIR   host CARLA PythonAPI tree; mounted and passed.
+#     Any --model-dir argument is mounted at its own path, read-only.
+set -euo pipefail
+
+# The repository is mounted at its own host path, not at the image's /app. The
+# orchestrator asks the daemon to mount that path into the sibling scenario
+# container, and the daemon resolves mount sources on the host, so a
+# container-only path would name nothing there. One value, right on both sides.
+REPO=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)
+
+IMAGE=${CADET_IMAGE:-cadet:dev}
+SOCKET=/var/run/docker.sock
+
+if [ ! -S "$SOCKET" ]; then
+    echo "scripts/cadet: no docker socket at $SOCKET; the orchestrator starts" \
+         "the simulator and cannot without one." >&2
+    exit 1
+fi
+
+args=(
+    --rm
+    # This machine's own namespace: the simulator's published port has to be the
+    # same 127.0.0.1 the config names, for the readiness poll and the roles both.
+    --network host
+    # As the invoking account, or the run cannot write its outputs into the
+    # mounted repository - and running as root instead leaves root-owned output
+    # trees behind in it.
+    --user "$(id -u):$(id -g)"
+    # The socket's group rather than --user 0: the image's user is
+    # unprivileged and cannot open the socket, and root solves it by giving up
+    # the line above.
+    --group-add "$(stat -c '%g' "$SOCKET")"
+    -v "$SOCKET:$SOCKET"
+    -v "$REPO:$REPO"
+    -w "$REPO"
+    # The mounted tree is the one to import, ahead of the copy the image
+    # installed at /app, so the working tree is what runs. Prepended to the
+    # caller's PYTHONPATH rather than replacing it: an environment may carry a
+    # path the run needs and the image does not have - ScenarioRunner imports
+    # `agents`, which ships in the CARLA client distribution rather than in the
+    # egg the image installs - and replacing the variable dropped it, so a
+    # local scenario hook exited with ModuleNotFoundError. Paths named this way
+    # still have to be readable in here, which is what the mounts below are for.
+    -e "PYTHONPATH=$REPO${PYTHONPATH:+:$PYTHONPATH}"
+    # The image's user home belongs to that user, not to the invoking account.
+    -e HOME=/tmp
+)
+
+# Which image a placed node runs, when the config names none. Passed through
+# rather than defaulted here: the orchestrator reads it, and leaving it unset
+# must mean exactly what it means without the wrapper.
+if [ -n "${CADET_NODE_IMAGE:-}" ]; then
+    args+=(-e "CADET_NODE_IMAGE=$CADET_NODE_IMAGE")
+fi
+
+# Without this the detector loads on the CPU and the measurement is of
+# something else. Empty disables it, for a machine with no GPU.
+GPUS=${CADET_GPUS-all}
+if [ -n "$GPUS" ]; then
+    args+=(--gpus "$GPUS")
+fi
+
+# The two trees the scenario container mounts live wherever this machine keeps
+# them, so they are environment and not config. Passed through *and* mounted:
+# the value names a host path, which this container also has to be able to read.
+for var in CADET_SCENARIO_RUNNER_DIR CADET_CARLA_PYTHONAPI_DIR; do
+    path=${!var-}
+    if [ -n "$path" ]; then
+        args+=(-v "$path:$path:ro" -e "$var=$path")
+    fi
+done
+
+# A --model-dir names a host path in an argument rather than in the environment,
+# so it has to be mounted for the roles to find the weights behind it.
+prev=
+for arg in "$@"; do
+    if [ "$prev" = "--model-dir" ] && [ -d "$arg" ]; then
+        mdir=$(cd "$arg" && pwd -P)
+        args+=(-v "$mdir:$mdir:ro")
+    fi
+    prev=$arg
+done
+
+exec docker run "${args[@]}" "$IMAGE" "$@"

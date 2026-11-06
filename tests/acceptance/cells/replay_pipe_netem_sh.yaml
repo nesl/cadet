@@ -1,0 +1,9 @@
+# replay.pipe.netem.sh: replay x av_pipeline x network:netem x single_host.
+extends: ../bases/_ol_replay.yaml
+experiment: {name: acc_replay_pipe_netem_sh}
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu, launcher: docker}
+  - {name: server, host: 127.0.0.1, port: 15347, role: server, device: cpu, launcher: docker}
+links:
+  - {name: frames_link, from: client, to: server, direction: both,
+     network: {mode: netem, distribution: {kind: lognormal, p50_ms: 8.0, p99_ms: 15.0}, loss: 0.0, bandwidth_mbps: 24.0}}

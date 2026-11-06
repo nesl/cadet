@@ -1,0 +1,20 @@
+# Edge serving: the model runs on an edge box reached over a LAN access link.
+# Faster compute than the device, a short network in front of it.
+extends: _base.yaml
+
+experiment: {name: dataset_vlm_edge, max_active_s: 300.0}
+
+app:
+  plugin: dataset_vlm
+  params: {placement: edge}
+
+links:
+  - name: uplink
+    from: dataset
+    to: server
+    direction: both
+    network:
+      mode: delay
+      distribution: {kind: lognormal, p50_ms: 8.0, p99_ms: 25.0}
+      loss: 0.0
+      bandwidth_mbps: 24.0

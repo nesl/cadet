@@ -1,0 +1,22 @@
+# Repo-wide base config. Every example extends this (directly or transitively) so
+# the boilerplate that never changes lives in exactly one place. Experiment configs
+# override only what differs — see docs/config-reference.md for all options.
+
+# Where run artifacts go. Results/weights are never committed (see .gitignore).
+outputs:
+  root: outputs
+  naming: "{experiment}/{app}/{run_id}"
+
+# Wire transport: one length-framed message per payload over TCP, encoded as a
+# safe record that executes nothing it decodes (the defaults; stated explicitly
+# here for discoverability). `encoding: pickle` restores the original scripts'
+# wire format, and with it the risk of unpickling socket data.
+transport:
+  protocol: tcp
+  mode: frame
+  encoding: safe
+
+# No extra collectors by default; per-frame latency and server queue metrics are
+# always recorded. Add e.g. [queue] per experiment.
+metrics:
+  collectors: []

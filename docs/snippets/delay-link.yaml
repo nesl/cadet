@@ -1,0 +1,19 @@
+# Valid delay-link snippet: constant 60 ms message-level delay.
+# Use mode: delay when you want the configured distribution honoured exactly.
+extends: ../../configs/base.yaml
+
+experiment: {name: snippet_delay, app: reference, repetitions: 1}
+source: {kind: synthetic, count: 8, width: 64, height: 48}
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu}
+  - {name: server, host: 127.0.0.1, port: 15011, role: server, device: cpu}
+links:
+  - name: inference_link
+    from: client
+    to: server
+    network:
+      mode: delay
+      distribution:
+        kind: constant
+        value_ms: 60.0
+app: {plugin: reference, params: {model_kind: stub}}

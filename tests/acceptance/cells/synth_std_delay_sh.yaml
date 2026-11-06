@@ -1,0 +1,6 @@
+# synth.std.delay.sh: synthetic x standalone x network:delay x single_host.
+extends: ../bases/_synth.yaml
+experiment: {name: acc_synth_std_delay_sh}
+links:
+  - {name: frames_link, from: client, to: server, direction: both,
+     network: {mode: delay, distribution: {kind: lognormal, p50_ms: 8.0, p99_ms: 25.0}, loss: 0.0, bandwidth_mbps: 24.0}}

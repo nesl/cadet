@@ -1,0 +1,37 @@
+# Shared base for the dataset-mode VLM example: one dataset node streams samples
+# to one serving node that runs a single vision-language model, and the dataset
+# node scores each answer against the ground truth the dataset carries. The one
+# thing the configs vary is where the model is served (device / edge / cloud).
+#
+# The source is the built-in generated sample set, so this base and `quick.yaml`
+# need no download and no GPU. `real.yaml` points the same app at a fetched
+# dataset and a real model; the README states the dataset and its terms.
+extends: ../../configs/base.yaml
+
+experiment: {name: dataset_vlm, app: dataset_vlm, repetitions: 1, seed: 0, max_active_s: 300.0}
+
+# The built-in VQA set: eight generated samples, each carrying a question and the
+# human answers. No file, no download. `fps: 0` runs as fast as possible.
+source: {kind: dataset, task: vqa, count: 8, fps: 0.0}
+
+# The stub model loads no weights, but the warm-up still runs one blank sample
+# through the serving path so the first real sample does not pay the first-call
+# cost as if it were latency.
+models: {warmup: true}
+
+# The default topology, which `quick.yaml` uses unchanged: one dataset node into
+# one serving node.
+nodes:
+  - {name: dataset, host: localhost, role: client, device: cpu}
+  - {name: server, host: 127.0.0.1, port: 15310, role: server, device: cpu}
+
+app:
+  plugin: dataset_vlm
+  params:
+    task: vqa
+    model: stub
+    placement: edge
+    # Stub inference cost per tier, in milliseconds: a constrained device, an
+    # edge box, a cloud accelerator. These are inputs, not measurements; they are
+    # what the placement axis trades against the link latency of each tier.
+    infer_ms: {device: 200.0, edge: 80.0, cloud: 25.0}

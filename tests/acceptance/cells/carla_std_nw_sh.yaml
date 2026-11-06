@@ -1,0 +1,20 @@
+# carla.std.nw.sh: carla x standalone x network:netwaggle x single_host.
+# The flat braking server bounds its inbound queue to the newest frame
+# (enforce_queue_policy + channels max_queue: 1), so under the 6 Mbps emulated
+# link it decides on fresh frames rather than a backlog of stale ones -- the same
+# freshness the pipeline form gets from its stage queue_policy: latest_only.
+# Without it the detector never reaches 3 consecutive in-ROI frames before the ego
+# passes 100 m, while carla.pipe.nw.sh (which has latest_only) does.
+extends: ../bases/_carla_std.yaml
+experiment: {name: acc_carla_std_nw_sh}
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu}
+  - {name: server, host: 127.0.0.1, port: 15043, role: server, device: gpu, enforce_queue_policy: true}
+channels:
+  # The example's own channel, with only the queue bound changed: naming a new
+  # channel replaces the list, which silently dropped the example's
+  # stop_on_brake and renamed the path the run's own logs refer to.
+  - {name: frames, from: client, to: server, max_queue: 1, send_meta: false, stop_on_brake: true}
+links:
+  - {name: frames_link, from: client, to: server, direction: both,
+     network: {mode: netwaggle, medium: wired, distribution: {kind: lognormal, p50_ms: 35.0, p99_ms: 68.0}, loss: 0.02, bandwidth_mbps: 6.0}}

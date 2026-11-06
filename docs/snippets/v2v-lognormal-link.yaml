@@ -1,0 +1,24 @@
+# Lognormal link snippet for V2V experiments: 5G p50 = 30 ms, p99 = 100 ms.
+# The lognormal link states two percentiles: p50_ms is the median (the scale
+# parameter, e^mu) and p99_ms is the tail, so sigma = ln(p99/p50) / 2.3263.
+# For p50 = 30 ms, p99 = 100 ms that is sigma = log(100/30) / 2.3263 = 0.5176.
+# Only mode: delay can render this spread (p99/p50 = 3.3x > 2x limit for netem).
+extends: ../../configs/base.yaml
+
+experiment: {name: snippet_v2v_lognormal, app: reference, repetitions: 1}
+source: {kind: synthetic, count: 8, width: 64, height: 48}
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu}
+  - {name: server, host: 127.0.0.1, port: 15012, role: server, device: cpu}
+links:
+  - name: ego_to_server
+    from: client
+    to: server
+    network:
+      mode: delay
+      distribution:
+        kind: lognormal
+        p50_ms: 30.0     # median
+        p99_ms: 100.0    # tail; sigma = ln(100/30) / 2.3263 = 0.5176
+      loss: 0.0
+app: {plugin: reference, params: {model_kind: stub}}

@@ -1,0 +1,42 @@
+# CADET continuous integration: lint + unit tests + the reference end-to-end run.
+#
+# Write-only for now (no remote configured, so this does not execute yet). It uses
+# the light `.[test]` extra — the suite runs on the stub model, so the ML stack
+# (torch/ultralytics) and CARLA are not needed in CI.
+name: ci
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.8"
+
+      - name: Install (editable + test extra)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[test]"
+
+      # Lint only, no format check: ported code stays close to the originals so a
+      # line-by-line parity audit against them is possible, and a formatter would
+      # rewrite exactly the lines an audit compares.
+      - name: Lint (ruff)
+        run: ruff check cadet tests scripts
+
+      - name: Config reference is up to date
+        run: python scripts/gen_config_reference.py --check
+
+      - name: Unit tests
+        run: pytest tests/unit -q
+
+      - name: Reference end-to-end (no CARLA, no GPU)
+        run: pytest tests/e2e/test_orchestrator.py tests/e2e/test_e2e.py -q

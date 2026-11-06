@@ -1,0 +1,58 @@
+# The same five-sensor cell over an emulated Wi-Fi medium. Every node in the
+# cell - the five sensors and the gateway - is a station on one access point,
+# `cell_ap`, and the access point is infrastructure: it runs nothing, holds no
+# address and is not a `nodes` entry at all.
+#
+# That is the shape this medium actually has, and the reason it cannot be
+# written as links. Five `sensor -> gateway` links would be five point-to-point
+# paths, each with its own L2 segment and its own route; the stations of a real
+# cell share one medium and one subnet, and reach each other over the air with
+# no L3 hop and nothing routing between them. Making the gateway *be* the access
+# point does not fix it either: in Mininet-WiFi an access point is a switch in
+# the root namespace with no address, so the server on it had nothing to bind
+# and died with `Cannot assign requested address`. A connector is the access
+# point, so the gateway stays an ordinary station that keeps the server role.
+#
+# The five distances stay as they were, because they are the axis: the
+# propagation model derives each sensor's association and loss from its own
+# distance to the access point, so the five sensors of one run already sit at
+# five distances and no sweep is needed to cross it. The cell is shaped by that
+# model and not by a qdisc, which is why no uplink states a distribution.
+#
+# Run this with `cadet emulate` inside the emulation container. `cadet run`
+# leaves an emulated topology unshaped, because this backend shapes in the
+# kernel rather than in the transport, so a plain run of this config measures
+# the placement with no network between the nodes.
+extends: _base.yaml
+
+# One requirement this config has and the wired ones do not: the emulation
+# container must share the host's network namespace, because `mac80211_hwsim`
+# creates its radios there and a container with a namespace of its own sees
+# none of them. It keeps its own process namespace. The wireless note in
+# `cadet/network/netwaggle/__init__.py` gives the arrangement in full.
+experiment: {name: sensing_wifi_5, max_active_s: 600.0}
+
+# The shared medium. One access point, so one cell: `type: ap` gives it radios
+# and the `wifi` block is the whole cell's, not any one station's.
+connectors:
+  - name: cell_ap
+    type: ap
+    position: "0,0,0"
+    wifi:
+      ssid: cadet
+      mode: g
+      channel: 1
+      propagation_model: logDistance
+      propagation_exp: 3.5
+
+# Each node names the connector it attaches to and where it sits, in metres.
+# The gateway sits a metre off the access point rather than on top of it, so no
+# pair in the cell is at distance zero from another; each sensor's distance to
+# the access point is unchanged to within 2%.
+nodes:
+  - {name: sensor_1, host: localhost, role: client, device: cpu, connector: cell_ap, position: "5,0,0"}
+  - {name: sensor_2, host: localhost, role: client, device: cpu, connector: cell_ap, position: "12,0,0"}
+  - {name: sensor_3, host: localhost, role: client, device: cpu, connector: cell_ap, position: "22,0,0"}
+  - {name: sensor_4, host: localhost, role: client, device: cpu, connector: cell_ap, position: "35,0,0"}
+  - {name: sensor_5, host: localhost, role: client, device: cpu, connector: cell_ap, position: "55,0,0"}
+  - {name: gateway, host: 127.0.0.1, port: 15110, role: server, device: cpu, connector: cell_ap, position: "0,1,0"}

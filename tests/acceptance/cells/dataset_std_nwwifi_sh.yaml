@@ -1,0 +1,9 @@
+# dataset.std.nwwifi.sh: dataset x standalone x netwaggle-wifi x single_host.
+# Stations on one access point; run with `cadet emulate` in the Mininet-WiFi container.
+extends: ../bases/_dataset.yaml
+experiment: {name: acc_dataset_std_nwwifi_sh}
+connectors:
+  - {name: cell_ap, type: ap, position: "0,0,0", wifi: {ssid: cadet, mode: g, channel: 1, propagation_model: logDistance, propagation_exp: 3.5}}
+nodes:
+  - {name: dataset, host: localhost, role: client, device: cpu, connector: cell_ap, position: "8,0,0"}
+  - {name: server, host: 127.0.0.1, port: 15341, role: server, device: cpu, connector: cell_ap, position: "0,1,0"}

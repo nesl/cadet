@@ -1,0 +1,60 @@
+# CADET direct dependencies (pinned). Python 3.8, CARLA 0.9.10.
+#
+# This is the unified environment: one venv runs the whole pipeline AND the YOLO
+# detection path (torch 2.4.1). The exact resolved set is in
+# docs/env/requirements.lock.txt.
+#
+# torch/torchvision are CUDA 12.1 builds on PyPI's default index for these
+# versions; if you need a specific CUDA build, add:
+#   --extra-index-url https://download.pytorch.org/whl/cu121
+
+# --- configuration layer ---
+pydantic==2.10.6
+PyYAML==6.0.3
+
+# --- numerics / vision ---
+numpy==1.24.4
+scipy==1.10.1
+opencv-python==4.9.0.80
+Pillow==10.4.0
+pandas==1.3.3
+Shapely==1.6.4
+
+# --- control (MPC solver) ---
+cvxpy==1.1.15
+osqp==0.6.2.post0
+
+# --- point clouds / visualization (lazy-imported) ---
+open3d==0.13.0
+pygame==2.5.2
+
+# --- detection (YOLO) + R2P2 prediction ---
+torch==2.4.1
+torchvision==0.19.1
+ultralytics==8.3.28
+
+# --- tracking (SORT; required) ---
+filterpy==1.4.5
+scikit-image==0.19.3
+
+# --- measurement (system-metric collectors) ---
+# psutil backs the `cpu` collector and pynvml the NVML reader for `gpu` and
+# `energy`. Both are imported only when a config names that collector, which is
+# never by default, so a run that measures nothing needs neither. pynvml is
+# listed as optional because the collector falls back to the `nvidia-smi` stream
+# the original used, which needs no binding at all.
+psutil==7.2.2
+#   nvidia-ml-py                         -> NVML binding (module `pynvml`); without
+#                                           it the gpu/energy collectors use nvidia-smi
+
+# --- optional extras ---
+# DeepSORT tracker (only needed when tracker_type == "deep_sort"); the import in
+# cadet/pipeline/perception/tracker.py is lazy so this stays optional:
+#   lapsolver==1.1.0
+
+# --- non-pip dependencies (install separately; not on PyPI) ---
+#   carla                                -> CARLA 0.9.10 PythonAPI egg (on PYTHONPATH)
+#   agents.navigation.global_route_planner[_dao]  -> ships with the CARLA PythonAPI
+#   sort.sort                            -> SORT repo (dependencies/sort)
+#   dependencies.nanonets_object_tracking.deepsort -> DeepSORT repo (optional)
+#   frenet_optimal_trajectory_planner    -> FOT planner repo (optional; lazy)

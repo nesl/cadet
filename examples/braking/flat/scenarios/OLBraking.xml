@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<scenarios>
+    <scenario name="BrakingScenario_1" type="BrakingScenario" town="Town05">
+        <ego_vehicle x="71.530029" y="306.419983" z="0.500000" yaw="0" model="vehicle.tesla.model3" />
+        <weather cloudiness="0" precipitation="0" precipitation_deposits="0"
+                 wind_intensity="0" sun_azimuth_angle="0" sun_altitude_angle="75" />
+    </scenario>
+    <scenario name="BrakingScenario_2" type="BrakingScenario" town="Town03">
+        <ego_vehicle x="71.530029" y="306.419983" z="0.500000" yaw="0" model="vehicle.tesla.model3" />
+        <weather cloudiness="0" precipitation="0" precipitation_deposits="0"
+                 wind_intensity="0" sun_azimuth_angle="0" sun_altitude_angle="75" />
+    </scenario>
+    <scenario name="BrakingScenario_3" type="BrakingScenario" town="Town02">
+        <ego_vehicle x="71.530029" y="306.419983" z="0.500000" yaw="0" model="vehicle.tesla.model3" />
+        <weather cloudiness="0" precipitation="0" precipitation_deposits="0"
+                 wind_intensity="0" sun_azimuth_angle="0" sun_altitude_angle="75" />
+    </scenario>
+</scenarios>
+

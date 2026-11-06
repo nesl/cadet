@@ -1,0 +1,3 @@
+# synth.pipe.none.sh: synthetic x av_pipeline x network:none x single_host.
+extends: ../bases/_ol_synth.yaml
+experiment: {name: acc_synth_pipe_none_sh}

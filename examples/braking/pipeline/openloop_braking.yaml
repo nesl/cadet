@@ -1,0 +1,116 @@
+# Open-loop emergency braking as a placed stage pipeline — the same experiment as
+# examples/braking/flat/openloop_braking.yaml, expressed with cadet/pipeline.
+#
+# Stage graph and placement (see README.md):
+#   [client] source(camera) ──►|| yolo ─► roi_consecutive [server] ──►|| brake_controller [client]
+# i.e. detection + decision on the server, control on the client — matching the flat
+# split. The two || marks are the node boundaries the runtime realises as transport
+# links.
+#
+# How to use: `cadet run examples/braking/pipeline/openloop_braking.yaml
+#   --stage-module cadet.pipeline.stages.braking --set source.carla.host=<HOST_IP>`
+extends: ../../../configs/base.yaml
+
+experiment:
+  name: openloop_braking_pipeline
+  app: pipeline
+  repetitions: 10
+  seed: 0
+
+source:
+  kind: carla
+  fps: 10
+  camera:
+    width: 800
+    height: 600
+    fov: 60.0
+  scenario:
+    ego_vehicle: audi.tt
+    target_object: car
+    ego_speed: 40mph
+  weather: clear
+
+  carla:
+    host: CARLA_HOST   # placeholder; pass real IP via --set source.carla.host=<HOST_IP>
+    port: 2000
+    timeout: 10
+models:
+  # The original braking scripts ran without model warm-up; set true to warm
+  # the model.
+  warmup: false
+  detector: yolo
+  tracker: sort
+  predictor: linear
+  model: yolo11x
+  registry:
+    yolo11x:
+      per_device:
+        gpu: yolo11x.pt
+        edge: yolo11x.engine
+        hailo: yolo11x.hef
+
+nodes:
+  - name: client
+    host: localhost
+    launcher: local
+    role: client
+    device: cpu
+  - name: server
+    host: localhost
+    port: 10000
+    launcher: local
+    role: server
+    device: gpu
+    gpu_index: 0
+    extra_processing_ms: 13.0
+
+links:
+  - name: frames_link
+    from: client
+    to: server
+    direction: forward
+    network:
+      mode: delay
+      distribution: {kind: normal, mean_ms: 30.0, std_ms: 30.0}
+      loss: 0.0
+
+app:
+  plugin: pipeline   # generic stage-pipeline driver
+
+pipeline:
+  stages:
+    # Capture on the client (pipeline head): makes the client->server boundary
+    # explicit so the runtime drives the connection from the boundary list.
+    - name: camera
+      impl: camera
+      node: client
+    # Perception + decision on the server. latest_only across the client->server
+    # boundary keeps the newest frame (matches the flat channel's keep-latest).
+    - name: detect
+      impl: yolo
+      node: server
+      queue_policy: latest_only
+    - name: decide
+      impl: roi_consecutive
+      node: server
+      params:
+        target_classes: [car, motorcycle, bicycle, person]
+        roi: {cx_min: 300, cx_max: 500}
+        conf_thresh: 0.3
+        detection_threshold: 3
+    # Control on the client (has the ego). Reads ego ground-truth telemetry.
+    - name: control
+      impl: brake_controller
+      node: client
+      params:
+        ego_vehicle: audi.tt
+        ego_speed: 40mph
+        controllers:
+          audi.tt: {target_decel: 7.0, max_decel: 7.3, kp: 0.2, max_ramp: 0.05}
+          carlamotors.carlacola: {target_decel: 3.0, max_decel: 3.0, kp: 0.45, max_ramp: 0.15}
+          kawasaki.ninja: {target_decel: 6.0, max_decel: 6.0, kp: 0.2, max_ramp: 0.05}
+
+sweep:
+  axes:
+    source.scenario.ego_vehicle: [audi.tt, carlamotors.carlacola, kawasaki.ninja]
+    source.scenario.target_object: [car, person, bike]

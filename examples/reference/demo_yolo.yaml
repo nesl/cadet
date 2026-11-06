@@ -1,0 +1,19 @@
+# Non-AV demo: replay a folder of images through YOLO on the server over a
+# 30 ms +/- jitter link; per-frame latency + detections. Images are generated/
+# downloaded at run time (never committed) — pass the folder with
+#   --set source.path=<dir>
+# Extends the reference base; overrides the source (replay), the model (YOLO on
+# GPU), the server node, and adds an emulated forward link.
+extends: _base.yaml
+experiment: {name: demo_yolo}
+source: {kind: replay, path: DEMO_IMAGES, fps: 0.0, loop: false}
+models:
+  model: yolo11x
+  registry: {yolo11x: {per_device: {gpu: yolo11x.pt, cpu: yolo11x.pt}}}
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu}
+  - {name: server, host: 127.0.0.1, port: 15020, role: server, device: gpu, gpu_index: 0}
+links:
+  - {name: net, from: client, to: server, direction: forward,
+     network: {mode: delay, distribution: {kind: normal, mean_ms: 30.0, std_ms: 8.0}}}
+app: {plugin: reference, params: {model_kind: yolo}}

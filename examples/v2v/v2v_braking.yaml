@@ -1,0 +1,121 @@
+# Vehicle-to-vehicle (V2V) braking experiment (reproduces the default V2V run).
+#
+# What this is: a follower ego reacts to a scripted leader. The ego streams
+# frames (with ego metadata) to the server, which gates braking on time-to-
+# collision. A delay link emulates the ego->server network latency.
+#
+# How to use: `cadet validate configs/v2v_braking.yaml`.
+
+experiment:
+  name: v2v_braking
+  app: v2v
+  repetitions: 10
+  seed: 0
+
+source:
+  kind: carla
+  fps: 10
+  camera:
+    width: 800           # original V2V camera = visualizer 800x600 (ROI/focal depend on width)
+    height: 600
+    fov: 60.0            # must match the client sensor setting
+  scenario:
+    map: Town05               # V2VBraking.xml declares Town05 for V2VBrakingScenario_1
+    # Named so the framework builds the scenario command itself (--reloadWorld,
+    # --timeout 10000, --output, simulator address); see cadet.sim.scenario_command.
+    # The scenario only spawns + idles both cars; the client drives them.
+    name: V2VBrakingScenario_1
+    definition: examples/v2v/scenarios/v2v_braking.py
+    config_file: examples/v2v/scenarios/V2VBraking.xml
+    ego_vehicle: audi.tt      # follower (V2); the leader (V1) is spawned by the scenario
+    target_object: car        # leader blueprint maps to vehicle.tesla.model3
+    ego_speed: 20mph
+
+    runner:
+      path: /opt/scenario_runner
+      # The scenario driver runs in a container from this image, which
+      # carries ScenarioRunner's pinned dependencies; the tree above is
+      # mounted into it. Built by docker/Dockerfile (INSTALL_SIM=1).
+      image: cadet:dev
+  carla:
+    image: carlasim/carla:0.9.10.1
+    gpu_index: 1             # the simulator owns GPU 1; the detector has GPU 0
+    quality: Low
+    offscreen: true
+    client_egg:
+      name: carla-0.9.10-py3.7-linux-x86_64.egg
+    port: 2000
+    timeout: 10
+models:
+  detector: yolo
+  tracker: sort
+  predictor: linear
+  model: yolo11x
+  # Device is derived from the server node that hosts the model (device: gpu).
+  registry:
+    yolo11x:
+      per_device:
+        gpu: yolo11x.pt
+        edge: yolo11x.engine
+        hailo: yolo11x.hef
+    coco_labels:
+      per_device:
+        gpu: coco.names
+        edge: coco.names
+        hailo: coco.names
+
+nodes:
+  - name: client
+    host: localhost
+    launcher: local
+    role: client
+    device: cpu
+  - name: server
+    host: localhost
+    port: 10000
+    launcher: local
+    role: server
+    device: gpu
+    gpu_index: 0           # detector on GPU 0; the simulator owns GPU 1
+    # Delay #1 of 2 (ego->server). The original injected it as a per-frame
+    # time.sleep(nw_delay_s=0.02) inside the server loop; CADET reproduces that
+    # exactly as a blocking server delay (default server_delay_mode: blocking), so
+    # it also stretches the server's inter-frame dt (which feeds the TTC estimate) -
+    # a constant-delay link would not. 20 ms = the original nw_delay_s. The real
+    # network-link form is the opt-in below (server_delay_mode: link + the link).
+    extra_processing_ms: 20.0
+
+channels:
+  - name: frames
+    from: client
+    to: server
+    max_queue: 2
+    send_meta: true        # include ego pose/speed/fov with each frame
+    stop_on_brake: true
+
+# Opt-in deviation: model the ego->server delay as a real network link instead of
+# the server's blocking sleep. Uncomment this link AND set the server node's
+# server_delay_mode: link (then the server does not sleep). Note a constant-delay
+# link shifts all arrivals equally and so does NOT reproduce the dt inflation the
+# blocking default does - use it only when you want wire-delay semantics.
+# links:
+#   - name: ego_to_server
+#     from: client
+#     to: server
+#     network:
+#       mode: delay
+#       distribution: {kind: constant, value_ms: 20.0}   # original nw_delay_s
+#       loss: 0.0
+
+app:
+  plugin: v2v              # TTC/distance gate + brake controllers use the V2V defaults
+  # Defaults reproduce the original single-process run: braking_mode "v2v" (the
+  # follower brakes on the leader's in-process intent, v2v_delay_s = 0.02 s after the
+  # leader brakes, on the wall clock), one client drives both cars. Delay #2 of 2
+  # (leader->follower intent) is this in-process shim by default; the leader-as-node +
+  # real network intent link is an opt-in deviation.
+
+outputs:
+  root: outputs
+  naming: "{experiment}/{app}/{run_id}"
+  save: []

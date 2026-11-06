@@ -1,0 +1,18 @@
+extends: existence
+message: "Remove filler word: '%s'"
+level: error
+tokens:
+  - explicitly
+  - exactly
+  - fully
+  - simply
+  - seamlessly
+  - seamless
+  - robust
+  - rigorous
+  - comprehensive
+  - importantly
+  - crucially
+  - "deep dive"
+  - "this page"
+  - "in this section"

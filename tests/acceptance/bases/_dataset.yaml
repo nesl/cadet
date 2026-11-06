@@ -1,0 +1,8 @@
+# Acceptance base: dataset source (built-in VQA), standalone VLM (dataset_vlm, stub).
+extends: ../../../examples/dataset_vlm/_base.yaml
+experiment: {name: acc_dataset, app: dataset_vlm, repetitions: 1, seed: 0, max_active_s: 120.0}
+source: {kind: dataset, task: vqa, count: 16, fps: 0.0}
+nodes:
+  - {name: dataset, host: localhost, role: client, device: cpu}
+  - {name: server, host: 127.0.0.1, port: 15341, role: server, device: cpu}
+metrics: {collectors: [cpu, gpu, energy, bandwidth]}

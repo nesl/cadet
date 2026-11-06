@@ -1,0 +1,141 @@
+# V2I braking, PIPELINE form (staged camera -> yolo_v2i -> gate -> brake_controller).
+#
+# Parity partner of the flat examples/v2i/v2i_braking.yaml. The stages hold the
+# same decision logic as the flat app's gates (tested in tests/unit/test_v2i_pipeline.py);
+# this config runs them live so the pipeline form can be compared to the flat form.
+#
+# Scope: the single-feed modes (baseline_local / baseline_cloud) - the ego camera
+# alone, decided by the v2i_ego_gate stage. The two-feed modes (v2i_local /
+# v2i_external) need a second fixed infra-camera feed into the yolo_v2i stage,
+# which the single-source pipeline driver does not yet provide, so those stay on
+# the flat form.
+
+experiment:
+  name: v2i_braking_pipeline
+  app: pipeline
+  repetitions: 10
+  seed: 0
+
+source:
+  kind: carla
+  fps: 10
+  camera:
+    width: 800
+    height: 600
+    fov: 60.0
+    mount_z: 1.6
+    queue_size: 5
+  scenario:
+    map: Town05
+    name: V2IBrakingScenario_1
+    definition: examples/v2i/scenarios/v2i_braking.py
+    config_file: examples/v2i/scenarios/V2IBraking.xml
+    ego_vehicle: audi.tt
+    target_object: person
+    ego_speed: 20mph
+    ego_spawn: {x: -122.958664, y: 130.0, z: 0.6, yaw: -90.0}
+    occluder:
+      model: vehicle.carlamotors.carlacola
+      spawn: {x: -105.958664, y: -70.0, z: 0.6, yaw: -90.0}
+    pedestrian:
+      spawn: {x: -110.0, y: -65.0, z: 0.6, yaw: 180.0}
+      speed_mps: 2.0
+      t_start_s: 15.3
+    timeout_s: 600.0
+    runner:
+      path: /opt/scenario_runner
+      image: cadet:dev
+  weather: clear
+
+  carla:
+    image: carlasim/carla:0.9.10.1
+    gpu_index: 1
+    quality: Low
+    offscreen: true
+    client_egg:
+      name: carla-0.9.10-py3.7-linux-x86_64.egg
+    port: 2000
+    timeout: 10
+
+models:
+  detector: yolo
+  tracker: sort
+  predictor: linear
+  model: yolo11x
+  registry:
+    yolo11x:
+      per_device:
+        gpu: yolo11x.pt
+        edge: yolo11x.engine
+        hailo: yolo11x.hef
+    coco_labels:
+      per_device:
+        gpu: coco.names
+        edge: coco.names
+        hailo: coco.names
+
+nodes:
+  - {name: client, host: localhost, launcher: local, role: client, device: cpu}
+  - name: server
+    host: localhost
+    port: 11000
+    launcher: local
+    role: server
+    device: gpu
+    inbound_block_at: 10
+
+channels:
+  - name: frames
+    from: client
+    to: server
+    max_queue: 2
+    send_meta: false
+    stop_on_brake: true
+    device_id: ego
+
+links: []
+
+app:
+  plugin: pipeline
+  params:
+    client_extension: examples.v2i.pipeline_ext:V2IPipelineExtension
+    # extension_params are the flat V2IParams (empty = original defaults; the
+    # single-feed modes are the ones this form runs).
+    extension_params:
+      mode: baseline_local
+    client_save_frames: false
+
+pipeline:
+  stages:
+    - {name: camera, impl: camera, node: client}
+    - name: detect
+      impl: yolo_v2i
+      node: server
+      queue_policy: latest_only
+      params:
+        target_classes: [person]
+        conf_thresh: 0.40
+        ego_roi: {cx_min: 150, cx_max: 700, cy_min: 50, cy_max: 700}
+        infra_roi: {cx_min: 850, cx_max: 1150, cy_min: 100, cy_max: 600}
+        crossing_x: -124.96
+        crossing_y: -65.0
+        min_ego_speed_mps: 0.5
+    - name: decide
+      impl: v2i_ego_gate
+      node: server
+      params:
+        consecutive_n: 1
+        ego_brake_gate_y: -30.0
+    - name: control
+      impl: brake_controller
+      node: client
+      params:
+        ego_vehicle: audi.tt
+        ego_speed: 20mph
+        controllers:
+          audi.tt: {target_decel: 7.0, max_decel: 7.3, kp: 0.2, max_ramp: 0.05}
+
+outputs:
+  root: outputs
+  naming: "{experiment}/{app}/{run_id}"
+  save: []

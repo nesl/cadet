@@ -1,0 +1,10 @@
+# dataset.std.delay.dist: dataset x standalone x network:delay x distributed_hil.
+extends: ../bases/_dataset.yaml
+experiment: {name: acc_dataset_std_delay_dist}
+nodes:
+  - {name: dataset, host: localhost, role: client, device: cpu}
+  - {name: server, host: edge-host, port: 15341, role: server, device: cpu, gpu_index: 0, launcher: ssh_docker, user: cadet, ssh_identity: ~/.ssh/cadet_acceptance, container: cadet:dev}
+links:
+  - {name: uplink, from: dataset, to: server, direction: both,
+     network: {mode: delay, distribution: {kind: lognormal, p50_ms: 8.0, p99_ms: 25.0}, loss: 0.0, bandwidth_mbps: 24.0}}
+metrics: {collectors: [cpu, gpu, energy, bandwidth, clock_offset]}

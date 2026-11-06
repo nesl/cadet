@@ -1,0 +1,38 @@
+# Reference app over a two-hop composed route: client -> edge -> server, with
+# the hops' delays composing into one end-to-end path.
+#
+# `edge` is a waypoint: with `realise: compose` the connection stays end to end
+# and nothing runs there, so the node declares the path, not a process.
+#
+# Set `links[*].network.mode: netem` to shape the same path in the kernel - the
+# hops then compose into one qdisc on the client. `netwaggle` is refused for a
+# hop: it has no per-hop routing yet, so a composed path would cross none of it.
+extends: _base.yaml
+
+experiment: {name: ref_route}
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu}
+  - {name: edge, host: 127.0.0.1, role: waypoint}
+  - {name: server, host: 127.0.0.1, port: 15010, role: server, device: cpu}
+links:
+  - name: access
+    from: client
+    to: edge
+    direction: forward
+    network:
+      mode: delay
+      distribution: {kind: constant, value_ms: 20.0}
+  - name: backhaul
+    from: edge
+    to: server
+    direction: forward
+    network:
+      mode: delay
+      distribution: {kind: constant, value_ms: 40.0}
+routes:
+  - name: client_to_server
+    from: client
+    to: server
+    via: [edge]
+    hops: [access, backhaul]
+    realise: compose

@@ -1,0 +1,13 @@
+# replay.std.nw.dist: replay x standalone x network:netwaggle x distributed_hil.
+extends: ../bases/_replay.yaml
+experiment: {name: acc_replay_std_nw_dist}
+nodes:
+  - {name: sensor_1, host: localhost, role: client, device: cpu}
+  - {name: sensor_2, host: localhost, role: client, device: cpu}
+  - {name: gateway, host: edge-host, port: 15141, role: server, device: cpu, gpu_index: 0, launcher: ssh_docker, user: cadet, ssh_identity: ~/.ssh/cadet_acceptance, container: cadet:dev}
+links:
+  - {name: uplink_sensor_1, from: sensor_1, to: gateway, direction: both,
+     network: {mode: netwaggle, medium: wired, distribution: {kind: lognormal, p50_ms: 35.0, p99_ms: 68.0}, loss: 0.02, bandwidth_mbps: 6.0}}
+  - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both,
+     network: {mode: netwaggle, medium: wired, distribution: {kind: lognormal, p50_ms: 35.0, p99_ms: 68.0}, loss: 0.02, bandwidth_mbps: 6.0}}
+metrics: {collectors: [cpu, gpu, energy, bandwidth, clock_offset]}

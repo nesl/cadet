@@ -1,0 +1,12 @@
+# replay.std.netem.sh: replay x standalone x network:netem x single_host.
+extends: ../bases/_replay.yaml
+experiment: {name: acc_replay_std_netem_sh}
+nodes:
+  - {name: sensor_1, host: localhost, role: client, device: cpu, launcher: docker}
+  - {name: sensor_2, host: localhost, role: client, device: cpu, launcher: docker}
+  - {name: gateway, host: 127.0.0.1, port: 15141, role: server, device: cpu, launcher: docker}
+links:
+  - {name: uplink_sensor_1, from: sensor_1, to: gateway, direction: both,
+     network: {mode: netem, distribution: {kind: lognormal, p50_ms: 8.0, p99_ms: 15.0}, loss: 0.0, bandwidth_mbps: 24.0}}
+  - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both,
+     network: {mode: netem, distribution: {kind: lognormal, p50_ms: 8.0, p99_ms: 15.0}, loss: 0.0, bandwidth_mbps: 24.0}}

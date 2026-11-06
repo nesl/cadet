@@ -1,0 +1,18 @@
+# Open-loop AV pipeline over the replay source: camera(client) -> stub_detector(server)
+# -> decision_log(server). Decisions logged per frame; no actuation sink.
+extends: ../../../configs/base.yaml
+experiment: {name: acc_ol_replay, app: pipeline, repetitions: 1, seed: 0, max_active_s: 180.0}
+source: {kind: replay, path: datasets/distributed_sensing/coco-val2017, fps: 0.0, limit: 20}
+models: {warmup: false}
+nodes:
+  - {name: client, host: localhost, role: client, device: cpu}
+  - {name: server, host: 127.0.0.1, port: 15347, role: server, device: cpu}
+app:
+  plugin: pipeline
+  params: {stop_after_reply: false, client_visualizer: false, client_save_frames: false}
+pipeline:
+  stages:
+    - {name: camera, impl: camera, node: client}
+    - {name: detect, impl: stub_detector, node: server}
+    - {name: decide, impl: decision_log, node: server, params: {target_classes: [car, person], roi: {cx_min: 0.0, cx_max: 100000.0}, detection_threshold: 1}}
+metrics: {collectors: [cpu, gpu, energy, bandwidth]}

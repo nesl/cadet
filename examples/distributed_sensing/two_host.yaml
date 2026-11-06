@@ -1,0 +1,96 @@
+# The distributed sensing example across two real machines: the sensors stay on the machine
+# that drives the run and the gateway runs in a container on a second machine,
+# reached over SSH with the `ssh_docker` launcher.
+#
+# What this config is for, and what it is not. The single-machine configs in
+# this directory answer the placement question; this one answers a different
+# one, which is whether the measurement survives being distributed. The
+# sensors' frames cross a real network interface to a real second machine, the
+# gateway's device metrics are that machine's rather than a share of this one's,
+# and the clock difference between the two is measured instead of assumed. None
+# of those is observable when every node is a process on one host.
+#
+#
+# How to run it. The three values that name the second machine are deliberately
+# NOT in this file - a machine's address, an account on it and a path to a
+# private key are properties of an environment, not of an experiment - so they
+# are passed in:
+#
+#   cadet run examples/distributed_sensing/two_host.yaml --app-module examples.distributed_sensing.app \
+#     --set nodes.2.host=<ADDRESS> \
+#     --set nodes.2.user=<ACCOUNT> \
+#     --set nodes.2.ssh_identity=<PRIVATE KEY PATH>
+#
+# Run it from a host account and not from the container wrapper
+# (`scripts/cadet`): the orchestrator authenticates as the invoking account
+# with that account's own key, and a key does not belong inside a container
+# image or a container's mounts. This example needs no CARLA client, so a plain
+# host interpreter is enough - which is the reason the two-machine case is
+# demonstrated with this example and not with a braking one.
+#
+# What the second machine has to have: a docker daemon its account can use, the
+# `cadet:dev` image, and this orchestrator's public key in that account's
+# authorized_keys. Nothing else - no repository checkout, no python, no CADET
+# install. The role runs from the image, the outputs are staged in that
+# account's own home and fetched back here, and both are removed when the run
+# ends.
+extends: _base.yaml
+
+experiment: {name: sensing_two_host, max_active_s: 180.0}
+
+nodes:
+  # The sensors stay here, as host processes, so the frames leave this machine
+  # through a real interface.
+  - {name: sensor_1, host: localhost, role: client, device: cpu}
+  - {name: sensor_2, host: localhost, role: client, device: cpu}
+  # The gateway, in a container on the second machine. `host` is the address
+  # the sensors connect to AND the address the orchestrator's SSH goes to:
+  # the container joins that machine's own network namespace, so there is one
+  # address rather than a published port whose reachability no config can
+  # promise.
+  #
+  # `gpu_index` is what gives the container the device, and it is set here for
+  # the collectors rather than for the detector: the stub detector loads no
+  # weights and runs on no device, but the `gpu` and `energy` collectors read
+  # the GPU of the machine they run on and cannot read one the container was
+  # not given. A collector that was asked for and cannot read fails the run on
+  # purpose, so this is not optional once `metrics.collectors` names them.
+  - name: gateway
+    host: second-machine.invalid
+    port: 15110
+    role: server
+    device: cpu
+    gpu_index: 0
+    launcher: ssh_docker
+    user: an-account
+    ssh_identity: /path/to/the/orchestrators/private/key
+    container: cadet:dev
+
+# The access links, one per sensor, with the parameters of a contested cell.
+# These shape the path on top of whatever the real network between the two
+# machines already costs; the link report records the configured intent and the
+# measured end-to-end latency separately, so the two are not confused.
+links:
+  - name: uplink_sensor_1
+    from: sensor_1
+    to: gateway
+    direction: both
+    network: &access
+      mode: delay
+      distribution: {kind: lognormal, p50_ms: 8.0, p99_ms: 25.0}
+      loss: 0.0
+      bandwidth_mbps: 24.0
+  - {name: uplink_sensor_2, from: sensor_2, to: gateway, direction: both, network: *access}
+
+# Every device collector, plus the clock offset. The offset is the one that is
+# only meaningful here: two nodes on one machine share a clock, and two nodes on
+# two machines do not. It corrects nothing - it is recorded in `run.json` with
+# its uncertainty so a cross-node interval can be read with that uncertainty
+# carried, rather than silently treated as zero.
+#
+# Each node's `gpu_*.csv` and `energy_*.csv` describe the machine that node runs
+# on, which on this topology means the sensors share one set of readings and the
+# gateway has its own. That is the point: on the single-machine configs all three
+# describe the same device and must not be added together.
+metrics:
+  collectors: [cpu, gpu, energy, bandwidth, clock_offset]

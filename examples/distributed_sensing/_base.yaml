@@ -1,0 +1,41 @@
+# Shared base for the distributed sensing example: N sensor nodes stream
+# frames over a contested access network into one processing node, and the
+# detector runs on the sensors, on the gateway, or on a cloud node behind it.
+# Everything the configs in this directory share lives here; each of them
+# overrides its own topology and the axes it sweeps.
+#
+# The source is generated, so this base and `quick.yaml` need no download.
+# `replay.yaml` points the same app at cached frames; the README states the
+# dataset and its terms.
+extends: ../../configs/base.yaml
+
+experiment: {name: distributed_sensing, app: distributed_sensing, repetitions: 1, seed: 0, max_active_s: 300.0}
+
+# Twenty generated frames at 10 fps: two seconds of capture per sensor, which is
+# enough for a latency distribution and short enough to keep the quick config
+# under a minute.
+source: {kind: synthetic, count: 20, width: 320, height: 240, fps: 10.0}
+
+# The stub detector loads no weights, but the warm-up still runs one blank frame
+# through the receive path, so the first sensor's first frame does not pay the
+# image codec's first-call cost as if it were latency.
+models: {warmup: true}
+
+# The default topology, which `quick.yaml` uses unchanged: two sensors into one
+# gateway. The sweeping configs replace this list.
+nodes:
+  - {name: sensor_1, host: localhost, role: client, device: cpu}
+  - {name: sensor_2, host: localhost, role: client, device: cpu}
+  - {name: gateway, host: 127.0.0.1, port: 15110, role: server, device: cpu}
+
+app:
+  plugin: distributed_sensing
+  params:
+    placement: gateway
+    detector: stub
+    # Detector cost per node class, in milliseconds. These are inputs, not
+    # measurements: they stand for a constrained sensor, an edge box and a cloud
+    # accelerator. They are what the placement axis trades against the bytes
+    # each placement puts on the access link.
+    detect_ms: {sensor: 120.0, gateway: 40.0, cloud: 12.0}
+    jpeg_quality: 80

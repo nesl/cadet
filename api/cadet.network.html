@@ -1,0 +1,1216 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="cadet.roles" href="cadet.roles.html"><link rel="prev" title="cadet.orchestrator" href="cadet.orchestrator.html">
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>cadet.network - CADET</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../_static/cadet-table.css?v=25e5b53d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">CADET</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <span class="sidebar-brand-text">CADET</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/versions.html">Version Matrix</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research goals</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../research-goals/index.html">Choose Your Research Goal</a><input aria-label="Toggle navigation of Choose Your Research Goal" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/cooperative-driving.html">Cooperative Driving</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/computation-placement.html">Computation Placement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/communication.html">Communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/model-benchmarking.html">Model Benchmarking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/distributed-sensing.html">Distributed Sensing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/cooperative-driving.html">Cooperative Driving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/computation-placement.html">Computation Placement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/model-benchmarking.html">Model Benchmarking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/distributed-sensing.html">Distributed Sensing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Using CADET</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ways-to-use.html">Ways to Use CADET</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/01-first-experiment.html">Tutorial 1: First Experiment (Replay + Reference App + Delay Link)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/02-carla-braking.html">Tutorial 2: CARLA Braking Experiment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/03-backends.html">Tutorial 3: Comparing Network Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/04-multi-device.html">Tutorial 4: Multi-Device Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/05-sweeps.html">Tutorial 5: Sweeps and Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/06-write-an-app.html">Tutorial 6: Write an App Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/07-v2v-v2i.html">Tutorial 7: V2V and V2I Experiments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-to guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../howto/replay-source.html">Use the replay source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/synthetic-source.html">Use the synthetic source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/live-source.html">Live source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/model-registry.html">Register per-device model artifacts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/link-distributions.html">Configure link distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/wifi-cell.html">Wi-Fi cell</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/transport-tuning.html">Transport tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/sweeps.html">Run and resume sweeps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/dashboard.html">Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/outputs.html">Read outputs and run.json</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/cadet-down.html">Recovery with cadet down</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config-reference.html">Config Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/cli.html">CLI Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/metrics.html">Metrics Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/output-format.html">Output Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/tested-configurations.html">Tested configurations</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cadet.cli.html">cadet.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.config.html">cadet.config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.core.html">cadet.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.orchestrator.html">cadet.orchestrator</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">cadet.network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.roles.html">cadet.roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.sources.html">cadet.sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.metrics.html">cadet.metrics</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/data-source-layer.html">Data Source Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/processing-core-layer.html">Processing Core Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/netwaggle-layer.html">NetWaggle Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/analysis-layer.html">Analysis Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/network-backends.html">Network Backend Semantics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/reproducibility.html">Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/design-goals.html">Design Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/dataset-mode.html">Dataset Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/requirements-and-scope.html">Requirements and scope</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Apps</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../apps.html">App Plugin Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../examples/index.html">Examples Gallery</a><input aria-label="Toggle navigation of Examples Gallery" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/distributed-sensing.html">Distributed Sensing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/dataset-vlm.html">Dataset-mode VLM serving</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/dataset-vlm.html">Dataset-mode VLM serving</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Help</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../community/citing.html">Citing CADET</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community/contributing.html">Contributing</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/nesl/cadet/blob/main/docs/source/api/cadet.network.rst?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/nesl/cadet/edit/main/docs/source/api/cadet.network.rst" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-cadet.network.shaping">
+<span id="cadet-network"></span><h1>cadet.network<a class="headerlink" href="#module-cadet.network.shaping" title="Link to this heading">¶</a></h1>
+<p>Shared description of how one direction of a link perturbs traffic.</p>
+<p>Both packet-level backends (<code class="docutils literal notranslate"><span class="pre">netem</span></code> and <code class="docutils literal notranslate"><span class="pre">netwaggle</span></code>) need the same numbers
+(delay, jitter, loss, bandwidth) for one direction of one link, and both need
+the same answer to “what does this distribution mean in the kernel?”. Keeping
+that here means the two backends agree on what a link’s network model means
+and differ only in where the qdisc is installed.</p>
+<p>These are packet-level parameters: they are rendered into <code class="docutils literal notranslate"><span class="pre">tc</span></code> arguments and
+TCLink keywords so they act on packets and the transport reacts to them. The
+message-level backend (<code class="docutils literal notranslate"><span class="pre">mode:</span> <span class="pre">delay</span></code>) does not use this object; it samples
+its distribution per application message in <a class="reference internal" href="cadet.core.html#module-cadet.core.network" title="cadet.core.network"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cadet.core.network</span></code></a>.</p>
+<p>Two measured facts about netem drive the mapping:</p>
+<ol class="arabic simple">
+<li><p><strong>netem’s own jitter is uniform</strong>, not Gaussian: <code class="docutils literal notranslate"><span class="pre">delay</span> <span class="pre">30ms</span> <span class="pre">15ms</span></code>
+produces delays spread evenly over 15-45 ms. Its p99 sits at
+<code class="docutils literal notranslate"><span class="pre">delay</span> <span class="pre">+</span> <span class="pre">0.98</span> <span class="pre">*</span> <span class="pre">jitter</span></code>, and it cannot represent a long tail.</p></li>
+<li><p><strong>netem reorders packets when it jitters them.</strong> Each packet is given an
+independent delay and released when that delay expires, so a packet behind
+can overtake one in front. Measured on a veth pair with 200 paced
+datagrams: <code class="docutils literal notranslate"><span class="pre">delay</span> <span class="pre">30ms</span></code> gave 0 inversions, <code class="docutils literal notranslate"><span class="pre">delay</span> <span class="pre">30ms</span> <span class="pre">15ms</span></code> gave 65.
+Adding a <code class="docutils literal notranslate"><span class="pre">rate</span></code> gave 0 inversions, because netem serialises its output
+through a rate stage. A jittered link is therefore only installed with a
+<code class="docutils literal notranslate"><span class="pre">rate</span></code>, and a config that asks for jitter without a bandwidth is refused.</p></li>
+</ol>
+<p>Contains: <code class="xref py py-data docutils literal notranslate"><span class="pre">Z99</span></code> (re-exported from <a class="reference internal" href="cadet.core.html#module-cadet.core.network" title="cadet.core.network"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cadet.core.network</span></code></a>, which
+samples the distributions) and <a class="reference internal" href="#cadet.network.shaping.percentiles_ms" title="cadet.network.shaping.percentiles_ms"><code class="xref py py-func docutils literal notranslate"><span class="pre">percentiles_ms()</span></code></a> (p50/p99 of a configured
+distribution), <a class="reference internal" href="#cadet.network.shaping.Shaping" title="cadet.network.shaping.Shaping"><code class="xref py py-class docutils literal notranslate"><span class="pre">Shaping</span></code></a> (parameters plus renderers for
+Mininet’s TCLink keywords and <code class="docutils literal notranslate"><span class="pre">tc</span></code> arguments), and <a class="reference internal" href="#cadet.network.shaping.shaping_from_network" title="cadet.network.shaping.shaping_from_network"><code class="xref py py-func docutils literal notranslate"><span class="pre">shaping_from_network()</span></code></a>
+(the mapping from a config <code class="docutils literal notranslate"><span class="pre">network</span></code> block to a <a class="reference internal" href="#cadet.network.shaping.Shaping" title="cadet.network.shaping.Shaping"><code class="xref py py-class docutils literal notranslate"><span class="pre">Shaping</span></code></a>).
+Built from <code class="docutils literal notranslate"><span class="pre">config.links[*].network</span></code> via <code class="docutils literal notranslate"><span class="pre">cadet.network.netwaggle.generator</span></code>
+and <code class="docutils literal notranslate"><span class="pre">cadet.network.netem</span></code>. Nothing here imports Mininet or runs commands.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="cadet.network.shaping.UnrepresentableDelay">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.network.shaping.</span></span><span class="sig-name descname"><span class="pre">UnrepresentableDelay</span></span><a class="headerlink" href="#cadet.network.shaping.UnrepresentableDelay" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
+<p>A delay distribution cannot be installed in the kernel as configured.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.shaping.percentiles_ms">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.shaping.</span></span><span class="sig-name descname"><span class="pre">percentiles_ms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.shaping.percentiles_ms" title="Link to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">(p50_ms,</span> <span class="pre">p99_ms)</span></code> for a configured delay distribution.</p>
+<p>This is what lets a link report state the intent next to the achieved
+shaping. <code class="docutils literal notranslate"><span class="pre">lognormal</span></code> states its two percentiles directly, so for that kind
+this only reads them back.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cadet.network.shaping.Shaping">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.network.shaping.</span></span><span class="sig-name descname"><span class="pre">Shaping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delay_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jitter_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_pct</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bandwidth_mbps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.shaping.Shaping" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>How one direction of a link perturbs traffic.</p>
+<p>All fields are optional, and <code class="docutils literal notranslate"><span class="pre">None</span></code> means “not configured”, which is not
+the same as zero: netem with an explicit 0 ms delay still installs a qdisc
+and so adds a little latency and reordering risk. An empty <a class="reference internal" href="#cadet.network.shaping.Shaping" title="cadet.network.shaping.Shaping"><code class="xref py py-class docutils literal notranslate"><span class="pre">Shaping</span></code></a>
+therefore installs nothing at all.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>delay_ms</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>jitter_ms</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>loss_pct</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>bandwidth_mbps</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="cadet.network.shaping.Shaping.is_empty">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_empty</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#cadet.network.shaping.Shaping.is_empty" title="Link to this definition">¶</a></dt>
+<dd><p>True when nothing is configured, so no qdisc need be installed.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cadet.network.shaping.Shaping.jitters">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">jitters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#cadet.network.shaping.Shaping.jitters" title="Link to this definition">¶</a></dt>
+<dd><p>True when this direction varies its per-packet delay.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cadet.network.shaping.Shaping.preserves_order">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">preserves_order</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#cadet.network.shaping.Shaping.preserves_order" title="Link to this definition">¶</a></dt>
+<dd><p>True when this shaping cannot reorder packets within a flow.</p>
+<p>Either it does not jitter at all, or it jitters behind a <code class="docutils literal notranslate"><span class="pre">rate</span></code> that
+serialises netem’s output. <a class="reference internal" href="#cadet.network.shaping.shaping_from_network" title="cadet.network.shaping.shaping_from_network"><code class="xref py py-func docutils literal notranslate"><span class="pre">shaping_from_network()</span></code></a> refuses anything
+else, so this should hold for every installed link.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cadet.network.shaping.Shaping.achieved_percentiles_ms">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">achieved_percentiles_ms</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#cadet.network.shaping.Shaping.achieved_percentiles_ms" title="Link to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">(p50,</span> <span class="pre">p99)</span></code> this shaping will actually produce, in ms.</p>
+<p>netem’s jitter is uniform, so the p99 is a fixed fraction of the way to
+<code class="docutils literal notranslate"><span class="pre">delay</span> <span class="pre">+</span> <span class="pre">jitter</span></code> rather than a Gaussian tail.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.network.shaping.Shaping.as_mininet_params">
+<span class="sig-name descname"><span class="pre">as_mininet_params</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.shaping.Shaping.as_mininet_params" title="Link to this definition">¶</a></dt>
+<dd><p>Return TCLink keyword parameters for this direction.</p>
+<p>Mininet wants <code class="docutils literal notranslate"><span class="pre">delay</span></code>/<code class="docutils literal notranslate"><span class="pre">jitter</span></code> as strings with units, <code class="docutils literal notranslate"><span class="pre">loss</span></code> as a
+percentage number and <code class="docutils literal notranslate"><span class="pre">bw</span></code> in Mbit/s. Only configured fields appear.</p>
+<p>A jittered direction cannot be expressed here in an order-preserving
+way: TCLink puts its bandwidth stage (htb) <em>before</em> netem, so netem is
+last in the egress path and its reordering survives. The emulator
+therefore replaces the qdisc on such an interface after the topology is
+up, using <a class="reference internal" href="#cadet.network.shaping.Shaping.netem_args" title="cadet.network.shaping.Shaping.netem_args"><code class="xref py py-meth docutils literal notranslate"><span class="pre">netem_args()</span></code></a>; see
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">cadet.network.netwaggle.emulator.Emulator()</span></code> .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.network.shaping.Shaping.netem_args">
+<span class="sig-name descname"><span class="pre">netem_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.shaping.Shaping.netem_args" title="Link to this definition">¶</a></dt>
+<dd><p>Return the <code class="docutils literal notranslate"><span class="pre">netem</span></code> arguments for delay, jitter, loss and rate.</p>
+<p>Jitter requires a delay: <code class="docutils literal notranslate"><span class="pre">netem</span> <span class="pre">delay</span></code> takes the jitter as its second
+positional value, so a jitter without a delay is rendered against a zero
+base rather than silently dropped.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">rate</span></code> is emitted whenever this direction jitters, because that is
+what keeps netem from reordering the flow (see the module docstring).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.shaping.shaping_from_network">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.shaping.</span></span><span class="sig-name descname"><span class="pre">shaping_from_network</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.shaping.shaping_from_network" title="Link to this definition">¶</a></dt>
+<dd><p>Build a <a class="reference internal" href="#cadet.network.shaping.Shaping" title="cadet.network.shaping.Shaping"><code class="xref py py-class docutils literal notranslate"><span class="pre">Shaping</span></code></a> from a link’s <code class="docutils literal notranslate"><span class="pre">network</span></code> block.</p>
+<p>The one place a configured distribution becomes kernel parameters, shared by
+both packet-level backends so they cannot drift apart.</p>
+<p><code class="docutils literal notranslate"><span class="pre">constant</span></code> is exact. <code class="docutils literal notranslate"><span class="pre">normal</span></code> and <code class="docutils literal notranslate"><span class="pre">lognormal</span></code> are matched on their p50
+and p99 onto netem’s uniform jitter, which is the most a single netem can
+represent; the achieved shape is recorded in the run’s link report so the
+approximation is visible. Two cases are refused outright rather than
+approximated into something that measures itself:</p>
+<ul class="simple">
+<li><p>a spread too wide for a symmetric jitter (<code class="docutils literal notranslate"><span class="pre">p99</span> <span class="pre">&gt;</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">p50</span></code>), which would
+need negative delays that netem clamps to zero, moving the p50;</p></li>
+<li><p>a jittered link with no <code class="docutils literal notranslate"><span class="pre">bandwidth_mbps</span></code>, which netem can only deliver
+by reordering the flow.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#cadet.network.shaping.Shaping" title="cadet.network.shaping.Shaping"><code class="xref py py-class docutils literal notranslate"><span class="pre">Shaping</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.shaping.shaping_from_path">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.shaping.</span></span><span class="sig-name descname"><span class="pre">shaping_from_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nets</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.shaping.shaping_from_path" title="Link to this definition">¶</a></dt>
+<dd><p>Build one <a class="reference internal" href="#cadet.network.shaping.Shaping" title="cadet.network.shaping.Shaping"><code class="xref py py-class docutils literal notranslate"><span class="pre">Shaping</span></code></a> for a composed path of hop <code class="docutils literal notranslate"><span class="pre">network</span></code> blocks.</p>
+<p>A composed route (<code class="docutils literal notranslate"><span class="pre">routes[*].realise:</span> <span class="pre">compose</span></code>) keeps one end-to-end
+connection, so there is one sender and therefore <strong>one qdisc</strong>: the hops
+have to be collapsed into a single delay, jitter, loss and rate. The
+composition is stated in percentiles, which is what the mapping already
+works in:</p>
+<ul class="simple">
+<li><p>the p50 and the p99 <strong>add</strong>. Adding the p99s is an upper bound, not a
+prediction: independent hops’ samples add, but the tail of a sum is
+narrower than the sum of the tails. It is the conservative direction - the
+installed spread is at least what the hops ask for - and it is what makes
+a two-hop path with hops 30 ms +/- a little representable at all.</p></li>
+<li><p>loss is the chance of <strong>not</strong> surviving every hop.</p></li>
+<li><p>bandwidth is the <strong>slowest</strong> hop’s: hops in series are a pipeline, and the
+bottleneck sets the rate.</p></li>
+</ul>
+<p>The refusals are then evaluated on the <strong>composed</strong> shaping, because the
+composition is what gets installed. That is not the same as checking each
+hop, and it is worth knowing which way it differs:</p>
+<ul class="simple">
+<li><p>the spread rule is linear, so hops that are each representable always
+compose into a representable path (each hop’s jitter is at most its own
+delay, so the sums keep that relation). Composing cannot turn acceptable
+hops into a refusal.</p></li>
+<li><p>the bandwidth rule is <strong>weaker</strong> on a path than on a hop. A jittered hop
+with no bandwidth of its own is refused as a link, because netem would
+reorder its flow; in a composed path it is accepted when <em>any</em> hop sets a
+bandwidth, because there is one qdisc and that rate serialises the whole
+path’s output. The reordering the rule exists to prevent cannot happen.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#cadet.network.shaping.Shaping" title="cadet.network.shaping.Shaping"><code class="xref py py-class docutils literal notranslate"><span class="pre">Shaping</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.shaping.shaping_from_percentiles">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.shaping.</span></span><span class="sig-name descname"><span class="pre">shaping_from_percentiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p50_ms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p99_ms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_fraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bandwidth_mbps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'link'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.shaping.shaping_from_percentiles" title="Link to this definition">¶</a></dt>
+<dd><p>Map a <code class="docutils literal notranslate"><span class="pre">(p50,</span> <span class="pre">p99)</span></code> intent onto netem, or refuse it.</p>
+<p>One link and a composed path differ only in how their percentiles were
+arrived at, so both are checked here and <code class="docutils literal notranslate"><span class="pre">subject</span></code> only names which one a
+refusal is talking about.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#cadet.network.shaping.Shaping" title="cadet.network.shaping.Shaping"><code class="xref py py-class docutils literal notranslate"><span class="pre">Shaping</span></code></a></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>p50_ms</strong> (<em>float</em>)</p></li>
+<li><p><strong>p99_ms</strong> (<em>float</em>)</p></li>
+<li><p><strong>loss_fraction</strong> (<em>float</em>)</p></li>
+<li><p><strong>bandwidth_mbps</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>subject</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-cadet.network.netem">netem backend: shape a link’s traffic with tc inside the sending node.</p>
+<dl>
+<dt>What this is for:</dt><dd><p>Implements <code class="docutils literal notranslate"><span class="pre">links[*].network.mode:</span> <span class="pre">netem</span></code>. Where the <code class="docutils literal notranslate"><span class="pre">netwaggle</span></code> backend
+builds a whole emulated network, this one changes nothing about the topology:
+it installs a <code class="docutils literal notranslate"><span class="pre">tc</span></code> queueing discipline on the sending node’s own interface
+and filters it to the link peer’s address and port, so only that flow is
+delayed, dropped and rate-limited. Everything else on the same interface
+(channels, the simulator connection, log shipping) stays in the unshaped
+default class.</p>
+<p>That is what makes this the simple option: no namespaces, no switches, no
+privileged emulation container. A node’s container needs only NET_ADMIN.</p>
+<p>This is <strong>packet-level</strong> emulation. The qdisc holds packets, so the configured
+delay applies to every packet leaving the sender on this flow (data, the
+handshake and ACKs alike), and <code class="docutils literal notranslate"><span class="pre">loss</span></code> drops packets that TCP retransmits
+rather than application messages. A request/response workload therefore pays
+the configured delay more than once unless Nagle is disabled
+(<code class="docutils literal notranslate"><span class="pre">nodes.*.transport_tuning.tcp_nodelay</span></code>), and configured loss shows up as
+p99 latency rather than as unanswered messages. That is the transport
+reacting to the link, which is the point of emulating at this layer; the
+message-level alternative is <code class="docutils literal notranslate"><span class="pre">mode:</span> <span class="pre">delay</span></code>. See “Link backend semantics” in
+<code class="docutils literal notranslate"><span class="pre">docs/config-reference.md</span></code>.</p>
+</dd>
+<dt>What it contains:</dt><dd><ul class="simple">
+<li><p><a class="reference internal" href="#cadet.network.netem.ShapeRule" title="cadet.network.netem.ShapeRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeRule</span></code></a>: one flow to shape (peer address, which port to match,
+and the <a class="reference internal" href="#cadet.network.shaping.Shaping" title="cadet.network.shaping.Shaping"><code class="xref py py-class docutils literal notranslate"><span class="pre">Shaping</span></code></a> to apply).</p></li>
+<li><p><a class="reference internal" href="#cadet.network.netem.rules_for_node" title="cadet.network.netem.rules_for_node"><code class="xref py py-func docutils literal notranslate"><span class="pre">rules_for_node()</span></code></a>: the rules a given node must install, derived from
+the config’s links and routes and that node’s direction of each. A
+composed route is one rule on the node at the start of the path, carrying
+the hops’ composed shaping and matching the far end: the connection is end
+to end, so no packet of it ever leaves a waypoint.</p></li>
+<li><p><a class="reference internal" href="#cadet.network.netem.build_commands" title="cadet.network.netem.build_commands"><code class="xref py py-func docutils literal notranslate"><span class="pre">build_commands()</span></code></a> / <a class="reference internal" href="#cadet.network.netem.teardown_commands" title="cadet.network.netem.teardown_commands"><code class="xref py py-func docutils literal notranslate"><span class="pre">teardown_commands()</span></code></a>: the <code class="docutils literal notranslate"><span class="pre">tc</span></code> command
+lines, as argv lists.</p></li>
+<li><p><a class="reference internal" href="#cadet.network.netem.NetemBackend" title="cadet.network.netem.NetemBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetemBackend</span></code></a>: applies and removes them through a caller-supplied
+runner, so the same code works locally or over <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span></code>.</p></li>
+<li><p><a class="reference internal" href="#cadet.network.netem.local_runner" title="cadet.network.netem.local_runner"><code class="xref py py-func docutils literal notranslate"><span class="pre">local_runner()</span></code></a>, <a class="reference internal" href="#cadet.network.netem.interface_for" title="cadet.network.netem.interface_for"><code class="xref py py-func docutils literal notranslate"><span class="pre">interface_for()</span></code></a> and <a class="reference internal" href="#cadet.network.netem.sessions_for_config" title="cadet.network.netem.sessions_for_config"><code class="xref py py-func docutils literal notranslate"><span class="pre">sessions_for_config()</span></code></a>:
+the glue the orchestrator uses to install the rules in the right place.</p></li>
+</ul>
+<p>Nothing here executes a command on import, and no function runs <code class="docutils literal notranslate"><span class="pre">tc</span></code>
+itself: a backend returns argv and the orchestrator’s launcher runs it in the
+right place. That keeps the whole mapping testable without root.</p>
+</dd>
+<dt>How it fits into CADET:</dt><dd><p>The orchestrator asks <a class="reference internal" href="#cadet.network.netem.rules_for_node" title="cadet.network.netem.rules_for_node"><code class="xref py py-func docutils literal notranslate"><span class="pre">rules_for_node()</span></code></a> what each node needs, then uses
+<a class="reference internal" href="#cadet.network.netem.NetemBackend" title="cadet.network.netem.NetemBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetemBackend</span></code></a> to apply before the role starts and remove on
+teardown. Ordering matters: apply before traffic flows, remove even when the
+run fails, which is why teardown is a single idempotent qdisc delete.</p>
+</dd>
+<dt>How to configure it:</dt><dd><p>Per link via <code class="docutils literal notranslate"><span class="pre">links[*].network</span></code> with <code class="docutils literal notranslate"><span class="pre">mode:</span> <span class="pre">netem</span></code>. Delay, jitter and
+loss come from the distribution and <code class="docutils literal notranslate"><span class="pre">loss</span></code>; <code class="docutils literal notranslate"><span class="pre">bandwidth_mbps</span></code> becomes the
+shaped class’s rate.</p>
+</dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.netem.ifb_name">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.netem.</span></span><span class="sig-name descname"><span class="pre">ifb_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.netem.ifb_name" title="Link to this definition">¶</a></dt>
+<dd><p>Return the intermediate device that carries <code class="docutils literal notranslate"><span class="pre">interface</span></code>’s ingress.</p>
+<p>An interface’s ingress cannot hold a shaping tree directly - the qdisc there
+classifies and redirects, it does not queue - so the tree lives on an
+intermediate functional block device and the ingress hook mirrors traffic to
+it. The name is derived from the interface so it is the same on every call
+and distinct per interface, and kept inside the kernel’s 15-character limit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>interface</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cadet.network.netem.ShapeRule">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.network.netem.</span></span><span class="sig-name descname"><span class="pre">ShapeRule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">link_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peer_ip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shaping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">match</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dport'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hook</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'egress'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.netem.ShapeRule" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>One flow to shape on a node’s interface.</p>
+<p><code class="docutils literal notranslate"><span class="pre">match</span></code> says which port identifies the flow:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;dport&quot;</span></code></dt><dd><p>the peer’s listening port. Used by the side that initiates; a client’s
+requests go to <code class="docutils literal notranslate"><span class="pre">server:port</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;sport&quot;</span></code></dt><dd><p>the local listening port. Used by the listener for its replies, which
+leave from <code class="docutils literal notranslate"><span class="pre">server:port</span></code> towards an ephemeral client port, so the
+destination port cannot identify them.</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">hook</span></code> says which direction of the interface the rule shapes.
+<code class="docutils literal notranslate"><span class="pre">&quot;egress&quot;</span></code> matches the address as the destination, which is what a node
+sending to a peer needs. <code class="docutils literal notranslate"><span class="pre">&quot;ingress&quot;</span></code> matches it as the source, for a
+direction whose sender runs on another machine: that sender’s own interface
+is that machine’s, and shaping it would shape everything else on it, so the
+receiver shapes what arrives from that address instead. Per-direction
+latency, loss and rate are what the link states either way.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>link_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>peer_ip</strong> (<em>str</em>)</p></li>
+<li><p><strong>port</strong> (<em>int</em>)</p></li>
+<li><p><strong>shaping</strong> (<a class="reference internal" href="#cadet.network.shaping.Shaping" title="cadet.network.shaping.Shaping"><em>Shaping</em></a>)</p></li>
+<li><p><strong>match</strong> (<em>str</em>)</p></li>
+<li><p><strong>hook</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.netem.rules_for_node">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.netem.</span></span><span class="sig-name descname"><span class="pre">rules_for_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offmachine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.netem.rules_for_node" title="Link to this definition">¶</a></dt>
+<dd><p>Return the shaping rules <code class="docutils literal notranslate"><span class="pre">node_name</span></code> must install on its interface.</p>
+<p>A link’s <code class="docutils literal notranslate"><span class="pre">direction</span></code> decides which side shapes. <code class="docutils literal notranslate"><span class="pre">forward</span></code> shapes the
+request path, so the rule belongs on the <code class="docutils literal notranslate"><span class="pre">from</span></code> node and matches the
+peer’s listening port. <code class="docutils literal notranslate"><span class="pre">reverse</span></code> shapes replies, so it belongs on the
+<code class="docutils literal notranslate"><span class="pre">to</span></code> node and matches its own listening port as the source. <code class="docutils literal notranslate"><span class="pre">both</span></code>
+installs a rule on each side.</p>
+<p><code class="docutils literal notranslate"><span class="pre">offmachine</span></code> names the nodes whose own interface is another machine’s. A
+direction whose sender is one of them cannot be shaped where it is sent:
+that interface carries everything else on that machine. Such a direction is
+shaped where it arrives instead - an ingress rule on the node at the other
+end, matching the sender’s address as the source - so every qdisc stays on
+an interface this orchestrator owns. The flow matched is the same flow, and
+the link’s latency, loss and rate are what the configuration states.</p>
+<p>Nodes named only by <code class="docutils literal notranslate"><span class="pre">channels</span></code> get no rules at all, which is how channel
+traffic stays unshaped: there is nothing to match it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="#cadet.network.netem.ShapeRule" title="cadet.network.netem.ShapeRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeRule</span></code></a>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>node_name</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.netem.egress_rules">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.netem.</span></span><span class="sig-name descname"><span class="pre">egress_rules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rules</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.netem.egress_rules" title="Link to this definition">¶</a></dt>
+<dd><p>The rules shaping what the node sends.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="#cadet.network.netem.ShapeRule" title="cadet.network.netem.ShapeRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeRule</span></code></a>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>rules</strong> (<em>List</em><em>[</em><a class="reference internal" href="#cadet.network.netem.ShapeRule" title="cadet.network.netem.ShapeRule"><em>ShapeRule</em></a><em>]</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.netem.ingress_rules">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.netem.</span></span><span class="sig-name descname"><span class="pre">ingress_rules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rules</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.netem.ingress_rules" title="Link to this definition">¶</a></dt>
+<dd><p>The rules shaping what arrives from a sender on another machine.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="#cadet.network.netem.ShapeRule" title="cadet.network.netem.ShapeRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShapeRule</span></code></a>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>rules</strong> (<em>List</em><em>[</em><a class="reference internal" href="#cadet.network.netem.ShapeRule" title="cadet.network.netem.ShapeRule"><em>ShapeRule</em></a><em>]</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.netem.ingress_commands">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.netem.</span></span><span class="sig-name descname"><span class="pre">ingress_commands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.netem.ingress_commands" title="Link to this definition">¶</a></dt>
+<dd><p>Return the commands shaping what arrives on <code class="docutils literal notranslate"><span class="pre">interface</span></code>.</p>
+<p>An interface’s ingress hook classifies and redirects; it cannot queue, so
+the shaping tree lives on an intermediate functional block device and every
+arriving packet is mirrored to it. The tree there is the same htb root, wide
+default class and netem leaf per rule that egress uses - what differs is
+only that a rule matches its peer as the <em>source</em>, because these packets are
+arriving from it.</p>
+<p>The device is created here rather than assumed: it lives in the namespace of
+the node’s own container, so it appears with the container and goes with it.
+Returns an empty list when there is nothing to install.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>interface</strong> (<em>str</em>)</p></li>
+<li><p><strong>rules</strong> (<em>List</em><em>[</em><a class="reference internal" href="#cadet.network.netem.ShapeRule" title="cadet.network.netem.ShapeRule"><em>ShapeRule</em></a><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.netem.build_commands">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.netem.</span></span><span class="sig-name descname"><span class="pre">build_commands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.netem.build_commands" title="Link to this definition">¶</a></dt>
+<dd><p>Return the <code class="docutils literal notranslate"><span class="pre">tc</span></code> commands installing <code class="docutils literal notranslate"><span class="pre">rules</span></code> on <code class="docutils literal notranslate"><span class="pre">interface</span></code>.</p>
+<p>The tree is an htb root whose default class is effectively unlimited, plus
+one shaped class per rule with a netem leaf. Unmatched traffic lands in the
+default class and is untouched, so channels sharing the interface are not
+shaped. Returns an empty list when there is nothing to install.</p>
+<p>Egress rules only: what arrives from a sender on another machine is shaped
+by <a class="reference internal" href="#cadet.network.netem.ingress_commands" title="cadet.network.netem.ingress_commands"><code class="xref py py-func docutils literal notranslate"><span class="pre">ingress_commands()</span></code></a>, which puts the same tree on an intermediate
+device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>interface</strong> (<em>str</em>)</p></li>
+<li><p><strong>rules</strong> (<em>List</em><em>[</em><a class="reference internal" href="#cadet.network.netem.ShapeRule" title="cadet.network.netem.ShapeRule"><em>ShapeRule</em></a><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.netem.teardown_commands">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.netem.</span></span><span class="sig-name descname"><span class="pre">teardown_commands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ingress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.netem.teardown_commands" title="Link to this definition">¶</a></dt>
+<dd><p>Return the commands removing everything this backend installed.</p>
+<p>Deleting a root qdisc takes the classes, leaf qdiscs and filters with it.
+<code class="docutils literal notranslate"><span class="pre">--force</span></code> is not used; instead each delete tolerates its object being
+absent, so teardown is idempotent and safe to run after a failed apply.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ingress</span></code> adds the removal of the ingress hook and its intermediate
+device, in that order, because the device cannot go while traffic is still
+redirected to it. Asked for rather than always emitted, so a node that
+shaped only what it sends tears down exactly what it built.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>interface</strong> (<em>str</em>)</p></li>
+<li><p><strong>ingress</strong> (<em>bool</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cadet.network.netem.NetemBackend">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.network.netem.</span></span><span class="sig-name descname"><span class="pre">NetemBackend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runner</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.netem.NetemBackend" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Applies and removes netem shaping through a caller-supplied runner.</p>
+<p><code class="docutils literal notranslate"><span class="pre">runner</span></code> takes an argv list and returns <code class="docutils literal notranslate"><span class="pre">(returncode,</span> <span class="pre">output)</span></code>. The
+orchestrator supplies one that runs locally or inside the node’s container,
+so this class never decides where a command executes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>interface</strong> (<em>str</em>)</p></li>
+<li><p><strong>rules</strong> (<em>List</em><em>[</em><a class="reference internal" href="#cadet.network.netem.ShapeRule" title="cadet.network.netem.ShapeRule"><em>ShapeRule</em></a><em>]</em>)</p></li>
+<li><p><strong>runner</strong> (<em>Callable</em><em>[</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em><em>, </em><em>object</em><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.network.netem.NetemBackend.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.netem.NetemBackend.apply" title="Link to this definition">¶</a></dt>
+<dd><p>Install the qdisc tree. Returns the commands run, for the run record.</p>
+<p>Any failure removes what was already installed, so a partially built
+tree never shapes traffic in a way the config did not ask for.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.network.netem.NetemBackend.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.netem.NetemBackend.remove" title="Link to this definition">¶</a></dt>
+<dd><p>Remove the qdisc tree; tolerates it being absent already.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cadet.network.netem.NetemBackend.applied">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">applied</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#cadet.network.netem.NetemBackend.applied" title="Link to this definition">¶</a></dt>
+<dd><p>True once <a class="reference internal" href="#cadet.network.netem.NetemBackend.apply" title="cadet.network.netem.NetemBackend.apply"><code class="xref py py-meth docutils literal notranslate"><span class="pre">apply()</span></code></a> has completed successfully.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.netem.local_runner">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.netem.</span></span><span class="sig-name descname"><span class="pre">local_runner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.netem.local_runner" title="Link to this definition">¶</a></dt>
+<dd><p>Run a tc command on this machine. The default runner for local runs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>argv</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.netem.interface_for">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.netem.</span></span><span class="sig-name descname"><span class="pre">interface_for</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.netem.interface_for" title="Link to this definition">¶</a></dt>
+<dd><p>Return the interface the kernel would use to reach <code class="docutils literal notranslate"><span class="pre">ip</span></code>.</p>
+<p>Asks the routing table rather than guessing, because the answer differs by
+deployment: a local run between two processes on one machine leaves by the
+loopback, while a containerised node leaves by its bridge interface. Falls
+back to <code class="docutils literal notranslate"><span class="pre">lo</span></code> when the lookup cannot be parsed, since that is the only
+sensible default for an address on this host.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ip</strong> (<em>str</em>)</p></li>
+<li><p><strong>runner</strong> (<em>Callable</em><em>[</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em><em>, </em><em>object</em><em>] </em><em>| </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.netem.sessions_for_config">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.netem.</span></span><span class="sig-name descname"><span class="pre">sessions_for_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interface_resolver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offmachine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.netem.sessions_for_config" title="Link to this definition">¶</a></dt>
+<dd><p>Build one <a class="reference internal" href="#cadet.network.netem.NetemBackend" title="cadet.network.netem.NetemBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetemBackend</span></code></a> per (node, interface) the config needs.</p>
+<p>Rules are grouped by the interface that reaches their peer, because a node
+may hold links whose peers are reached by different interfaces and each
+interface carries its own qdisc tree. Returns an empty list when no link
+uses <code class="docutils literal notranslate"><span class="pre">mode:</span> <span class="pre">netem</span></code>, so the caller can treat it as “nothing to do”.</p>
+<p><code class="docutils literal notranslate"><span class="pre">offmachine</span></code> names the nodes running on another machine; a direction they
+send is shaped where it arrives. See <a class="reference internal" href="#cadet.network.netem.rules_for_node" title="cadet.network.netem.rules_for_node"><code class="xref py py-func docutils literal notranslate"><span class="pre">rules_for_node()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="#cadet.network.netem.NetemBackend" title="cadet.network.netem.NetemBackend"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetemBackend</span></code></a>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>node_names</strong> (<em>List</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>runner</strong> (<em>Callable</em><em>[</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em><em>, </em><em>object</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>interface_resolver</strong> (<em>Callable</em><em>[</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.netem.apply_sessions">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.netem.</span></span><span class="sig-name descname"><span class="pre">apply_sessions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sessions</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.netem.apply_sessions" title="Link to this definition">¶</a></dt>
+<dd><p>Apply every session, rolling back all of them if any one fails.</p>
+<p>Partial shaping is worse than none: it would quietly measure a different
+experiment from the configured one. On failure every session already applied
+is removed before the error propagates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>sessions</strong> (<em>List</em><em>[</em><a class="reference internal" href="#cadet.network.netem.NetemBackend" title="cadet.network.netem.NetemBackend"><em>NetemBackend</em></a><em>]</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.netem.remove_sessions">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.netem.</span></span><span class="sig-name descname"><span class="pre">remove_sessions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sessions</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.netem.remove_sessions" title="Link to this definition">¶</a></dt>
+<dd><p>Remove every session; tolerates sessions that were never applied.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>sessions</strong> (<em>List</em><em>[</em><a class="reference internal" href="#cadet.network.netem.NetemBackend" title="cadet.network.netem.NetemBackend"><em>NetemBackend</em></a><em>]</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-cadet.network.tuning">Per-node transport tuning, applied only inside that node’s own namespace.</p>
+<dl>
+<dt>What this is for:</dt><dd><p>Packet-level emulation includes the transport’s reaction to a link, and for
+a request/response workload of small messages that reaction is substantial:
+on a 60 ms forward-shaped link, the same traffic measured 141 ms with kernel
+defaults and 110 ms with Nagle disabled. Those are properties of the TCP
+stack, not of the emulated link, so they belong in the config as explicit
+per-node knobs rather than being silently inherited or silently changed.</p>
+<p>Defaults are deliberately the kernel’s. CADET does not pick a TCP policy on
+the experimenter’s behalf; it makes the policy visible and selectable, and
+records it in the run.</p>
+</dd>
+<dt>What it contains:</dt><dd><ul class="simple">
+<li><p><code class="xref py py-data docutils literal notranslate"><span class="pre">SYSCTL_KEYS</span></code>: which tunables are sysctls (and so need a namespace).</p></li>
+<li><p><a class="reference internal" href="#cadet.network.tuning.socket_options" title="cadet.network.tuning.socket_options"><code class="xref py py-func docutils literal notranslate"><span class="pre">socket_options()</span></code></a>: the setsockopt triples for a node.</p></li>
+<li><p><a class="reference internal" href="#cadet.network.tuning.apply_socket_options" title="cadet.network.tuning.apply_socket_options"><code class="xref py py-func docutils literal notranslate"><span class="pre">apply_socket_options()</span></code></a>: apply them to a socket.</p></li>
+<li><p><a class="reference internal" href="#cadet.network.tuning.sysctl_settings" title="cadet.network.tuning.sysctl_settings"><code class="xref py py-func docutils literal notranslate"><span class="pre">sysctl_settings()</span></code></a> / <a class="reference internal" href="#cadet.network.tuning.route_settings" title="cadet.network.tuning.route_settings"><code class="xref py py-func docutils literal notranslate"><span class="pre">route_settings()</span></code></a>: namespace-scoped
+settings, as <code class="docutils literal notranslate"><span class="pre">(key,</span> <span class="pre">value)</span></code> pairs and as argv.</p></li>
+<li><p><a class="reference internal" href="#cadet.network.tuning.namespace_commands" title="cadet.network.tuning.namespace_commands"><code class="xref py py-func docutils literal notranslate"><span class="pre">namespace_commands()</span></code></a>: the commands to run inside a node’s namespace.</p></li>
+<li><p><a class="reference internal" href="#cadet.network.tuning.docker_sysctl_args" title="cadet.network.tuning.docker_sysctl_args"><code class="xref py py-func docutils literal notranslate"><span class="pre">docker_sysctl_args()</span></code></a>: the same settings as <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code> flags.</p></li>
+<li><p><a class="reference internal" href="#cadet.network.tuning.requires_namespace" title="cadet.network.tuning.requires_namespace"><code class="xref py py-func docutils literal notranslate"><span class="pre">requires_namespace()</span></code></a>: whether a node’s tuning needs one, used to
+refuse a setting that would otherwise leak to the host.</p></li>
+</ul>
+</dd>
+<dt>How it fits into CADET:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">nodes[*].transport_tuning</span></code> feeds this module.
+<a class="reference internal" href="cadet.core.html#module-cadet.core.transport" title="cadet.core.transport"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cadet.core.transport</span></code></a> applies the socket options when it creates a
+socket; <code class="xref py py-class docutils literal notranslate"><span class="pre">Emulator</span></code> runs
+<a class="reference internal" href="#cadet.network.tuning.namespace_commands" title="cadet.network.tuning.namespace_commands"><code class="xref py py-func docutils literal notranslate"><span class="pre">namespace_commands()</span></code></a> inside each emulated host;
+<code class="xref py py-class docutils literal notranslate"><span class="pre">DockerLauncher</span></code> passes
+<a class="reference internal" href="#cadet.network.tuning.docker_sysctl_args" title="cadet.network.tuning.docker_sysctl_args"><code class="xref py py-func docutils literal notranslate"><span class="pre">docker_sysctl_args()</span></code></a> to <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code>. The orchestrator’s preflight
+refuses a sysctl or route setting for a node whose launcher is <code class="docutils literal notranslate"><span class="pre">local</span></code>,
+because there is no namespace there and the change would be host-wide.</p>
+<p><strong>Nothing here ever writes a host-wide setting.</strong> The sysctls involved are
+per-network-namespace, which was verified on this platform: setting
+<code class="docutils literal notranslate"><span class="pre">tcp_slow_start_after_idle</span></code> inside a container (whether by <code class="docutils literal notranslate"><span class="pre">docker</span>
+<span class="pre">--sysctl</span></code> at creation or by <code class="docutils literal notranslate"><span class="pre">sysctl</span> <span class="pre">-w</span></code> in a privileged container with its
+own namespace) leaves the host’s value unchanged.</p>
+</dd>
+<dt>How to configure it:</dt><dd><p>Per node:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nodes</span><span class="p">:</span>
+  <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">client</span>
+    <span class="n">transport_tuning</span><span class="p">:</span>
+      <span class="n">tcp_nodelay</span><span class="p">:</span> <span class="n">true</span>                 <span class="c1"># socket option, no namespace needed</span>
+      <span class="n">tcp_slow_start_after_idle</span><span class="p">:</span> <span class="n">false</span>  <span class="c1"># sysctl, needs a namespace</span>
+      <span class="n">initcwnd</span><span class="p">:</span> <span class="mi">20</span>                      <span class="c1"># route attribute, needs a namespace</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.tuning.socket_options">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.tuning.</span></span><span class="sig-name descname"><span class="pre">socket_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.tuning.socket_options" title="Link to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">(level,</span> <span class="pre">option,</span> <span class="pre">value)</span></code> triples for this node’s sockets.</p>
+<p>Only <code class="docutils literal notranslate"><span class="pre">tcp_nodelay</span></code> is a socket option; it needs no namespace and no
+privilege, which is why it is the one knob that works under every launcher.
+An unset field yields nothing, so the kernel default stands.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.tuning.apply_socket_options">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.tuning.</span></span><span class="sig-name descname"><span class="pre">apply_socket_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.tuning.apply_socket_options" title="Link to this definition">¶</a></dt>
+<dd><p>Apply this node’s socket options to <code class="docutils literal notranslate"><span class="pre">sock</span></code>; return what was applied.</p>
+<p>Failures are swallowed deliberately: a platform that rejects an option
+should not fail the run, and the returned list records what actually took
+effect so the run report cannot overstate it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.tuning.sysctl_settings">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.tuning.</span></span><span class="sig-name descname"><span class="pre">sysctl_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.tuning.sysctl_settings" title="Link to this definition">¶</a></dt>
+<dd><p>Return the <code class="docutils literal notranslate"><span class="pre">{sysctl</span> <span class="pre">key:</span> <span class="pre">value}</span></code> this node asks for.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.tuning.route_settings">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.tuning.</span></span><span class="sig-name descname"><span class="pre">route_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.tuning.route_settings" title="Link to this definition">¶</a></dt>
+<dd><p>Return the requested <code class="docutils literal notranslate"><span class="pre">initcwnd</span></code>, or None.</p>
+<p>initcwnd is an attribute of a route, not a socket or a sysctl, so it is
+applied by rewriting the route inside the node’s namespace.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.tuning.requires_namespace">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.tuning.</span></span><span class="sig-name descname"><span class="pre">requires_namespace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.tuning.requires_namespace" title="Link to this definition">¶</a></dt>
+<dd><p>True when this node’s tuning can only be applied inside a namespace.</p>
+<p><code class="docutils literal notranslate"><span class="pre">tcp_nodelay</span></code> alone does not require one. Anything else does, and applying
+it without one would change the host.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.tuning.namespace_commands">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.tuning.</span></span><span class="sig-name descname"><span class="pre">namespace_commands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">routes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.tuning.namespace_commands" title="Link to this definition">¶</a></dt>
+<dd><p>Return the commands to run inside this node’s namespace.</p>
+<p><code class="docutils literal notranslate"><span class="pre">routes</span></code> matters only for <code class="docutils literal notranslate"><span class="pre">initcwnd</span></code>, which is an attribute of a route
+and so must name one. Each entry is <code class="docutils literal notranslate"><span class="pre">(destination,</span> <span class="pre">interface)</span></code>; the
+netwaggle backend gives a host one /32 route per link peer, so there is
+normally one entry per peer. With no routes supplied the setting is skipped
+rather than guessed at, because rewriting the wrong route would change
+traffic the config never mentioned — the bypass default route in particular
+must stay at the kernel default, like the rest of the plumbing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>routes</strong> (<em>List</em><em>[</em><em>Tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>] </em><em>| </em><em>None</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.tuning.docker_sysctl_args">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.tuning.</span></span><span class="sig-name descname"><span class="pre">docker_sysctl_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.tuning.docker_sysctl_args" title="Link to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">--sysctl</span> <span class="pre">k=v</span></code> flags for <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code>.</p>
+<p>Docker applies these at container creation, inside the container’s own
+network namespace, which is why this is the right mechanism for a
+containerised node: an unprivileged container has a read-only <code class="docutils literal notranslate"><span class="pre">/proc/sys</span></code>
+and could not set them afterwards.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.network.tuning.describe">
+<span class="sig-prename descclassname"><span class="pre">cadet.network.tuning.</span></span><span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.network.tuning.describe" title="Link to this definition">¶</a></dt>
+<dd><p>Return this node’s effective tuning, for the run record.</p>
+<p>Fields the config left unset are reported as <code class="docutils literal notranslate"><span class="pre">None</span></code> rather than as the
+kernel’s value: CADET does not know the kernel default and should not claim
+one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="cadet.roles.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">cadet.roles</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="cadet.orchestrator.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">cadet.orchestrator</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">cadet.network</a><ul>
+<li><a class="reference internal" href="#cadet.network.shaping.UnrepresentableDelay"><code class="docutils literal notranslate"><span class="pre">UnrepresentableDelay</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.shaping.percentiles_ms"><code class="docutils literal notranslate"><span class="pre">percentiles_ms()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.shaping.Shaping"><code class="docutils literal notranslate"><span class="pre">Shaping</span></code></a><ul>
+<li><a class="reference internal" href="#cadet.network.shaping.Shaping.is_empty"><code class="docutils literal notranslate"><span class="pre">Shaping.is_empty</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.shaping.Shaping.jitters"><code class="docutils literal notranslate"><span class="pre">Shaping.jitters</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.shaping.Shaping.preserves_order"><code class="docutils literal notranslate"><span class="pre">Shaping.preserves_order</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.shaping.Shaping.achieved_percentiles_ms"><code class="docutils literal notranslate"><span class="pre">Shaping.achieved_percentiles_ms</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.shaping.Shaping.as_mininet_params"><code class="docutils literal notranslate"><span class="pre">Shaping.as_mininet_params()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.shaping.Shaping.netem_args"><code class="docutils literal notranslate"><span class="pre">Shaping.netem_args()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cadet.network.shaping.shaping_from_network"><code class="docutils literal notranslate"><span class="pre">shaping_from_network()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.shaping.shaping_from_path"><code class="docutils literal notranslate"><span class="pre">shaping_from_path()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.shaping.shaping_from_percentiles"><code class="docutils literal notranslate"><span class="pre">shaping_from_percentiles()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.netem.ifb_name"><code class="docutils literal notranslate"><span class="pre">ifb_name()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.netem.ShapeRule"><code class="docutils literal notranslate"><span class="pre">ShapeRule</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.netem.rules_for_node"><code class="docutils literal notranslate"><span class="pre">rules_for_node()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.netem.egress_rules"><code class="docutils literal notranslate"><span class="pre">egress_rules()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.netem.ingress_rules"><code class="docutils literal notranslate"><span class="pre">ingress_rules()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.netem.ingress_commands"><code class="docutils literal notranslate"><span class="pre">ingress_commands()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.netem.build_commands"><code class="docutils literal notranslate"><span class="pre">build_commands()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.netem.teardown_commands"><code class="docutils literal notranslate"><span class="pre">teardown_commands()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.netem.NetemBackend"><code class="docutils literal notranslate"><span class="pre">NetemBackend</span></code></a><ul>
+<li><a class="reference internal" href="#cadet.network.netem.NetemBackend.apply"><code class="docutils literal notranslate"><span class="pre">NetemBackend.apply()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.netem.NetemBackend.remove"><code class="docutils literal notranslate"><span class="pre">NetemBackend.remove()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.netem.NetemBackend.applied"><code class="docutils literal notranslate"><span class="pre">NetemBackend.applied</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cadet.network.netem.local_runner"><code class="docutils literal notranslate"><span class="pre">local_runner()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.netem.interface_for"><code class="docutils literal notranslate"><span class="pre">interface_for()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.netem.sessions_for_config"><code class="docutils literal notranslate"><span class="pre">sessions_for_config()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.netem.apply_sessions"><code class="docutils literal notranslate"><span class="pre">apply_sessions()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.netem.remove_sessions"><code class="docutils literal notranslate"><span class="pre">remove_sessions()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.tuning.socket_options"><code class="docutils literal notranslate"><span class="pre">socket_options()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.tuning.apply_socket_options"><code class="docutils literal notranslate"><span class="pre">apply_socket_options()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.tuning.sysctl_settings"><code class="docutils literal notranslate"><span class="pre">sysctl_settings()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.tuning.route_settings"><code class="docutils literal notranslate"><span class="pre">route_settings()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.tuning.requires_namespace"><code class="docutils literal notranslate"><span class="pre">requires_namespace()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.tuning.namespace_commands"><code class="docutils literal notranslate"><span class="pre">namespace_commands()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.tuning.docker_sysctl_args"><code class="docutils literal notranslate"><span class="pre">docker_sysctl_args()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.network.tuning.describe"><code class="docutils literal notranslate"><span class="pre">describe()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/sidebar-scroll.js?v=a725cd90"></script>
+    </body>
+</html>

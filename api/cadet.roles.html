@@ -1,0 +1,912 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="cadet.sources" href="cadet.sources.html"><link rel="prev" title="cadet.network" href="cadet.network.html">
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>cadet.roles - CADET</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../_static/cadet-table.css?v=25e5b53d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">CADET</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <span class="sidebar-brand-text">CADET</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/versions.html">Version Matrix</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research goals</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../research-goals/index.html">Choose Your Research Goal</a><input aria-label="Toggle navigation of Choose Your Research Goal" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/cooperative-driving.html">Cooperative Driving</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/computation-placement.html">Computation Placement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/communication.html">Communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/model-benchmarking.html">Model Benchmarking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/distributed-sensing.html">Distributed Sensing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/cooperative-driving.html">Cooperative Driving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/computation-placement.html">Computation Placement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/model-benchmarking.html">Model Benchmarking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/distributed-sensing.html">Distributed Sensing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Using CADET</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ways-to-use.html">Ways to Use CADET</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/01-first-experiment.html">Tutorial 1: First Experiment (Replay + Reference App + Delay Link)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/02-carla-braking.html">Tutorial 2: CARLA Braking Experiment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/03-backends.html">Tutorial 3: Comparing Network Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/04-multi-device.html">Tutorial 4: Multi-Device Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/05-sweeps.html">Tutorial 5: Sweeps and Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/06-write-an-app.html">Tutorial 6: Write an App Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/07-v2v-v2i.html">Tutorial 7: V2V and V2I Experiments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-to guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../howto/replay-source.html">Use the replay source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/synthetic-source.html">Use the synthetic source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/live-source.html">Live source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/model-registry.html">Register per-device model artifacts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/link-distributions.html">Configure link distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/wifi-cell.html">Wi-Fi cell</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/transport-tuning.html">Transport tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/sweeps.html">Run and resume sweeps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/dashboard.html">Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/outputs.html">Read outputs and run.json</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/cadet-down.html">Recovery with cadet down</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config-reference.html">Config Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/cli.html">CLI Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/metrics.html">Metrics Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/output-format.html">Output Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/tested-configurations.html">Tested configurations</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cadet.cli.html">cadet.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.config.html">cadet.config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.core.html">cadet.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.orchestrator.html">cadet.orchestrator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.network.html">cadet.network</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">cadet.roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.sources.html">cadet.sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.metrics.html">cadet.metrics</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/data-source-layer.html">Data Source Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/processing-core-layer.html">Processing Core Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/netwaggle-layer.html">NetWaggle Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/analysis-layer.html">Analysis Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/network-backends.html">Network Backend Semantics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/reproducibility.html">Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/design-goals.html">Design Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/dataset-mode.html">Dataset Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/requirements-and-scope.html">Requirements and scope</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Apps</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../apps.html">App Plugin Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../examples/index.html">Examples Gallery</a><input aria-label="Toggle navigation of Examples Gallery" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/distributed-sensing.html">Distributed Sensing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/dataset-vlm.html">Dataset-mode VLM serving</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/dataset-vlm.html">Dataset-mode VLM serving</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Help</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../community/citing.html">Citing CADET</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community/contributing.html">Contributing</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/nesl/cadet/blob/main/docs/source/api/cadet.roles.rst?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/nesl/cadet/edit/main/docs/source/api/cadet.roles.rst" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-cadet.roles.server">
+<span id="cadet-roles"></span><h1>cadet.roles<a class="headerlink" href="#module-cadet.roles.server" title="Link to this heading">¶</a></h1>
+<p>Generic multi-connection server runtime.</p>
+<dl>
+<dt>What this is for:</dt><dd><p>Accepts many concurrent client connections, each with its own reader + delay
+line, all feeding ONE shared request queue in front of a single model. A
+scheduler (<code class="docutils literal notranslate"><span class="pre">fifo</span></code> default, or <code class="docutils literal notranslate"><span class="pre">round_robin</span></code> across clients) picks the next
+request; the model processes it and the reply goes back on the originating
+connection (through that connection’s reverse delay line, if any).</p>
+</dd>
+<dt>What it contains:</dt><dd><ul class="simple">
+<li><p><a class="reference internal" href="#cadet.roles.server.Request" title="cadet.roles.server.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">_FifoScheduler</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">_RoundRobinScheduler</span></code>.</p></li>
+<li><p><a class="reference internal" href="#cadet.roles.server.ServerRuntime" title="cadet.roles.server.ServerRuntime"><code class="xref py py-class docutils literal notranslate"><span class="pre">ServerRuntime</span></code></a>: accept loop + feeder-per-connection + scheduler loop;
+records per request the queue wait, inference time and queue depth at enqueue.</p></li>
+<li><p><a class="reference internal" href="#cadet.roles.server.build_server" title="cadet.roles.server.build_server"><code class="xref py py-func docutils literal notranslate"><span class="pre">build_server()</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt>How it fits into CADET:</dt><dd><p><cite>cadet serve &lt;config&gt;</cite>; the server node’s <code class="docutils literal notranslate"><span class="pre">scheduler</span></code> field picks the policy.
+Per-request metrics are written to <code class="docutils literal notranslate"><span class="pre">outputs/&lt;experiment&gt;/&lt;app&gt;/server_metrics.csv</span></code>
+(used by the concurrent-load experiments).</p>
+<p><strong>System metrics.</strong> When <code class="docutils literal notranslate"><span class="pre">metrics.collectors</span></code> names them, this runtime also
+runs the per-node collectors (<code class="xref py py-mod docutils literal notranslate"><span class="pre">cadet.metrics.collectors</span></code>) for its own
+node, around the serving loop, writing <code class="docutils literal notranslate"><span class="pre">&lt;collector&gt;_&lt;node&gt;.csv</span></code> into the
+run directory. If the <code class="docutils literal notranslate"><span class="pre">energy</span></code> collector is among them, each per-request
+record additionally carries that inference’s own energy: the collector is
+asked for the average power over the window the request was being processed
+in, on the same monotonic clock the record’s <code class="docutils literal notranslate"><span class="pre">inference_s</span></code> is measured on,
+so the attribution needs no second alignment step. Default is no collectors,
+and then nothing here changes.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="cadet.roles.server.Request">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.roles.server.</span></span><span class="sig-name descname"><span class="pre">Request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transport</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.server.Request" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>One client request waiting for the model, tagged with its client id.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cadet.roles.server.Request.client_id">
+<span class="sig-name descname"><span class="pre">client_id</span></span><a class="headerlink" href="#cadet.roles.server.Request.client_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cadet.roles.server.Request.payload">
+<span class="sig-name descname"><span class="pre">payload</span></span><a class="headerlink" href="#cadet.roles.server.Request.payload" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cadet.roles.server.Request.transport">
+<span class="sig-name descname"><span class="pre">transport</span></span><a class="headerlink" href="#cadet.roles.server.Request.transport" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cadet.roles.server.Request.enqueue_time">
+<span class="sig-name descname"><span class="pre">enqueue_time</span></span><a class="headerlink" href="#cadet.roles.server.Request.enqueue_time" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cadet.roles.server.Request.depth">
+<span class="sig-name descname"><span class="pre">depth</span></span><a class="headerlink" href="#cadet.roles.server.Request.depth" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cadet.roles.server.Request.drops">
+<span class="sig-name descname"><span class="pre">drops</span></span><a class="headerlink" href="#cadet.roles.server.Request.drops" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cadet.roles.server.PeerModels">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.roles.server.</span></span><span class="sig-name descname"><span class="pre">PeerModels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.server.PeerModels" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The network models for each connection into one node, by its peer.</p>
+<p>A node can be the far end of several paths at once - N sensors into one
+gateway, an ego and a roadside feed into one server - and those paths are
+not the same link. The server used to resolve one path and hand the same
+hops to every connection, varying only the RNG stream, so a cell whose
+uplinks differed could not be expressed: the difference was configured and
+then ignored.</p>
+<p>Call it as <code class="docutils literal notranslate"><span class="pre">(client_id,</span> <span class="pre">peer_ip)</span></code> for a plain accept loop, or pass
+<a class="reference internal" href="#cadet.roles.server.PeerModels.for_source" title="cadet.roles.server.PeerModels.for_source"><code class="xref py py-meth docutils literal notranslate"><span class="pre">for_source()</span></code></a> to <a class="reference internal" href="cadet.core.html#cadet.core.transport.MultiConnectionEndpoint.serve" title="cadet.core.transport.MultiConnectionEndpoint.serve"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cadet.core.transport.MultiConnectionEndpoint.serve()</span></code></a>
+as its <code class="docutils literal notranslate"><span class="pre">model_for</span></code>, which is the fan-in form. Each connection gets fresh
+models with their own RNG stream, seeded from the experiment seed so a run
+stays reproducible.</p>
+<p><strong>Peers are told apart by address</strong>, which is what a connection carries. Two
+client nodes on one host therefore cannot be distinguished, and they share
+the first path declared into this node; that is logged rather than hidden,
+because the alternative - the client naming itself in band - is a wire
+change and this is not the place to make one.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.roles.server.PeerModels.for_source">
+<span class="sig-name descname"><span class="pre">for_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.server.PeerModels.for_source" title="Link to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">model_for</span></code> for <code class="xref py py-class docutils literal notranslate"><span class="pre">MultiConnectionEndpoint</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;ip:port&quot;</span></code> in.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cadet.roles.server.ServerRuntime">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.roles.server.</span></span><span class="sig-name descname"><span class="pre">ServerRuntime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_factory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">warmup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_processing_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fifo'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inbound_max_pending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_delay_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'blocking'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collectors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tcp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'frame'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inbound_block_at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.server.ServerRuntime" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Multi-connection server: concurrent readers -&gt; scheduler -&gt; one model.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.roles.server.ServerRuntime.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.server.ServerRuntime.run" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.roles.server.build_server">
+<span class="sig-prename descclassname"><span class="pre">cadet.roles.server.</span></span><span class="sig-name descname"><span class="pre">build_server</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overrides</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bind_host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.server.build_server" title="Link to this definition">¶</a></dt>
+<dd><p>Build a <a class="reference internal" href="#cadet.roles.server.ServerRuntime" title="cadet.roles.server.ServerRuntime"><code class="xref py py-class docutils literal notranslate"><span class="pre">ServerRuntime</span></code></a> for one run from a config file.</p>
+<p><code class="docutils literal notranslate"><span class="pre">node_name</span></code> selects which server node to bind (needed when a config has more
+than one server); it falls back to the first node with role <code class="docutils literal notranslate"><span class="pre">server</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">rep</span></code> names the repetition, because the per-request metrics and the
+per-node metrics CSVs are written into that repetition’s run directory and
+two reps of one config would otherwise write to one file.</p>
+<p><code class="docutils literal notranslate"><span class="pre">bind_host</span></code> overrides the address this server listens on, leaving the
+config alone. It exists for a role whose container does not hold the address
+its peers use: a node on another machine is reached at that machine’s
+address and its container has to listen on one of its own. It cannot be a
+config override, because the config is hashed into the run id and the
+orchestrator and the role would then disagree about which run this is.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_path</strong> (<em>str</em>)</p></li>
+<li><p><strong>overrides</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>run_index</strong> (<em>int</em>)</p></li>
+<li><p><strong>model_dirs</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>rep</strong> (<em>int</em>)</p></li>
+<li><p><strong>bind_host</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-cadet.roles.client">Generic client runtime (paper Fig. 1(b)).</p>
+<dl>
+<dt>What this is for:</dt><dd><p>Drives one client run through the pipeline stages (source, frame processing,
+transport, action translation, metric collection), delegating the per-stage
+behaviour to an app plugin’s client hooks.</p>
+</dd>
+<dt>What it contains:</dt><dd><ul class="simple">
+<li><p><a class="reference internal" href="#cadet.roles.client.RunContext" title="cadet.roles.client.RunContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunContext</span></code></a>: the shared handles (config, source, transport, output).</p></li>
+<li><p><a class="reference internal" href="#cadet.roles.client.ClientRuntime" title="cadet.roles.client.ClientRuntime"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClientRuntime</span></code></a>: the staged loop.</p></li>
+<li><p><a class="reference internal" href="#cadet.roles.client.build_client" title="cadet.roles.client.build_client"><code class="xref py py-func docutils literal notranslate"><span class="pre">build_client()</span></code></a>: assemble context + app for a config/run from the CLI.</p></li>
+</ul>
+</dd>
+<dt>How it fits into CADET:</dt><dd><p><cite>cadet client &lt;config&gt; –node client [–run N] [–rep R]</cite> calls
+<a class="reference internal" href="#cadet.roles.client.build_client" title="cadet.roles.client.build_client"><code class="xref py py-func docutils literal notranslate"><span class="pre">build_client()</span></code></a> then <a class="reference internal" href="#cadet.roles.client.ClientRuntime.run" title="cadet.roles.client.ClientRuntime.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ClientRuntime.run()</span></code></a>. The app (e.g.
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">examples.braking.flat.app</span></code>) supplies control/encoding/metrics; the source is
+<a class="reference internal" href="cadet.sources.html#cadet.sources.carla.CarlaSource" title="cadet.sources.carla.CarlaSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">cadet.sources.carla.CarlaSource</span></code></a>.</p>
+<p><strong>System metrics.</strong> When <code class="docutils literal notranslate"><span class="pre">metrics.collectors</span></code> names them, the runtime also
+runs the per-node collectors (<code class="xref py py-mod docutils literal notranslate"><span class="pre">cadet.metrics.collectors</span></code>) for this
+client’s node, around the loop, writing <code class="docutils literal notranslate"><span class="pre">&lt;collector&gt;_&lt;node&gt;.csv</span></code> into the
+run directory. Default is no collectors, and then nothing here changes.</p>
+</dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.roles.client.client_outcome_file">
+<span class="sig-prename descclassname"><span class="pre">cadet.roles.client.</span></span><span class="sig-name descname"><span class="pre">client_outcome_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.client.client_outcome_file" title="Link to this definition">¶</a></dt>
+<dd><p>Return the outcome file name for a client node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.roles.client.scene_timeout_for">
+<span class="sig-prename descclassname"><span class="pre">cadet.roles.client.</span></span><span class="sig-name descname"><span class="pre">scene_timeout_for</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.client.scene_timeout_for" title="Link to this definition">¶</a></dt>
+<dd><p>Return how long this config’s client should wait for the scene.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cadet.roles.client.RunContext">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.roles.client.</span></span><span class="sig-name descname"><span class="pre">RunContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transport</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.client.RunContext" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Handles shared between the runtime and the app for one run.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cadet.roles.client.ClientRuntime">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.roles.client.</span></span><span class="sig-name descname"><span class="pre">ClientRuntime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_port</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'after_scenario'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene_timeout_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">120.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collectors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.client.ClientRuntime" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Runs the client loop until the app reports it is done.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> (<a class="reference internal" href="#cadet.roles.client.RunContext" title="cadet.roles.client.RunContext"><em>RunContext</em></a>)</p></li>
+<li><p><strong>client_start</strong> (<em>str</em>)</p></li>
+<li><p><strong>scene_timeout_s</strong> (<em>float</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.roles.client.ClientRuntime.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.client.ClientRuntime.run" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cadet.roles.client.ClientRuntime.node_name">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">node_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#cadet.roles.client.ClientRuntime.node_name" title="Link to this definition">¶</a></dt>
+<dd><p>This client’s node name, which its records are keyed by.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.roles.client.build_client">
+<span class="sig-prename descclassname"><span class="pre">cadet.roles.client.</span></span><span class="sig-name descname"><span class="pre">build_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overrides</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.client.build_client" title="Link to this definition">¶</a></dt>
+<dd><p>Build a <a class="reference internal" href="#cadet.roles.client.ClientRuntime" title="cadet.roles.client.ClientRuntime"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClientRuntime</span></code></a> for one run from a config file.</p>
+<p><code class="docutils literal notranslate"><span class="pre">node_name</span></code> selects which client node this process is, the way
+<a class="reference internal" href="#cadet.roles.server.build_server" title="cadet.roles.server.build_server"><code class="xref py py-func docutils literal notranslate"><span class="pre">cadet.roles.server.build_server()</span></code></a> already did for servers. Without it
+every client process in a run believed it was the first client node: the
+flag existed on <code class="docutils literal notranslate"><span class="pre">cadet</span> <span class="pre">client</span></code> and was never passed through, so with N
+clients they shared one identity, one outcome file and one link report.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_path</strong> (<em>str</em>)</p></li>
+<li><p><strong>overrides</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>run_index</strong> (<em>int</em>)</p></li>
+<li><p><strong>rep</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-cadet.roles.load">Load generator role: N synthetic clients at a configured rate -&gt; server(s).</p>
+<dl class="simple">
+<dt>What this is for:</dt><dd><p>Drives concurrent-load experiments. A <code class="docutils literal notranslate"><span class="pre">load</span></code> node describes N synthetic
+clients, a send rate, and an arrival process (constant or Poisson). Each
+client connects to every <code class="docutils literal notranslate"><span class="pre">server</span></code> node (fan-out) and sends frames in the
+reference-app wire format, recording round-trip latency. Combined with the
+server’s per-request metrics (queue wait vs load), this measures contention.</p>
+</dd>
+<dt>What it contains:</dt><dd><ul class="simple">
+<li><p><a class="reference internal" href="#cadet.roles.load.LoadRunner" title="cadet.roles.load.LoadRunner"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoadRunner</span></code></a>: spawn clients, send at rate, collect latencies.</p></li>
+<li><p><a class="reference internal" href="#cadet.roles.load.build_load" title="cadet.roles.load.build_load"><code class="xref py py-func docutils literal notranslate"><span class="pre">build_load()</span></code></a>: construct from a config.</p></li>
+</ul>
+</dd>
+<dt>How it fits into CADET:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">cadet</span> <span class="pre">load</span> <span class="pre">&lt;config&gt;</span> <span class="pre">--app-module</span> <span class="pre">examples.reference.app</span></code>. Targets all
+<code class="docutils literal notranslate"><span class="pre">server</span></code> nodes in the config: <code class="docutils literal notranslate"><span class="pre">clients=10,</span> <span class="pre">servers=[s]</span></code> is 10-&gt;1;
+<code class="docutils literal notranslate"><span class="pre">clients=1,</span> <span class="pre">servers=[s1,s2]</span></code> is 1-&gt;2.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="cadet.roles.load.LoadRunner">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.roles.load.</span></span><span class="sig-name descname"><span class="pre">LoadRunner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csv_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.load.LoadRunner" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Runs a fleet of synthetic clients against the config’s server nodes.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.roles.load.LoadRunner.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.load.LoadRunner.run" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.roles.load.build_load">
+<span class="sig-prename descclassname"><span class="pre">cadet.roles.load.</span></span><span class="sig-name descname"><span class="pre">build_load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overrides</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.load.build_load" title="Link to this definition">¶</a></dt>
+<dd><p>Construct a <a class="reference internal" href="#cadet.roles.load.LoadRunner" title="cadet.roles.load.LoadRunner"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoadRunner</span></code></a> from a config file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_path</strong> (<em>str</em>)</p></li>
+<li><p><strong>overrides</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>run_index</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-cadet.roles.common">Shared wiring for the client/server runtimes.</p>
+<dl class="simple">
+<dt>What this is for:</dt><dd><p>Small helpers both role runtimes use: select one run config from a file
+(overrides + sweep run index), look up nodes/links, and prepare the output
+directory (creating it and saving the resolved config alongside results).</p>
+</dd>
+<dt>What it contains:</dt><dd><ul class="simple">
+<li><p><a class="reference internal" href="#cadet.roles.common.select_run_config" title="cadet.roles.common.select_run_config"><code class="xref py py-func docutils literal notranslate"><span class="pre">select_run_config()</span></code></a> -&gt; (config, run_id_base)</p></li>
+<li><p><a class="reference internal" href="#cadet.roles.common.node_by_role" title="cadet.roles.common.node_by_role"><code class="xref py py-func docutils literal notranslate"><span class="pre">node_by_role()</span></code></a>, <a class="reference internal" href="#cadet.roles.common.link_into_node" title="cadet.roles.common.link_into_node"><code class="xref py py-func docutils literal notranslate"><span class="pre">link_into_node()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#cadet.roles.common.output_dir" title="cadet.roles.common.output_dir"><code class="xref py py-func docutils literal notranslate"><span class="pre">output_dir()</span></code></a> (pure path), <a class="reference internal" href="#cadet.roles.common.prepare_output_dir" title="cadet.roles.common.prepare_output_dir"><code class="xref py py-func docutils literal notranslate"><span class="pre">prepare_output_dir()</span></code></a> (creates it)</p></li>
+<li><p><a class="reference internal" href="#cadet.roles.common.StopSignal" title="cadet.roles.common.StopSignal"><code class="xref py py-class docutils literal notranslate"><span class="pre">StopSignal</span></code></a>: turn the orchestrator’s stop signal into a flag a
+role’s own loop can act on, so it reaches its own shutdown path, and then
+hand the process back to the signal so its exit status still says what
+happened to it</p></li>
+</ul>
+</dd>
+<dt>How it fits into CADET:</dt><dd><p>Used by <a class="reference internal" href="#module-cadet.roles.client" title="cadet.roles.client"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cadet.roles.client</span></code></a> and <a class="reference internal" href="#module-cadet.roles.server" title="cadet.roles.server"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cadet.roles.server</span></code></a>. Output paths
+come only from the resolved config’s <code class="docutils literal notranslate"><span class="pre">outputs</span></code> section — never a curated
+results directory.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="cadet.roles.common.StopSignal">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.roles.common.</span></span><span class="sig-name descname"><span class="pre">StopSignal</span></span><a class="headerlink" href="#cadet.roles.common.StopSignal" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A role’s stop signal: first a flag its own loop acts on, then its exit.</p>
+<p>The orchestrator stops a role with SIGTERM and escalates to SIGKILL after a
+grace. Python’s default action for SIGTERM ends the process at once, so a
+role that is stopped rather than finishing by itself never ran its own
+shutdown path: a server’s <code class="docutils literal notranslate"><span class="pre">finally</span></code> did not execute and its per-request
+metrics were never written. Measured: the braking app wrote
+<code class="docutils literal notranslate"><span class="pre">server_metrics_*.csv</span></code> because its app stops the loop itself after the
+brake, while the reference app, whose server waits for work until it is
+stopped, produced none at all.</p>
+<p><a class="reference internal" href="#cadet.roles.common.StopSignal.install" title="cadet.roles.common.StopSignal.install"><code class="xref py py-meth docutils literal notranslate"><span class="pre">install()</span></code></a> makes the handler set a flag through <code class="docutils literal notranslate"><span class="pre">on_stop</span></code>; the loop
+notices on its next turn and unwinds normally. Raising from the handler
+would skip the same shutdown path by another route, which is also why the
+loop’s wait has to be bounded rather than indefinite.</p>
+<p><a class="reference internal" href="#cadet.roles.common.StopSignal.finish" title="cadet.roles.common.StopSignal.finish"><code class="xref py py-meth docutils literal notranslate"><span class="pre">finish()</span></code></a> then <strong>hands the process back to the signal</strong>, so its exit
+status is the one a signalled process has. That is not cosmetic: the
+orchestrator reads a worker’s exit code during the active phase to tell a
+guard that finished its job (code 0 - the braking server is single-shot by
+design) from one that died under it (non-zero - <code class="docutils literal notranslate"><span class="pre">node</span> <span class="pre">exited</span>
+<span class="pre">unexpectedly</span></code>). A server that flushed its records and then exited 0 would
+make an operator’s <code class="docutils literal notranslate"><span class="pre">kill</span></code> look like a clean finish, which is exactly the
+failure the lifecycle matrix exists to catch.</p>
+<p>Signals can only be installed from the main thread, and a role process is
+one process per role, so this is used from the role’s own <code class="docutils literal notranslate"><span class="pre">run</span></code>. Off the
+main thread (a test driving a runtime in-process) <a class="reference internal" href="#cadet.roles.common.StopSignal.install" title="cadet.roles.common.StopSignal.install"><code class="xref py py-meth docutils literal notranslate"><span class="pre">install()</span></code></a> is a
+no-op rather than an error, and <a class="reference internal" href="#cadet.roles.common.StopSignal.finish" title="cadet.roles.common.StopSignal.finish"><code class="xref py py-meth docutils literal notranslate"><span class="pre">finish()</span></code></a> then has nothing to do.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.roles.common.StopSignal.install">
+<span class="sig-name descname"><span class="pre">install</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">on_stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.common.StopSignal.install" title="Link to this definition">¶</a></dt>
+<dd><p>Install the handler for SIGTERM and SIGINT.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>on_stop</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>None</em><em>]</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.roles.common.StopSignal.finish">
+<span class="sig-name descname"><span class="pre">finish</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.common.StopSignal.finish" title="Link to this definition">¶</a></dt>
+<dd><p>Exit as a signalled process, now that the records are written.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.roles.common.select_run_config">
+<span class="sig-prename descclassname"><span class="pre">cadet.roles.common.</span></span><span class="sig-name descname"><span class="pre">select_run_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overrides</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.common.select_run_config" title="Link to this definition">¶</a></dt>
+<dd><p>Load + override + expand a config and return the <code class="docutils literal notranslate"><span class="pre">run_index</span></code>-th run.</p>
+<p>Returns <code class="docutils literal notranslate"><span class="pre">(config,</span> <span class="pre">run_id_base)</span></code> where <code class="docutils literal notranslate"><span class="pre">run_id_base</span></code> is the config hash
+(the per-repetition <code class="docutils literal notranslate"><span class="pre">-r&lt;rep&gt;</span></code> suffix is added by the caller).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<a class="reference internal" href="cadet.config.html#cadet.config.schema.Config" title="cadet.config.schema.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>)</p></li>
+<li><p><strong>overrides</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>run_index</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.roles.common.node_by_role">
+<span class="sig-prename descclassname"><span class="pre">cadet.roles.common.</span></span><span class="sig-name descname"><span class="pre">node_by_role</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.common.node_by_role" title="Link to this definition">¶</a></dt>
+<dd><p>Return the first node with <code class="docutils literal notranslate"><span class="pre">role</span></code> (or <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> (<a class="reference internal" href="cadet.config.html#cadet.config.schema.Config" title="cadet.config.schema.Config"><em>Config</em></a>)</p></li>
+<li><p><strong>role</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.roles.common.link_into_node">
+<span class="sig-prename descclassname"><span class="pre">cadet.roles.common.</span></span><span class="sig-name descname"><span class="pre">link_into_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.common.link_into_node" title="Link to this definition">¶</a></dt>
+<dd><p>Return the first link whose <code class="docutils literal notranslate"><span class="pre">to</span></code> endpoint is <code class="docutils literal notranslate"><span class="pre">node_name</span></code> (or <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> (<a class="reference internal" href="cadet.config.html#cadet.config.schema.Config" title="cadet.config.schema.Config"><em>Config</em></a>)</p></li>
+<li><p><strong>node_name</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.roles.common.output_dir">
+<span class="sig-prename descclassname"><span class="pre">cadet.roles.common.</span></span><span class="sig-name descname"><span class="pre">output_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.common.output_dir" title="Link to this definition">¶</a></dt>
+<dd><p>Return the output directory path for a run (does not create it).</p>
+<p>Directory = <code class="docutils literal notranslate"><span class="pre">outputs.root/&lt;outputs.naming</span> <span class="pre">formatted&gt;</span></code>. Kept pure so the
+orchestrator can locate a run’s outputs (e.g. for resume) without side effects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>config</strong> (<a class="reference internal" href="cadet.config.html#cadet.config.schema.Config" title="cadet.config.schema.Config"><em>Config</em></a>)</p></li>
+<li><p><strong>run_id</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.roles.common.prepare_output_dir">
+<span class="sig-prename descclassname"><span class="pre">cadet.roles.common.</span></span><span class="sig-name descname"><span class="pre">prepare_output_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.roles.common.prepare_output_dir" title="Link to this definition">¶</a></dt>
+<dd><p>Create the output directory for this run and save the resolved config.</p>
+<p>Directory = <a class="reference internal" href="#cadet.roles.common.output_dir" title="cadet.roles.common.output_dir"><code class="xref py py-func docutils literal notranslate"><span class="pre">output_dir()</span></code></a>. The resolved config is written as
+<code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> next to the results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>config</strong> (<a class="reference internal" href="cadet.config.html#cadet.config.schema.Config" title="cadet.config.schema.Config"><em>Config</em></a>)</p></li>
+<li><p><strong>run_id</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="cadet.sources.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">cadet.sources</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="cadet.network.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">cadet.network</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">cadet.roles</a><ul>
+<li><a class="reference internal" href="#cadet.roles.server.Request"><code class="docutils literal notranslate"><span class="pre">Request</span></code></a><ul>
+<li><a class="reference internal" href="#cadet.roles.server.Request.client_id"><code class="docutils literal notranslate"><span class="pre">Request.client_id</span></code></a></li>
+<li><a class="reference internal" href="#cadet.roles.server.Request.payload"><code class="docutils literal notranslate"><span class="pre">Request.payload</span></code></a></li>
+<li><a class="reference internal" href="#cadet.roles.server.Request.transport"><code class="docutils literal notranslate"><span class="pre">Request.transport</span></code></a></li>
+<li><a class="reference internal" href="#cadet.roles.server.Request.enqueue_time"><code class="docutils literal notranslate"><span class="pre">Request.enqueue_time</span></code></a></li>
+<li><a class="reference internal" href="#cadet.roles.server.Request.depth"><code class="docutils literal notranslate"><span class="pre">Request.depth</span></code></a></li>
+<li><a class="reference internal" href="#cadet.roles.server.Request.drops"><code class="docutils literal notranslate"><span class="pre">Request.drops</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cadet.roles.server.PeerModels"><code class="docutils literal notranslate"><span class="pre">PeerModels</span></code></a><ul>
+<li><a class="reference internal" href="#cadet.roles.server.PeerModels.for_source"><code class="docutils literal notranslate"><span class="pre">PeerModels.for_source()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cadet.roles.server.ServerRuntime"><code class="docutils literal notranslate"><span class="pre">ServerRuntime</span></code></a><ul>
+<li><a class="reference internal" href="#cadet.roles.server.ServerRuntime.run"><code class="docutils literal notranslate"><span class="pre">ServerRuntime.run()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cadet.roles.server.build_server"><code class="docutils literal notranslate"><span class="pre">build_server()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.roles.client.client_outcome_file"><code class="docutils literal notranslate"><span class="pre">client_outcome_file()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.roles.client.scene_timeout_for"><code class="docutils literal notranslate"><span class="pre">scene_timeout_for()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.roles.client.RunContext"><code class="docutils literal notranslate"><span class="pre">RunContext</span></code></a></li>
+<li><a class="reference internal" href="#cadet.roles.client.ClientRuntime"><code class="docutils literal notranslate"><span class="pre">ClientRuntime</span></code></a><ul>
+<li><a class="reference internal" href="#cadet.roles.client.ClientRuntime.run"><code class="docutils literal notranslate"><span class="pre">ClientRuntime.run()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.roles.client.ClientRuntime.node_name"><code class="docutils literal notranslate"><span class="pre">ClientRuntime.node_name</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cadet.roles.client.build_client"><code class="docutils literal notranslate"><span class="pre">build_client()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.roles.load.LoadRunner"><code class="docutils literal notranslate"><span class="pre">LoadRunner</span></code></a><ul>
+<li><a class="reference internal" href="#cadet.roles.load.LoadRunner.run"><code class="docutils literal notranslate"><span class="pre">LoadRunner.run()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cadet.roles.load.build_load"><code class="docutils literal notranslate"><span class="pre">build_load()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.roles.common.StopSignal"><code class="docutils literal notranslate"><span class="pre">StopSignal</span></code></a><ul>
+<li><a class="reference internal" href="#cadet.roles.common.StopSignal.install"><code class="docutils literal notranslate"><span class="pre">StopSignal.install()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.roles.common.StopSignal.finish"><code class="docutils literal notranslate"><span class="pre">StopSignal.finish()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cadet.roles.common.select_run_config"><code class="docutils literal notranslate"><span class="pre">select_run_config()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.roles.common.node_by_role"><code class="docutils literal notranslate"><span class="pre">node_by_role()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.roles.common.link_into_node"><code class="docutils literal notranslate"><span class="pre">link_into_node()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.roles.common.output_dir"><code class="docutils literal notranslate"><span class="pre">output_dir()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.roles.common.prepare_output_dir"><code class="docutils literal notranslate"><span class="pre">prepare_output_dir()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/sidebar-scroll.js?v=a725cd90"></script>
+    </body>
+</html>

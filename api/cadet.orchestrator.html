@@ -1,0 +1,1516 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="cadet.network" href="cadet.network.html"><link rel="prev" title="cadet.core" href="cadet.core.html">
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>cadet.orchestrator - CADET</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../_static/cadet-table.css?v=25e5b53d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">CADET</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <span class="sidebar-brand-text">CADET</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/versions.html">Version Matrix</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research goals</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../research-goals/index.html">Choose Your Research Goal</a><input aria-label="Toggle navigation of Choose Your Research Goal" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/cooperative-driving.html">Cooperative Driving</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/computation-placement.html">Computation Placement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/communication.html">Communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/model-benchmarking.html">Model Benchmarking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/distributed-sensing.html">Distributed Sensing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/cooperative-driving.html">Cooperative Driving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/computation-placement.html">Computation Placement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/model-benchmarking.html">Model Benchmarking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/distributed-sensing.html">Distributed Sensing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Using CADET</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ways-to-use.html">Ways to Use CADET</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/01-first-experiment.html">Tutorial 1: First Experiment (Replay + Reference App + Delay Link)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/02-carla-braking.html">Tutorial 2: CARLA Braking Experiment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/03-backends.html">Tutorial 3: Comparing Network Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/04-multi-device.html">Tutorial 4: Multi-Device Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/05-sweeps.html">Tutorial 5: Sweeps and Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/06-write-an-app.html">Tutorial 6: Write an App Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/07-v2v-v2i.html">Tutorial 7: V2V and V2I Experiments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-to guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../howto/replay-source.html">Use the replay source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/synthetic-source.html">Use the synthetic source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/live-source.html">Live source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/model-registry.html">Register per-device model artifacts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/link-distributions.html">Configure link distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/wifi-cell.html">Wi-Fi cell</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/transport-tuning.html">Transport tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/sweeps.html">Run and resume sweeps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/dashboard.html">Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/outputs.html">Read outputs and run.json</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/cadet-down.html">Recovery with cadet down</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config-reference.html">Config Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/cli.html">CLI Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/metrics.html">Metrics Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/output-format.html">Output Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/tested-configurations.html">Tested configurations</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cadet.cli.html">cadet.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.config.html">cadet.config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.core.html">cadet.core</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">cadet.orchestrator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.network.html">cadet.network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.roles.html">cadet.roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.sources.html">cadet.sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.metrics.html">cadet.metrics</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/data-source-layer.html">Data Source Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/processing-core-layer.html">Processing Core Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/netwaggle-layer.html">NetWaggle Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/analysis-layer.html">Analysis Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/network-backends.html">Network Backend Semantics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/reproducibility.html">Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/design-goals.html">Design Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/dataset-mode.html">Dataset Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/requirements-and-scope.html">Requirements and scope</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Apps</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../apps.html">App Plugin Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../examples/index.html">Examples Gallery</a><input aria-label="Toggle navigation of Examples Gallery" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/distributed-sensing.html">Distributed Sensing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/dataset-vlm.html">Dataset-mode VLM serving</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/dataset-vlm.html">Dataset-mode VLM serving</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Help</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../community/citing.html">Citing CADET</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community/contributing.html">Contributing</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/nesl/cadet/blob/main/docs/source/api/cadet.orchestrator.rst?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/nesl/cadet/edit/main/docs/source/api/cadet.orchestrator.rst" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-cadet.orchestrator.runner">
+<span id="cadet-orchestrator"></span><h1>cadet.orchestrator<a class="headerlink" href="#module-cadet.orchestrator.runner" title="Link to this heading">¶</a></h1>
+<p>Orchestrator: turn a config into running processes and back again, cleanly.</p>
+<p>This module owns the lifecycle of a run and a sweep. For a run it clears its
+own leftovers, runs preflight, starts the servers and waits for readiness,
+starts the sim-side hooks and waits for their marker, starts clients/load,
+waits for the run to end by its <code class="docutils literal notranslate"><span class="pre">experiment.end_on</span></code> rule, then tears
+everything down in reverse order so no process is orphaned. For a sweep it
+enumerates the matrix and runs each cell; with <code class="docutils literal notranslate"><span class="pre">experiment.resume</span></code> (or
+<code class="docutils literal notranslate"><span class="pre">--resume</span></code>) it skips cells whose output is already complete, and by default
+it reruns them. An interrupted run is part of that lifecycle, not an exception
+to it: SIGTERM and SIGHUP are turned into an exception
+(<a class="reference internal" href="#cadet.orchestrator.lifecycle.interrupt_guard" title="cadet.orchestrator.lifecycle.interrupt_guard"><code class="xref py py-func docutils literal notranslate"><span class="pre">cadet.orchestrator.lifecycle.interrupt_guard()</span></code></a>) so the teardown runs,
+and whatever a harder kill leaves behind is removed by <code class="docutils literal notranslate"><span class="pre">cadet</span> <span class="pre">down</span></code>
+(<code class="xref py py-func docutils literal notranslate"><span class="pre">cadet.orchestrator.recovery.sweep()</span></code>). It provides
+<a class="reference internal" href="#cadet.orchestrator.runner.PreflightError" title="cadet.orchestrator.runner.PreflightError"><code class="xref py py-class docutils literal notranslate"><span class="pre">PreflightError</span></code></a>, <a class="reference internal" href="#cadet.orchestrator.runner.preflight" title="cadet.orchestrator.runner.preflight"><code class="xref py py-func docutils literal notranslate"><span class="pre">preflight()</span></code></a>, <a class="reference internal" href="#cadet.orchestrator.runner.RunResult" title="cadet.orchestrator.runner.RunResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunResult</span></code></a> and
+<a class="reference internal" href="#cadet.orchestrator.runner.Orchestrator" title="cadet.orchestrator.runner.Orchestrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Orchestrator</span></code></a>.</p>
+<p>It is called by <code class="docutils literal notranslate"><span class="pre">cadet</span> <span class="pre">run</span></code> / <code class="docutils literal notranslate"><span class="pre">cadet</span> <span class="pre">sweep</span></code> in <a class="reference internal" href="cadet.cli.html#module-cadet.cli" title="cadet.cli"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cadet.cli</span></code></a>, and spawns
+the role entry points (<code class="docutils literal notranslate"><span class="pre">cadet</span> <span class="pre">serve</span></code> / <code class="docutils literal notranslate"><span class="pre">cadet</span> <span class="pre">client</span></code> / <code class="docutils literal notranslate"><span class="pre">cadet</span> <span class="pre">load</span></code>)
+through the launcher each node’s config asks for: a host process, a container
+on this machine, or (in dry-run) a container on another machine.
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">cadet.orchestrator.placement</span></code> owns that dispatch, the per-run docker
+network and the per-node containers; this module keeps the ordering and the
+teardown, which do not change with where a role runs. Sim hooks come from the
+app plugin’s <code class="xref py py-meth docutils literal notranslate"><span class="pre">AppPlugin.sim_hooks()</span></code>.</p>
+<p>It also records what a cross-node timestamp is worth: with
+<code class="docutils literal notranslate"><span class="pre">metrics.collectors:</span> <span class="pre">clock_offset</span></code> it measures each node’s clock against its
+own before the run and again after the roles have stopped, and writes the
+offset and its uncertainty into <code class="docutils literal notranslate"><span class="pre">run.json</span></code>
+(<code class="xref py py-mod docutils literal notranslate"><span class="pre">cadet.metrics.clock_offset</span></code>). Nothing is corrected by it.</p>
+<p>It also owns the lifetime of each link’s network backend, installing netem
+qdiscs before any role starts and removing them on teardown so a failed run
+cannot leave traffic shaped. For a containerised node the qdisc goes inside
+that node’s own namespace, through a runner the placement supplies, because the
+interface to shape is the container’s and not the host’s. The <code class="docutils literal notranslate"><span class="pre">delay</span></code> backend
+needs nothing here (it lives inside the transport), and <code class="docutils literal notranslate"><span class="pre">netwaggle</span></code> is driven
+by <code class="docutils literal notranslate"><span class="pre">cadet</span> <span class="pre">emulate</span></code> inside the emulation container.</p>
+<p>Driven entirely by the experiment config (<code class="docutils literal notranslate"><span class="pre">nodes</span></code>, <code class="docutils literal notranslate"><span class="pre">nodes.launcher</span></code>,
+<code class="docutils literal notranslate"><span class="pre">outputs</span></code>) plus <code class="docutils literal notranslate"><span class="pre">--app-module</span></code> / <code class="docutils literal notranslate"><span class="pre">--model-dir</span></code> passed to role processes.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="cadet.orchestrator.runner.PreflightError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.runner.</span></span><span class="sig-name descname"><span class="pre">PreflightError</span></span><a class="headerlink" href="#cadet.orchestrator.runner.PreflightError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when a run cannot safely start (bad model, port in use, …).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.runner.preflight">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.runner.</span></span><span class="sig-name descname"><span class="pre">preflight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log=&lt;built-in</span> <span class="pre">function</span> <span class="pre">print&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_ports=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_experimental=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.runner.preflight" title="Link to this definition">¶</a></dt>
+<dd><p>Check a run can start: model artifacts resolve and listening ports are free.</p>
+<p>Raises <a class="reference internal" href="#cadet.orchestrator.runner.PreflightError" title="cadet.orchestrator.runner.PreflightError"><code class="xref py py-class docutils literal notranslate"><span class="pre">PreflightError</span></code></a> with a readable message on the first problem.
+Throughput is a warning rather than a problem: a saturated link is a valid
+experiment, and only the experimenter can say whether this one is intended.</p>
+<p><code class="docutils literal notranslate"><span class="pre">check_ports</span></code> is False for the emulated backend, whose servers bind inside
+their own network namespaces: a port busy on the container’s localhost says
+nothing about the port an emulated host will bind, and refusing on it would
+reject runs that are fine.</p>
+<p><code class="docutils literal notranslate"><span class="pre">allow_experimental</span></code> accepts config options that are implemented but
+unverified; None defers to <code class="docutils literal notranslate"><span class="pre">experiment.allow_experimental</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model_dirs</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>check_ports</strong> (<em>bool</em>)</p></li>
+<li><p><strong>allow_experimental</strong> (<em>bool</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cadet.orchestrator.runner.RunResult">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.runner.</span></span><span class="sig-name descname"><span class="pre">RunResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ok</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detail</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.runner.RunResult" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Outcome of a single run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>run_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>out_dir</strong> (<em>str</em>)</p></li>
+<li><p><strong>ok</strong> (<em>bool</em>)</p></li>
+<li><p><strong>detail</strong> (<em>str</em>)</p></li>
+<li><p><strong>reason</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cadet.orchestrator.runner.Orchestrator">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.runner.</span></span><span class="sig-name descname"><span class="pre">Orchestrator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">launcher=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log=&lt;built-in</span> <span class="pre">function</span> <span class="pre">print&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.runner.Orchestrator" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Starts and supervises the processes of a run or sweep (local launcher).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.orchestrator.runner.Orchestrator.is_complete">
+<span class="sig-name descname"><span class="pre">is_complete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.runner.Orchestrator.is_complete" title="Link to this definition">¶</a></dt>
+<dd><p>True if the run’s output dir already has a success marker (resume).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>run_id</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.orchestrator.runner.Orchestrator.run_one">
+<span class="sig-name descname"><span class="pre">run_one</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overrides</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_modules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_experimental</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.runner.Orchestrator.run_one" title="Link to this definition">¶</a></dt>
+<dd><p>Run one (run_index, rep) cell end-to-end, tearing everything down after.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#cadet.orchestrator.runner.RunResult" title="cadet.orchestrator.runner.RunResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunResult</span></code></a></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>config_path</strong> (<em>str</em>)</p></li>
+<li><p><strong>overrides</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>run_index</strong> (<em>int</em>)</p></li>
+<li><p><strong>rep</strong> (<em>int</em>)</p></li>
+<li><p><strong>app_modules</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>model_dirs</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>allow_experimental</strong> (<em>bool</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.orchestrator.runner.Orchestrator.sweep">
+<span class="sig-name descname"><span class="pre">sweep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overrides</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_modules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_experimental</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.runner.Orchestrator.sweep" title="Link to this definition">¶</a></dt>
+<dd><p>Run every (run_index, rep) cell.</p>
+<p>A completed cell is re-run unless resume is asked for, which is what the
+original did; <code class="docutils literal notranslate"><span class="pre">resume</span></code> (or <code class="docutils literal notranslate"><span class="pre">experiment.resume</span></code>) skips cells that
+already have a run.json.</p>
+<p>Cells are separated by <code class="docutils literal notranslate"><span class="pre">experiment.inter_run_pause_s</span></code>, five seconds as
+in the original. It is not idle time: on a shared simulator it is what
+gave the previous run’s actors time to be cleared before the next
+scenario reloaded the world.</p>
+<p>Stops early if a run is interrupted: a terminating signal is a request
+to stop the sweep, and the cells it never reached are left absent from
+the output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="#cadet.orchestrator.runner.RunResult" title="cadet.orchestrator.runner.RunResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunResult</span></code></a>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>config_path</strong> (<em>str</em>)</p></li>
+<li><p><strong>overrides</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>app_modules</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>model_dirs</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>reps</strong> (<em>int</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>allow_experimental</strong> (<em>bool</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>resume</strong> (<em>bool</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.orchestrator.runner.Orchestrator.status">
+<span class="sig-name descname"><span class="pre">status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.runner.Orchestrator.status" title="Link to this definition">¶</a></dt>
+<dd><p>Return the current run-state (recorded active processes).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.orchestrator.runner.Orchestrator.down">
+<span class="sig-name descname"><span class="pre">down</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.runner.Orchestrator.down" title="Link to this definition">¶</a></dt>
+<dd><p>Remove every CADET-owned leftover; return what was removed.</p>
+<p>This is the recovery path for a run that never reached its teardown - a
+SIGKILL, or a stop before the signal guard was installed. It covers more
+than the processes it used to: containers, docker networks, emulated
+namespaces, OVS bridges, veths and the qdiscs a run recorded, each
+matched by ownership rather than by kind. See
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">cadet.orchestrator.recovery</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-cadet.orchestrator.lifecycle">Run-lifecycle steps, ported from the original orchestrator scripts.</p>
+<p>The original experiment orchestrators already solved the lifecycle of a braking
+run: clear orphans and the server port, start the server and ScenarioRunner,
+block on a marker line in the scenario log, run the client to completion, then
+kill the scenario’s whole process group. This module is that logic, ported once
+so both the host orchestrator and the emulated session share one ordering and one
+teardown. Their hard-coded constants (port 10000, script names) became config
+fields; the readiness marker and its timeout come from the hook’s
+<code class="xref py py-class docutils literal notranslate"><span class="pre">LaunchSpec</span></code>. Three behaviours here are additions without an original
+equivalent: wall-clock limits on each phase (<a class="reference internal" href="#cadet.orchestrator.lifecycle.startup_limit_s" title="cadet.orchestrator.lifecycle.startup_limit_s"><code class="xref py py-func docutils literal notranslate"><span class="pre">startup_limit_s()</span></code></a>,
+<a class="reference internal" href="#cadet.orchestrator.lifecycle.active_limit_s" title="cadet.orchestrator.lifecycle.active_limit_s"><code class="xref py py-func docutils literal notranslate"><span class="pre">active_limit_s()</span></code></a>), treating a sim hook or server failure as the end of the
+run, and an explicit run-end rule (<code class="docutils literal notranslate"><span class="pre">experiment.end_on</span></code>). The original’s <code class="docutils literal notranslate"><span class="pre">fuser</span>
+<span class="pre">-k</span></code> port cleanup was narrowed: only CADET-owned processes are killed; a foreign
+holder is named by preflight and refused. Used by <a class="reference internal" href="#module-cadet.orchestrator.runner" title="cadet.orchestrator.runner"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cadet.orchestrator.runner</span></code></a>
+and <code class="xref py py-mod docutils literal notranslate"><span class="pre">cadet.network.netwaggle.session</span></code>. Phase limits come from
+<code class="docutils literal notranslate"><span class="pre">experiment.max_startup_s</span></code> (defaults to the sum of readiness timeouts) and
+<code class="docutils literal notranslate"><span class="pre">experiment.max_active_s</span></code> (defaults to <code class="docutils literal notranslate"><span class="pre">source.scenario.timeout_s</span></code> plus a
+margin). <code class="docutils literal notranslate"><span class="pre">experiment.end_on</span></code> and <code class="docutils literal notranslate"><span class="pre">experiment.end_grace_s</span></code> control when and
+how cleanly a run stops.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.StartupLimitExceeded">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">StartupLimitExceeded</span></span><a class="headerlink" href="#cadet.orchestrator.lifecycle.StartupLimitExceeded" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>The startup phase ran past <code class="docutils literal notranslate"><span class="pre">experiment.max_startup_s</span></code>.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.RunTiming">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">RunTiming</span></span><a class="headerlink" href="#cadet.orchestrator.lifecycle.RunTiming" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>How long each phase of a run took, and which limit ended it.</p>
+<p>Recorded in <code class="docutils literal notranslate"><span class="pre">run.json</span></code> so a run that hit a limit can be told apart from
+one that was merely slow, without re-reading the logs: the phase durations
+say where the time went and <code class="docutils literal notranslate"><span class="pre">limit</span></code> says whether a bound was reached.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.RunTiming.as_dict">
+<span class="sig-name descname"><span class="pre">as_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.RunTiming.as_dict" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.RunInterrupted">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">RunInterrupted</span></span><a class="headerlink" href="#cadet.orchestrator.lifecycle.RunInterrupted" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>A terminating signal arrived while a run was active.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.install_interrupt_guard">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">install_interrupt_guard</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.install_interrupt_guard" title="Link to this definition">¶</a></dt>
+<dd><p>Turn SIGTERM and SIGHUP into <a class="reference internal" href="#cadet.orchestrator.lifecycle.RunInterrupted" title="cadet.orchestrator.lifecycle.RunInterrupted"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunInterrupted</span></code></a>; return the undo.</p>
+<p>Default SIGTERM handling ends the process immediately, so a <code class="docutils literal notranslate"><span class="pre">finally</span></code>
+block never runs and an interrupted run leaves its processes, qdiscs and
+emulated network behind. Raising instead routes the interruption through the
+teardown the run already has, which is why this adds no teardown logic of
+its own. SIGINT already raises <code class="xref py py-class docutils literal notranslate"><span class="pre">KeyboardInterrupt</span></code> and is left alone.</p>
+<p>Returned as a function rather than a context manager because the callers
+install it around a <code class="docutils literal notranslate"><span class="pre">try</span></code>/<code class="docutils literal notranslate"><span class="pre">finally</span></code> they already have, and wrapping that
+in another block would re-indent the whole run for no behavioural gain;
+<a class="reference internal" href="#cadet.orchestrator.lifecycle.interrupt_guard" title="cadet.orchestrator.lifecycle.interrupt_guard"><code class="xref py py-func docutils literal notranslate"><span class="pre">interrupt_guard()</span></code></a> is the block form for callers that want one.
+Signals cannot be installed from a non-main thread, where this is a no-op.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.interrupt_guard">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">interrupt_guard</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.interrupt_guard" title="Link to this definition">¶</a></dt>
+<dd><p>Block form of <a class="reference internal" href="#cadet.orchestrator.lifecycle.install_interrupt_guard" title="cadet.orchestrator.lifecycle.install_interrupt_guard"><code class="xref py py-func docutils literal notranslate"><span class="pre">install_interrupt_guard()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.wait_for_line">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">wait_for_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.wait_for_line" title="Link to this definition">¶</a></dt>
+<dd><p>Read forward through an open log until <code class="docutils literal notranslate"><span class="pre">target_line</span></code> appears.</p>
+<p>Ported unchanged from the original orchestrators: it reads incrementally
+from wherever the handle is, so a marker already written is still seen, and
+the timeout applies to waiting for <em>new</em> output rather than to the total
+wait. A scenario that keeps logging therefore keeps its barrier open, which
+is the behaviour the original runs depended on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.wait_for_marker">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">wait_for_marker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.wait_for_marker" title="Link to this definition">¶</a></dt>
+<dd><p>Wait for <code class="docutils literal notranslate"><span class="pre">target_line</span></code> in <code class="docutils literal notranslate"><span class="pre">log_path</span></code>, giving up if <code class="docutils literal notranslate"><span class="pre">proc</span></code> exits.</p>
+<p>The barrier itself is <a class="reference internal" href="#cadet.orchestrator.lifecycle.wait_for_line" title="cadet.orchestrator.lifecycle.wait_for_line"><code class="xref py py-func docutils literal notranslate"><span class="pre">wait_for_line()</span></code></a>. The process check is the
+addition: the original would sit in <code class="docutils literal notranslate"><span class="pre">readline</span></code> for the full timeout after
+ScenarioRunner had already died, so a crash cost a minute per run and
+reported only “did not start properly”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>log_path</strong> (<em>str</em>)</p></li>
+<li><p><strong>target_line</strong> (<em>str</em>)</p></li>
+<li><p><strong>timeout</strong> (<em>float</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.readiness_failure">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">readiness_failure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.readiness_failure" title="Link to this definition">¶</a></dt>
+<dd><p>Describe a failed readiness wait: who, whether it died, and its last words.</p>
+<p>A wait can fail two ways that call for opposite fixes - the process exited,
+or it is alive and never printed its marker - and the message used to say
+neither. The log tail is included because the log a sweep writes is per-rep
+and the next rep overwrites the directory, so by the time the failure is
+read the evidence can be gone.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>log_path</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.orphan_patterns">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">orphan_patterns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_hook_specs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.orphan_patterns" title="Link to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">pkill</span> <span class="pre">-f</span></code> patterns for the processes a previous run may have left.</p>
+<p>The original listed its two script names and <code class="docutils literal notranslate"><span class="pre">scenario_runner</span></code> literally.
+Here the role processes are always <code class="docutils literal notranslate"><span class="pre">cadet</span> <span class="pre">&lt;sub&gt;</span></code> and the sim-side programs
+come from the app’s own hook specs, so the list is derived rather than
+hard-coded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>sim_hook_specs</strong> (<em>Sequence</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.listen_ports">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">listen_ports</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.listen_ports" title="Link to this definition">¶</a></dt>
+<dd><p>Return the ports this config’s listening nodes will bind.</p>
+<p>These are the ports the original freed with <code class="docutils literal notranslate"><span class="pre">fuser</span> <span class="pre">-k</span> <span class="pre">10000/tcp</span></code>, taken
+from the config instead of a constant.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.process_cmdline">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">process_cmdline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.process_cmdline" title="Link to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">pid</span></code>’s command line, or “” if it is gone or unreadable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pid</strong> (<em>int</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.process_cwd">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">process_cwd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.process_cwd" title="Link to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">pid</span></code>’s working directory, or “” if it is gone or unreadable.</p>
+<p>Evidence of ownership that does not depend on a record: a role started from
+a checkout runs with that checkout as its working directory, so a
+pattern-matched process can be attributed to a tree rather than guessed at.
+Unreadable for a process owned by another account, which is the right
+answer - a process this account cannot inspect is not one it should kill.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pid</strong> (<em>int</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.process_start_ticks">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">process_start_ticks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.process_start_ticks" title="Link to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">pid</span></code>’s start time in clock ticks since boot, or <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<p>Field 22 of <code class="docutils literal notranslate"><span class="pre">/proc/&lt;pid&gt;/stat</span></code>. It is what makes a recorded pid checkable
+after the fact: a pid is reused, a (pid, start time) pair is not, so a
+cleanup can tell the process it recorded from whatever now holds that
+number.</p>
+<p>Parsed from after the last <code class="docutils literal notranslate"><span class="pre">)</span></code> rather than by splitting the whole line,
+because field 2 is the executable name in parentheses and may itself contain
+spaces and parentheses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pid</strong> (<em>int</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.all_pids">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">all_pids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.all_pids" title="Link to this definition">¶</a></dt>
+<dd><p>Return every pid visible in /proc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.pids_matching">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">pids_matching</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.pids_matching" title="Link to this definition">¶</a></dt>
+<dd><p>Return the pids whose command line contains <code class="docutils literal notranslate"><span class="pre">pattern</span></code>, excluding ours.</p>
+<p>The original used <code class="docutils literal notranslate"><span class="pre">pkill</span> <span class="pre">-f</span></code>, which also matches the shell running the
+cleanup and so kills itself. Reading /proc instead makes it possible to
+exclude this process and its group, to report what was killed, and to work
+in an image that has no procps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pattern</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.listening_socket_inodes">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">listening_socket_inodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.listening_socket_inodes" title="Link to this definition">¶</a></dt>
+<dd><p>Return the inodes of the sockets listening on <code class="docutils literal notranslate"><span class="pre">port</span></code>, from /proc/net.</p>
+<p><code class="docutils literal notranslate"><span class="pre">/proc/net/tcp</span></code> writes the local address as <code class="docutils literal notranslate"><span class="pre">HEXIP:HEXPORT</span></code> and the
+state as a two-digit hex code, of which 0A is LISTEN.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Set</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>port</strong> (<em>int</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.port_holders">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">port_holders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.port_holders" title="Link to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">(pid,</span> <span class="pre">command</span> <span class="pre">line)</span></code> for every process listening on <code class="docutils literal notranslate"><span class="pre">port</span></code>.</p>
+<p>This is the information the original threw away: it passed the port to
+<code class="docutils literal notranslate"><span class="pre">fuser</span> <span class="pre">-k</span></code> and never learned whose socket it had just closed. Resolved
+from /proc alone - the listening socket’s inode, then the descriptors
+pointing at it - because the images this runs in have neither <code class="docutils literal notranslate"><span class="pre">fuser</span></code> nor
+<code class="docutils literal notranslate"><span class="pre">ss</span></code>, and a cleanup that silently cannot identify a holder is the
+failure mode this removes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>port</strong> (<em>int</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.describe_port_holders">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">describe_port_holders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.describe_port_holders" title="Link to this definition">¶</a></dt>
+<dd><p>Return a readable “pid N (cmdline)” list for whoever holds <code class="docutils literal notranslate"><span class="pre">port</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>port</strong> (<em>int</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.is_cadet_owned">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">is_cadet_owned</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">owned</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patterns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.is_cadet_owned" title="Link to this definition">¶</a></dt>
+<dd><p>True if <code class="docutils literal notranslate"><span class="pre">pid</span></code> was recorded by this orchestrator <strong>and still looks like it</strong>.</p>
+<p>The record is the evidence of ownership, and a command line cannot replace
+it: every CADET server’s is <code class="docutils literal notranslate"><span class="pre">cadet</span> <span class="pre">serve</span></code>, so matching on it alone cannot
+distinguish a leftover of our own from a live process belonging to someone
+else’s run on the same machine - and killing the latter is what a pre-run
+cleanup must never do. Measured, before that was narrowed: two orchestrators
+in one container, and every run of the second failed with the first’s server
+SIGTERMed during model warm-up.</p>
+<p>But a record is not sufficient either, because <strong>pids are reused</strong>. A stale
+record names a number, and by the time a later run reads it the kernel may
+have given that number to something else - including a role belonging to a
+run in another checkout, which is how this was found: the route equivalence
+test failed about one run in five with <code class="docutils literal notranslate"><span class="pre">serve:server</span> <span class="pre">exited</span> <span class="pre">with</span> <span class="pre">code</span>
+<span class="pre">-15</span></code>, while other streams were running their own suites on the same
+machine. Nothing in the record can notice that; the process can.</p>
+<p>So ownership is the record <strong>and</strong> a command line that still matches one of
+<code class="docutils literal notranslate"><span class="pre">patterns</span></code>. With no patterns given the check is the record alone, which is
+what <code class="docutils literal notranslate"><span class="pre">cadet</span> <span class="pre">down</span></code> wants, where sweeping everything recorded is the point.</p>
+<p>A process that looks like a role but is not recorded is reported by
+<a class="reference internal" href="#cadet.orchestrator.lifecycle.looks_like_a_role" title="cadet.orchestrator.lifecycle.looks_like_a_role"><code class="xref py py-func docutils literal notranslate"><span class="pre">looks_like_a_role()</span></code></a> and left alone.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>pid</strong> (<em>int</em>)</p></li>
+<li><p><strong>owned</strong> (<em>Iterable</em><em>[</em><em>int</em><em>]</em>)</p></li>
+<li><p><strong>patterns</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.looks_like_a_role">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">looks_like_a_role</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patterns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.looks_like_a_role" title="Link to this definition">¶</a></dt>
+<dd><p>True if <code class="docutils literal notranslate"><span class="pre">pid</span></code>’s command line is a CADET role or an app’s sim program.</p>
+<p>Evidence for a report, not for a kill: see <a class="reference internal" href="#cadet.orchestrator.lifecycle.is_cadet_owned" title="cadet.orchestrator.lifecycle.is_cadet_owned"><code class="xref py py-func docutils literal notranslate"><span class="pre">is_cadet_owned()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>pid</strong> (<em>int</em>)</p></li>
+<li><p><strong>patterns</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.kill_pids">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">kill_pids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log=&lt;built-in</span> <span class="pre">function</span> <span class="pre">print&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.kill_pids" title="Link to this definition">¶</a></dt>
+<dd><p>SIGTERM a pid’s process group, escalating to SIGKILL. Returns those killed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pids</strong> (<em>Iterable</em><em>[</em><em>int</em><em>]</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.port_free">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">port_free</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'127.0.0.1'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.port_free" title="Link to this definition">¶</a></dt>
+<dd><p>True if <code class="docutils literal notranslate"><span class="pre">host:port</span></code> can be bound, i.e. nothing is listening there.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>port</strong> (<em>int</em>)</p></li>
+<li><p><strong>host</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.wait_for_ports_free">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">wait_for_ports_free</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ports</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout_s=5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log=&lt;built-in</span> <span class="pre">function</span> <span class="pre">print&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.wait_for_ports_free" title="Link to this definition">¶</a></dt>
+<dd><p>Wait until every port is actually free, after the holders were killed.</p>
+<p>Killing a process does not release its listening socket synchronously, so a
+bind check run straight after the cleanup still sees the port in use and the
+run is refused for a port that is about to become free. The original papered
+over this with a fixed sleep between runs; this waits on the condition
+instead. Returns False if a port is still held when the time runs out, which
+means something CADET did not start is holding it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ports</strong> (<em>Sequence</em><em>[</em><em>int</em><em>]</em>)</p></li>
+<li><p><strong>timeout_s</strong> (<em>float</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.kill_orphans">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">kill_orphans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">patterns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ports</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log=&lt;built-in</span> <span class="pre">function</span> <span class="pre">print&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">owned=()</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.kill_orphans" title="Link to this definition">¶</a></dt>
+<dd><p>Kill the leftover processes CADET owns, and free only the ports they held.</p>
+<p>Ported from the original’s <code class="docutils literal notranslate"><span class="pre">kill_orphans</span></code>, with its one indiscriminate
+step narrowed. The original ran <code class="docutils literal notranslate"><span class="pre">pkill</span> <span class="pre">-f</span></code> over its script names and then
+<code class="docutils literal notranslate"><span class="pre">fuser</span> <span class="pre">-k</span></code> over its port, which frees the port whoever is holding it. Here
+a port is freed only by killing a holder that is CADET’s own - recorded in
+<code class="docutils literal notranslate"><span class="pre">owned</span></code>, or matching one of <code class="docutils literal notranslate"><span class="pre">patterns</span></code> - so a run can never take down a
+process the experimenter started.</p>
+<p>Every kill is best-effort: “nothing to kill” is the normal case and must not
+fail the run. Returns the holders left alone, as <code class="docutils literal notranslate"><span class="pre">(port,</span> <span class="pre">pid,</span> <span class="pre">cmdline)</span></code>,
+which is what preflight reports when it then refuses the run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>patterns</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>ports</strong> (<em>Sequence</em><em>[</em><em>int</em><em>]</em>)</p></li>
+<li><p><strong>owned</strong> (<em>Iterable</em><em>[</em><em>int</em><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.print_final_client_report">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">print_final_client_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client_log_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log=&lt;built-in</span> <span class="pre">function</span> <span class="pre">print&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.print_final_client_report" title="Link to this definition">¶</a></dt>
+<dd><p>Echo the client’s final report, as the original did after every run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>client_log_path</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.client_output_failures">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">client_output_failures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">out_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log=&lt;built-in</span> <span class="pre">function</span> <span class="pre">print&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.client_output_failures" title="Link to this definition">¶</a></dt>
+<dd><p>Return a reason per client that reported producing no output.</p>
+<p>The verdict is the client’s, written beside its metrics: it holds the counts
+and its app declares what counts as output (see
+<a class="reference internal" href="cadet.core.html#cadet.core.apps.AppPlugin.client_success" title="cadet.core.apps.AppPlugin.client_success"><code class="xref py py-func docutils literal notranslate"><span class="pre">cadet.core.apps.AppPlugin.client_success()</span></code></a>). A missing file is not a
+failure - a client that never got far enough to write one has already failed
+the run for a reason that is recorded.</p>
+<p>Whether that verdict <em>fails the run</em> is <code class="docutils literal notranslate"><span class="pre">experiment.require_output</span></code>, off
+by default because the original judged a run by the client’s exit code
+alone. With it off the verdict is still logged: the information is the
+client’s own and worth having, it just does not change the outcome.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>out_dir</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.active_limit_s">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">active_limit_s</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.active_limit_s" title="Link to this definition">¶</a></dt>
+<dd><p>Return the wall-clock limit for the worker phase, in seconds.</p>
+<p><code class="docutils literal notranslate"><span class="pre">experiment.max_active_s</span></code> wins; otherwise the scenario’s own timeout plus
+<code class="xref py py-data docutils literal notranslate"><span class="pre">ACTIVE_LIMIT_MARGIN_S</span></code>, so the limit always sits outside the
+scenario’s own ending and only catches a run that failed to end at all.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.startup_limit_s">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">startup_limit_s</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">readiness_timeouts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.startup_limit_s" title="Link to this definition">¶</a></dt>
+<dd><p>Return the wall-clock limit for everything before the workers start.</p>
+<p><code class="docutils literal notranslate"><span class="pre">experiment.max_startup_s</span></code> wins; otherwise the sum of the readiness
+timeouts this run will wait on. The sum is the right default because it is
+already the phase’s bound, taken one step at a time: a startup that every
+individual wait would have allowed can never be refused by the total, and a
+phase that stalls between the waits still cannot run past it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>readiness_timeouts</strong> (<em>Sequence</em><em>[</em><em>float</em><em>]</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.remaining_startup_s">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">remaining_startup_s</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deadline</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_timeout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">what</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.remaining_startup_s" title="Link to this definition">¶</a></dt>
+<dd><p>Return how long a readiness wait may take, given the startup deadline.</p>
+<p>Raises <a class="reference internal" href="#cadet.orchestrator.lifecycle.StartupLimitExceeded" title="cadet.orchestrator.lifecycle.StartupLimitExceeded"><code class="xref py py-class docutils literal notranslate"><span class="pre">StartupLimitExceeded</span></code></a> if the budget is already spent, which
+is what makes the limit a bound on the phase rather than a note written
+afterwards.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>deadline</strong> (<em>float</em>)</p></li>
+<li><p><strong>step_timeout</strong> (<em>float</em>)</p></li>
+<li><p><strong>what</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.end_rule">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">end_rule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.end_rule" title="Link to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">(end_on,</span> <span class="pre">grace_s)</span></code> for this config, with the schema’s defaults.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.RunOutcome">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">RunOutcome</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">codes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detail</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.RunOutcome" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Why a run ended, and with what exit codes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>codes</strong> (<em>List</em><em>[</em><em>int</em><em> | </em><em>None</em><em>]</em>)</p></li>
+<li><p><strong>reason</strong> (<em>str</em>)</p></li>
+<li><p><strong>detail</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.RunOutcome.ok">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ok</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#cadet.orchestrator.lifecycle.RunOutcome.ok" title="Link to this definition">¶</a></dt>
+<dd><p>True if the run ended the way its <code class="docutils literal notranslate"><span class="pre">end_on</span></code> rule says it should.</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">client_report</span></code> that means the workers exited cleanly. For a run
+ended by its sim hook the workers were stopped on purpose, so their exit
+codes are absent rather than zero; what disqualifies the run is a worker
+that had already failed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.RunOutcome.as_dict">
+<span class="sig-name descname"><span class="pre">as_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.RunOutcome.as_dict" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.lifecycle.wait_for_workers">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.lifecycle.</span></span><span class="sig-name descname"><span class="pre">wait_for_workers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit_s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guards=()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log=&lt;built-in</span> <span class="pre">function</span> <span class="pre">print&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_hooks=()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_on='client_report'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grace_s=0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.lifecycle.wait_for_workers" title="Link to this definition">¶</a></dt>
+<dd><p>Block until the run’s <code class="docutils literal notranslate"><span class="pre">end_on</span></code> rule fires, the limit passes, or a guard dies.</p>
+<p><code class="docutils literal notranslate"><span class="pre">workers</span></code> are the processes whose completion <em>is</em> the run under the
+<code class="docutils literal notranslate"><span class="pre">client_report</span></code> rule (clients and load generators); the original ran its
+single client in the foreground, which is that rule. <code class="docutils literal notranslate"><span class="pre">guards</span></code> are
+processes that must stay alive for the run to mean anything - the sim hooks
+and the servers - and <code class="docutils literal notranslate"><span class="pre">sim_hooks</span></code> is the subset whose <em>clean</em> exit can end
+a run, under the <code class="docutils literal notranslate"><span class="pre">sim_hook_exit</span></code> and <code class="docutils literal notranslate"><span class="pre">first</span></code> rules.</p>
+<p>Without an explicit rule a clean sim-hook exit only got recorded, so a
+scenario that had finished left the client streaming into a world that no
+longer had an ego, until the run limit caught it minutes later. <code class="docutils literal notranslate"><span class="pre">end_on</span></code>
+makes the choice a config field instead of an accident of which process
+happened to exit first, and <code class="docutils literal notranslate"><span class="pre">grace_s</span></code> gives the workers a bounded chance
+to write their own report before they are stopped.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#cadet.orchestrator.lifecycle.RunOutcome" title="cadet.orchestrator.lifecycle.RunOutcome"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunOutcome</span></code></a></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>workers</strong> (<em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><em>str</em><em>, </em><em>object</em><em>]</em><em>]</em>)</p></li>
+<li><p><strong>limit_s</strong> (<em>float</em>)</p></li>
+<li><p><strong>guards</strong> (<em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><em>str</em><em>, </em><em>object</em><em>]</em><em>]</em>)</p></li>
+<li><p><strong>sim_hooks</strong> (<em>Sequence</em><em>[</em><em>Tuple</em><em>[</em><em>str</em><em>, </em><em>object</em><em>]</em><em>]</em>)</p></li>
+<li><p><strong>end_on</strong> (<em>str</em>)</p></li>
+<li><p><strong>grace_s</strong> (<em>float</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-cadet.orchestrator.state">Run-state store for <code class="docutils literal notranslate"><span class="pre">cadet</span> <span class="pre">status</span></code> / <code class="docutils literal notranslate"><span class="pre">cadet</span> <span class="pre">down</span></code>.</p>
+<p>A JSON record under <code class="docutils literal notranslate"><span class="pre">&lt;cwd&gt;/.cadet/state.json</span></code> tracks what an orchestrator run
+has started: a map of <code class="docutils literal notranslate"><span class="pre">run_id</span> <span class="pre">-&gt;</span> <span class="pre">{dir,</span> <span class="pre">procs,</span> <span class="pre">netem_interfaces}</span></code>, with one pid
+file per launched process under <code class="docutils literal notranslate"><span class="pre">&lt;cwd&gt;/.cadet/pids/&lt;run_id&gt;/&lt;name&gt;.pid</span></code>. The
+pid files make ownership checkable: a pattern match on a command line cannot
+distinguish a CADET role from any other process listening on the same port, so
+cleanup needs direct evidence that CADET started something; a file written at
+launch is that evidence, and it persists even if the orchestrator dies mid-run.
+Used by <a class="reference internal" href="#module-cadet.orchestrator.runner" title="cadet.orchestrator.runner"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cadet.orchestrator.runner</span></code></a> (records each process at launch and
+clears on teardown) and by <code class="xref py py-func docutils literal notranslate"><span class="pre">cadet.orchestrator.recovery.sweep()</span></code> (reads the
+pid files and interfaces to power <code class="docutils literal notranslate"><span class="pre">cadet</span> <span class="pre">down</span></code>). The state root is fixed at
+<code class="docutils literal notranslate"><span class="pre">&lt;cwd&gt;/.cadet</span></code> so <code class="docutils literal notranslate"><span class="pre">cadet</span> <span class="pre">status</span></code> and <code class="docutils literal notranslate"><span class="pre">cadet</span> <span class="pre">down</span></code> need no config.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="cadet.orchestrator.state.StateStore">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.state.</span></span><span class="sig-name descname"><span class="pre">StateStore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.state.StateStore" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A JSON file mapping run_id -&gt; run record (processes started for that run).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>root</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.orchestrator.state.StateStore.pid_dir">
+<span class="sig-name descname"><span class="pre">pid_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.state.StateStore.pid_dir" title="Link to this definition">¶</a></dt>
+<dd><p>Return the directory holding <code class="docutils literal notranslate"><span class="pre">run_id</span></code>’s pid files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>run_id</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.orchestrator.state.StateStore.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.state.StateStore.load" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.orchestrator.state.StateStore.record">
+<span class="sig-name descname"><span class="pre">record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">procs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.state.StateStore.record" title="Link to this definition">¶</a></dt>
+<dd><p>Record (or replace) the process list for <code class="docutils literal notranslate"><span class="pre">run_id</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>run_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>out_dir</strong> (<em>str</em>)</p></li>
+<li><p><strong>procs</strong> (<em>List</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.orchestrator.state.StateStore.add_proc">
+<span class="sig-name descname"><span class="pre">add_proc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.state.StateStore.add_proc" title="Link to this definition">¶</a></dt>
+<dd><p>Record one process as soon as it is started.</p>
+<p>Called per launch rather than once per run: a run that is interrupted
+between its first and last process must still leave a complete record of
+what it started, which is the case the old end-of-startup record
+missed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>run_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>out_dir</strong> (<em>str</em>)</p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>pid</strong> (<em>int</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.orchestrator.state.StateStore.record_netem">
+<span class="sig-name descname"><span class="pre">record_netem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interfaces</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.state.StateStore.record_netem" title="Link to this definition">¶</a></dt>
+<dd><p>Record the interfaces this run installed netem qdiscs on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>run_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>out_dir</strong> (<em>str</em>)</p></li>
+<li><p><strong>interfaces</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.orchestrator.state.StateStore.recorded_pids">
+<span class="sig-name descname"><span class="pre">recorded_pids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.state.StateStore.recorded_pids" title="Link to this definition">¶</a></dt>
+<dd><p>Return every pid in every pid file, whether or not it is still alive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.orchestrator.state.StateStore.abandoned_pids">
+<span class="sig-name descname"><span class="pre">abandoned_pids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.state.StateStore.abandoned_pids" title="Link to this definition">¶</a></dt>
+<dd><p>Return the recorded pids a pre-run cleanup may kill.</p>
+<p>The store lives in the working directory, so two orchestrators started
+in the same repository share it, and “recorded” is therefore not the
+same as “mine to kill”. A run’s processes are fair game when this
+process is the one that recorded them, or when the orchestrator that did
+is no longer alive - that run is abandoned and its processes are the
+orphans the cleanup exists for. A run another live orchestrator
+recorded is left alone: killing it was measured to fail every
+concurrent run with the server SIGTERMed during warm-up.</p>
+<p><code class="docutils literal notranslate"><span class="pre">recorded_pids</span></code> keeps its meaning for <code class="docutils literal notranslate"><span class="pre">cadet</span> <span class="pre">down</span></code>, where sweeping
+everything is the point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.orchestrator.state.StateStore.pids_for">
+<span class="sig-name descname"><span class="pre">pids_for</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.state.StateStore.pids_for" title="Link to this definition">¶</a></dt>
+<dd><p>Return the pids recorded for one run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>run_id</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.orchestrator.state.StateStore.records_for">
+<span class="sig-name descname"><span class="pre">records_for</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.state.StateStore.records_for" title="Link to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">(pid,</span> <span class="pre">start_ticks)</span></code> for one run; <code class="docutils literal notranslate"><span class="pre">start_ticks</span></code> may be None.</p>
+<p><code class="docutils literal notranslate"><span class="pre">None</span></code> for a pid file written before the start time was recorded, or
+for one whose process had already gone when it was written. A caller
+that verifies the start time must treat <code class="docutils literal notranslate"><span class="pre">None</span></code> as “cannot verify” and
+decide what that means for it, rather than as “verified”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>run_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>directory</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.orchestrator.state.StateStore.recorded_process_records">
+<span class="sig-name descname"><span class="pre">recorded_process_records</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.state.StateStore.recorded_process_records" title="Link to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">(pid,</span> <span class="pre">start_ticks)</span></code> for every recorded process.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.orchestrator.state.StateStore.recorded_netem_interfaces">
+<span class="sig-name descname"><span class="pre">recorded_netem_interfaces</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.state.StateStore.recorded_netem_interfaces" title="Link to this definition">¶</a></dt>
+<dd><p>Return every interface any recorded run installed a netem qdisc on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.orchestrator.state.StateStore.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.state.StateStore.clear" title="Link to this definition">¶</a></dt>
+<dd><p>Drop <code class="docutils literal notranslate"><span class="pre">run_id</span></code>’s pid files, then remove it from the store (idempotent).</p>
+<p>The pid files go first. They are what a cleanup reads, and the record
+entry is what says who owns them, so removing the entry first would
+leave pid files behind that no entry claims - and an unclaimed pid file
+is one a cleanup may kill. The reverse leftover, an entry with no pid
+files, is read by nothing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>run_id</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.orchestrator.state.StateStore.clear_all">
+<span class="sig-name descname"><span class="pre">clear_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.state.StateStore.clear_all" title="Link to this definition">¶</a></dt>
+<dd><p>Remove every recorded run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.state.pid_alive">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.state.</span></span><span class="sig-name descname"><span class="pre">pid_alive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.state.pid_alive" title="Link to this definition">¶</a></dt>
+<dd><p>True if a process group / pid is still alive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pid</strong> (<em>int</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cadet.orchestrator.state.kill_pid">
+<span class="sig-prename descclassname"><span class="pre">cadet.orchestrator.state.</span></span><span class="sig-name descname"><span class="pre">kill_pid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.orchestrator.state.kill_pid" title="Link to this definition">¶</a></dt>
+<dd><p>Terminate a process group by leader pid (SIGTERM), ignoring if gone.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pid</strong> (<em>int</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="cadet.network.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">cadet.network</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="cadet.core.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">cadet.core</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">cadet.orchestrator</a><ul>
+<li><a class="reference internal" href="#cadet.orchestrator.runner.PreflightError"><code class="docutils literal notranslate"><span class="pre">PreflightError</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.runner.preflight"><code class="docutils literal notranslate"><span class="pre">preflight()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.runner.RunResult"><code class="docutils literal notranslate"><span class="pre">RunResult</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.runner.Orchestrator"><code class="docutils literal notranslate"><span class="pre">Orchestrator</span></code></a><ul>
+<li><a class="reference internal" href="#cadet.orchestrator.runner.Orchestrator.is_complete"><code class="docutils literal notranslate"><span class="pre">Orchestrator.is_complete()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.runner.Orchestrator.run_one"><code class="docutils literal notranslate"><span class="pre">Orchestrator.run_one()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.runner.Orchestrator.sweep"><code class="docutils literal notranslate"><span class="pre">Orchestrator.sweep()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.runner.Orchestrator.status"><code class="docutils literal notranslate"><span class="pre">Orchestrator.status()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.runner.Orchestrator.down"><code class="docutils literal notranslate"><span class="pre">Orchestrator.down()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.StartupLimitExceeded"><code class="docutils literal notranslate"><span class="pre">StartupLimitExceeded</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.RunTiming"><code class="docutils literal notranslate"><span class="pre">RunTiming</span></code></a><ul>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.RunTiming.as_dict"><code class="docutils literal notranslate"><span class="pre">RunTiming.as_dict()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.RunInterrupted"><code class="docutils literal notranslate"><span class="pre">RunInterrupted</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.install_interrupt_guard"><code class="docutils literal notranslate"><span class="pre">install_interrupt_guard()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.interrupt_guard"><code class="docutils literal notranslate"><span class="pre">interrupt_guard()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.wait_for_line"><code class="docutils literal notranslate"><span class="pre">wait_for_line()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.wait_for_marker"><code class="docutils literal notranslate"><span class="pre">wait_for_marker()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.readiness_failure"><code class="docutils literal notranslate"><span class="pre">readiness_failure()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.orphan_patterns"><code class="docutils literal notranslate"><span class="pre">orphan_patterns()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.listen_ports"><code class="docutils literal notranslate"><span class="pre">listen_ports()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.process_cmdline"><code class="docutils literal notranslate"><span class="pre">process_cmdline()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.process_cwd"><code class="docutils literal notranslate"><span class="pre">process_cwd()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.process_start_ticks"><code class="docutils literal notranslate"><span class="pre">process_start_ticks()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.all_pids"><code class="docutils literal notranslate"><span class="pre">all_pids()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.pids_matching"><code class="docutils literal notranslate"><span class="pre">pids_matching()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.listening_socket_inodes"><code class="docutils literal notranslate"><span class="pre">listening_socket_inodes()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.port_holders"><code class="docutils literal notranslate"><span class="pre">port_holders()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.describe_port_holders"><code class="docutils literal notranslate"><span class="pre">describe_port_holders()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.is_cadet_owned"><code class="docutils literal notranslate"><span class="pre">is_cadet_owned()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.looks_like_a_role"><code class="docutils literal notranslate"><span class="pre">looks_like_a_role()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.kill_pids"><code class="docutils literal notranslate"><span class="pre">kill_pids()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.port_free"><code class="docutils literal notranslate"><span class="pre">port_free()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.wait_for_ports_free"><code class="docutils literal notranslate"><span class="pre">wait_for_ports_free()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.kill_orphans"><code class="docutils literal notranslate"><span class="pre">kill_orphans()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.print_final_client_report"><code class="docutils literal notranslate"><span class="pre">print_final_client_report()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.client_output_failures"><code class="docutils literal notranslate"><span class="pre">client_output_failures()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.active_limit_s"><code class="docutils literal notranslate"><span class="pre">active_limit_s()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.startup_limit_s"><code class="docutils literal notranslate"><span class="pre">startup_limit_s()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.remaining_startup_s"><code class="docutils literal notranslate"><span class="pre">remaining_startup_s()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.end_rule"><code class="docutils literal notranslate"><span class="pre">end_rule()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.RunOutcome"><code class="docutils literal notranslate"><span class="pre">RunOutcome</span></code></a><ul>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.RunOutcome.ok"><code class="docutils literal notranslate"><span class="pre">RunOutcome.ok</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.RunOutcome.as_dict"><code class="docutils literal notranslate"><span class="pre">RunOutcome.as_dict()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cadet.orchestrator.lifecycle.wait_for_workers"><code class="docutils literal notranslate"><span class="pre">wait_for_workers()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.state.StateStore"><code class="docutils literal notranslate"><span class="pre">StateStore</span></code></a><ul>
+<li><a class="reference internal" href="#cadet.orchestrator.state.StateStore.pid_dir"><code class="docutils literal notranslate"><span class="pre">StateStore.pid_dir()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.state.StateStore.load"><code class="docutils literal notranslate"><span class="pre">StateStore.load()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.state.StateStore.record"><code class="docutils literal notranslate"><span class="pre">StateStore.record()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.state.StateStore.add_proc"><code class="docutils literal notranslate"><span class="pre">StateStore.add_proc()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.state.StateStore.record_netem"><code class="docutils literal notranslate"><span class="pre">StateStore.record_netem()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.state.StateStore.recorded_pids"><code class="docutils literal notranslate"><span class="pre">StateStore.recorded_pids()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.state.StateStore.abandoned_pids"><code class="docutils literal notranslate"><span class="pre">StateStore.abandoned_pids()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.state.StateStore.pids_for"><code class="docutils literal notranslate"><span class="pre">StateStore.pids_for()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.state.StateStore.records_for"><code class="docutils literal notranslate"><span class="pre">StateStore.records_for()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.state.StateStore.recorded_process_records"><code class="docutils literal notranslate"><span class="pre">StateStore.recorded_process_records()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.state.StateStore.recorded_netem_interfaces"><code class="docutils literal notranslate"><span class="pre">StateStore.recorded_netem_interfaces()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.state.StateStore.clear"><code class="docutils literal notranslate"><span class="pre">StateStore.clear()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.state.StateStore.clear_all"><code class="docutils literal notranslate"><span class="pre">StateStore.clear_all()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cadet.orchestrator.state.pid_alive"><code class="docutils literal notranslate"><span class="pre">pid_alive()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.orchestrator.state.kill_pid"><code class="docutils literal notranslate"><span class="pre">kill_pid()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/sidebar-scroll.js?v=a725cd90"></script>
+    </body>
+</html>

@@ -1,0 +1,15 @@
+/* Collision outcome cells for Table II */
+.outcome-safe {
+  color: #1a7f37;
+  font-weight: 600;
+}
+.outcome-collision {
+  color: #cf222e;
+  font-weight: 600;
+}
+@media (prefers-color-scheme: dark) {
+  .outcome-safe   { color: #3fb950; }
+  .outcome-collision { color: #f85149; }
+}
+[data-theme="dark"] .outcome-safe   { color: #3fb950; }
+[data-theme="dark"] .outcome-collision { color: #f85149; }

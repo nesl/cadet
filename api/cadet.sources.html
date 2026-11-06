@@ -1,0 +1,1111 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="cadet.metrics" href="cadet.metrics.html"><link rel="prev" title="cadet.roles" href="cadet.roles.html">
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>cadet.sources - CADET</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../_static/cadet-table.css?v=25e5b53d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">CADET</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <span class="sidebar-brand-text">CADET</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/versions.html">Version Matrix</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research goals</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../research-goals/index.html">Choose Your Research Goal</a><input aria-label="Toggle navigation of Choose Your Research Goal" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/cooperative-driving.html">Cooperative Driving</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/computation-placement.html">Computation Placement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/communication.html">Communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/model-benchmarking.html">Model Benchmarking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/distributed-sensing.html">Distributed Sensing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/cooperative-driving.html">Cooperative Driving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/computation-placement.html">Computation Placement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/model-benchmarking.html">Model Benchmarking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/distributed-sensing.html">Distributed Sensing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Using CADET</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ways-to-use.html">Ways to Use CADET</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/01-first-experiment.html">Tutorial 1: First Experiment (Replay + Reference App + Delay Link)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/02-carla-braking.html">Tutorial 2: CARLA Braking Experiment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/03-backends.html">Tutorial 3: Comparing Network Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/04-multi-device.html">Tutorial 4: Multi-Device Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/05-sweeps.html">Tutorial 5: Sweeps and Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/06-write-an-app.html">Tutorial 6: Write an App Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/07-v2v-v2i.html">Tutorial 7: V2V and V2I Experiments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-to guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../howto/replay-source.html">Use the replay source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/synthetic-source.html">Use the synthetic source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/live-source.html">Live source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/model-registry.html">Register per-device model artifacts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/link-distributions.html">Configure link distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/wifi-cell.html">Wi-Fi cell</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/transport-tuning.html">Transport tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/sweeps.html">Run and resume sweeps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/dashboard.html">Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/outputs.html">Read outputs and run.json</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/cadet-down.html">Recovery with cadet down</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config-reference.html">Config Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/cli.html">CLI Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/metrics.html">Metrics Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/output-format.html">Output Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/tested-configurations.html">Tested configurations</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cadet.cli.html">cadet.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.config.html">cadet.config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.core.html">cadet.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.orchestrator.html">cadet.orchestrator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.network.html">cadet.network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.roles.html">cadet.roles</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">cadet.sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cadet.metrics.html">cadet.metrics</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/data-source-layer.html">Data Source Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/processing-core-layer.html">Processing Core Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/netwaggle-layer.html">NetWaggle Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/analysis-layer.html">Analysis Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/network-backends.html">Network Backend Semantics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/reproducibility.html">Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/design-goals.html">Design Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/dataset-mode.html">Dataset Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/requirements-and-scope.html">Requirements and scope</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Apps</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../apps.html">App Plugin Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../examples/index.html">Examples Gallery</a><input aria-label="Toggle navigation of Examples Gallery" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/distributed-sensing.html">Distributed Sensing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/dataset-vlm.html">Dataset-mode VLM serving</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/dataset-vlm.html">Dataset-mode VLM serving</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Help</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../community/citing.html">Citing CADET</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community/contributing.html">Contributing</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/nesl/cadet/blob/main/docs/source/api/cadet.sources.rst?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/nesl/cadet/edit/main/docs/source/api/cadet.sources.rst" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-cadet.sources.carla">
+<span id="cadet-sources"></span><h1>cadet.sources<a class="headerlink" href="#module-cadet.sources.carla" title="Link to this heading">¶</a></h1>
+<p>CARLA input source for CADET.</p>
+<dl class="simple">
+<dt>What this is for:</dt><dd><p>Implements the <a class="reference internal" href="cadet.core.html#cadet.core.source.Source" title="cadet.core.source.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">cadet.core.source.Source</span></code></a> interface against a running
+CARLA simulator. It attaches to the ego vehicle that ScenarioRunner has
+already spawned, mounts an RGB camera the same way the original open-loop
+braking client did, and yields frames. It also exposes the small set of
+CARLA actuations the braking client needs (apply control, set target
+velocity, locate/destroy the obstacle).</p>
+</dd>
+<dt>What it contains:</dt><dd><ul class="simple">
+<li><p><a class="reference internal" href="#cadet.sources.carla.CarlaSource" title="cadet.sources.carla.CarlaSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">CarlaSource</span></code></a>: open/next_frame/close/metadata plus the ego handle and
+actuation helpers.</p></li>
+</ul>
+</dd>
+<dt>How it fits into CADET:</dt><dd><p>Built from the resolved config’s <code class="docutils literal notranslate"><span class="pre">source</span></code> section (host/port/timeout,
+camera w/h/fov) and <code class="docutils literal notranslate"><span class="pre">source.scenario</span></code> (ego_vehicle, target_object). The
+braking client runtime (<a class="reference internal" href="cadet.roles.html#module-cadet.roles.client" title="cadet.roles.client"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cadet.roles.client</span></code></a>) drives it. <code class="docutils literal notranslate"><span class="pre">carla</span></code> is
+imported lazily so this module imports fine where CARLA is absent (unit tests).</p>
+</dd>
+<dt>How to configure it:</dt><dd><p><cite>simulator_host</cite> is a placeholder in the example configs; pass the real
+address at run time with <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">source.carla.host=&lt;HOST_IP&gt;</span></code>.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.sources.carla.</span></span><span class="sig-name descname"><span class="pre">CarlaSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="cadet.core.html#cadet.core.source.Source" title="cadet.core.source.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a></p>
+<p>Frame source backed by a running CARLA simulator.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.prepare">
+<span class="sig-name descname"><span class="pre">prepare</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.prepare" title="Link to this definition">¶</a></dt>
+<dd><p>Connect to the simulator. Does not need the ego to exist yet.</p>
+<p>Split out of <a class="reference internal" href="#cadet.sources.carla.CarlaSource.open" title="cadet.sources.carla.CarlaSource.open"><code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code></a> so a client can finish everything that does
+not depend on the ego - including connecting to its server and loading
+its own model - and announce itself ready <em>before</em> the scenario is
+started. The ego exists only for a short window once the scenario runs,
+and a client still setting up when it appeared could miss it entirely.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.await_scene">
+<span class="sig-name descname"><span class="pre">await_scene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout_s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.await_scene" title="Link to this definition">¶</a></dt>
+<dd><p>Poll until the ego the sim hook spawned exists; True if it appeared.</p>
+<p>This is the client waiting for the scenario rather than the other way
+round. Polling is the only option available: CARLA 0.9.10 offers no
+actor-spawn notification.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>timeout_s</strong> (<em>float</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.open">
+<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.open" title="Link to this definition">¶</a></dt>
+<dd><p>Attach to the ego (if not already) and set up the camera + obstacle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.snapshot">
+<span class="sig-name descname"><span class="pre">snapshot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.snapshot" title="Link to this definition">¶</a></dt>
+<dd><p>Return (frame_id, elapsed_s, dt_s) of the current world tick, or None.</p>
+<p>Lets a client gate control on the simulation clock (one command per tick)
+and use the tick dt for rate-dependent logic, instead of the loop’s wall rate.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.next_frame">
+<span class="sig-name descname"><span class="pre">next_frame</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.next_frame" title="Link to this definition">¶</a></dt>
+<dd><p>Return the next <code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if none is available now.</p>
+<p><code class="docutils literal notranslate"><span class="pre">None</span></code> is <strong>not</strong> by itself the end of the stream. A file or a
+generator has nothing left when it returns None, but a live source
+returns None whenever nothing has arrived yet - which is always true on
+the first tick, before its first sensor callback. Ask
+<a class="reference internal" href="#cadet.sources.carla.CarlaSource.exhausted" title="cadet.sources.carla.CarlaSource.exhausted"><code class="xref py py-meth docutils literal notranslate"><span class="pre">exhausted()</span></code></a> to tell the two apart.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<a class="reference internal" href="cadet.core.html#cadet.core.source.Frame" title="cadet.core.source.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.close" title="Link to this definition">¶</a></dt>
+<dd><p>Release backend resources.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.exhausted">
+<span class="sig-name descname"><span class="pre">exhausted</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.exhausted" title="Link to this definition">¶</a></dt>
+<dd><p>Never: a running simulator keeps producing frames until it is closed.</p>
+<p><code class="docutils literal notranslate"><span class="pre">next_frame</span></code> returns None whenever the camera queue is momentarily
+empty, which it always is on the first tick after the camera is spawned.
+Reading that as the end of the stream ends a run before it has seen a
+single frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.metadata">
+<span class="sig-name descname"><span class="pre">metadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.metadata" title="Link to this definition">¶</a></dt>
+<dd><p>Return static source metadata (resolution, fps, map, …).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.apply_control">
+<span class="sig-name descname"><span class="pre">apply_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">throttle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brake</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.apply_control" title="Link to this definition">¶</a></dt>
+<dd><p>Apply a vehicle control to the ego.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>throttle</strong> (<em>float</em>)</p></li>
+<li><p><strong>steer</strong> (<em>float</em>)</p></li>
+<li><p><strong>brake</strong> (<em>float</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.set_target_velocity">
+<span class="sig-name descname"><span class="pre">set_target_velocity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">speed_mps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.set_target_velocity" title="Link to this definition">¶</a></dt>
+<dd><p>Set the ego’s velocity along its heading (the baseline’s speed kick).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>speed_mps</strong> (<em>float</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.ego_is_alive">
+<span class="sig-name descname"><span class="pre">ego_is_alive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.ego_is_alive" title="Link to this definition">¶</a></dt>
+<dd><p>Whether the ego actor still exists in the simulator.</p>
+<p>A scenario destroys the actors it spawned when it ends, and an app that
+is waiting on the ego - for it to brake, or to come to a stop - is then
+waiting for something that cannot happen. Asked of the actor rather than
+inferred from a stale reading: a destroyed actor keeps answering
+<code class="docutils literal notranslate"><span class="pre">get_location</span></code> with the last position it had, so a client watching
+only the position cannot tell the difference between stopped and gone.</p>
+<p>True when the simulator cannot be asked, because an unanswerable
+question is not evidence that the ego has gone.</p>
+<p>The world is asked for the actor by id, rather than the actor handle
+being asked about itself. A handle whose actor the server has already
+destroyed goes on answering: <code class="docutils literal notranslate"><span class="pre">is_alive</span></code> stayed true and
+<code class="docutils literal notranslate"><span class="pre">get_location</span></code> kept returning the last position, so a client trusting
+either kept braking a vehicle that was no longer there. Measured on the
+distributed tier, where the scenario reported it could not destroy the
+ego because the ego was already gone.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.vehicle_location">
+<span class="sig-name descname"><span class="pre">vehicle_location</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.vehicle_location" title="Link to this definition">¶</a></dt>
+<dd><p>Current ego world location.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.vehicle_speed_mps">
+<span class="sig-name descname"><span class="pre">vehicle_speed_mps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.vehicle_speed_mps" title="Link to this definition">¶</a></dt>
+<dd><p>Current ego speed magnitude in m/s.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.original_client_loop_poll">
+<span class="sig-name descname"><span class="pre">original_client_loop_poll</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.original_client_loop_poll" title="Link to this definition">¶</a></dt>
+<dd><p>The original client’s per-tick debug polling.</p>
+<p>Ported verbatim from <code class="docutils literal notranslate"><span class="pre">open_loop_run_braking.py</span></code>’s loop tail: two
+<code class="docutils literal notranslate"><span class="pre">get_transform</span></code> RPCs (ego + camera), the relative offset, four debug prints
+and the ego bounding-box read - run every control tick. This is the remaining
+per-tick cost (RPC round-trips + console I/O) that set the original client’s
+loop rate; it is the real work, not a sleep. <code class="docutils literal notranslate"><span class="pre">log</span></code> carries the prints to the
+node log, the same I/O the original sent to stdout.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.poll_control">
+<span class="sig-name descname"><span class="pre">poll_control</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.poll_control" title="Link to this definition">¶</a></dt>
+<dd><p>The ego’s current control (<code class="docutils literal notranslate"><span class="pre">get_control</span></code> RPC), as the original read per frame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.apply_walker_control">
+<span class="sig-name descname"><span class="pre">apply_walker_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.apply_walker_control" title="Link to this definition">¶</a></dt>
+<dd><p>Drive the obstacle as a walker (V2I pedestrian): direction vector + speed.</p>
+<p>The V2I client drives the crossing pedestrian itself, as the original did; the
+obstacle here is a <code class="docutils literal notranslate"><span class="pre">walker.pedestrian.*</span></code> actor, so it takes a WalkerControl
+rather than a VehicleControl.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.spawn_fixed_camera">
+<span class="sig-name descname"><span class="pre">spawn_fixed_camera</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pitch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fov</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.spawn_fixed_camera" title="Link to this definition">¶</a></dt>
+<dd><p>Spawn an RGB camera at a FIXED world pose (not ego-attached); return (cam, queue).</p>
+<p>For the V2I infrastructure (roadside) feed: the one client process owns this
+camera in addition to its ego-attached one, as the original V2IClient did. The
+queue yields <code class="docutils literal notranslate"><span class="pre">(rgb_array,</span> <span class="pre">capture_time)</span></code> with the same BGRA-&gt;RGB conversion the
+ego path uses; it drops frames when full (keep-latest), like the ego camera.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.obstacle_location">
+<span class="sig-name descname"><span class="pre">obstacle_location</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.obstacle_location" title="Link to this definition">¶</a></dt>
+<dd><p>Current obstacle world location, or None when there is no obstacle.</p>
+<p>For V2V the obstacle is the scripted lead vehicle; the client reads its
+location to drive it (cruise/brake) and to measure the headway gap.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.obstacle_speed_mps">
+<span class="sig-name descname"><span class="pre">obstacle_speed_mps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.obstacle_speed_mps" title="Link to this definition">¶</a></dt>
+<dd><p>Current obstacle speed magnitude in m/s (0.0 when there is no obstacle).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.obstacle_velocity">
+<span class="sig-name descname"><span class="pre">obstacle_velocity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.obstacle_velocity" title="Link to this definition">¶</a></dt>
+<dd><p>Current obstacle velocity vector <code class="docutils literal notranslate"><span class="pre">(vx,</span> <span class="pre">vy,</span> <span class="pre">vz)</span></code> m/s, or None if no obstacle.</p>
+<p>For the V2I ground-truth pedestrian TTE (evaluation only): the signed y-velocity
+gives the ped’s time to the crossing line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.apply_obstacle_control">
+<span class="sig-name descname"><span class="pre">apply_obstacle_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">throttle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brake</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.apply_obstacle_control" title="Link to this definition">¶</a></dt>
+<dd><p>Apply a throttle/brake control to the obstacle (V2V leader actuation).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>throttle</strong> (<em>float</em>)</p></li>
+<li><p><strong>brake</strong> (<em>float</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.set_obstacle_target_velocity">
+<span class="sig-name descname"><span class="pre">set_obstacle_target_velocity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">speed_mps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.set_obstacle_target_velocity" title="Link to this definition">¶</a></dt>
+<dd><p>Set the obstacle’s velocity along its heading (the V2V leader cruise kick).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>speed_mps</strong> (<em>float</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.carla.CarlaSource.destroy_obstacle">
+<span class="sig-name descname"><span class="pre">destroy_obstacle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.carla.CarlaSource.destroy_obstacle" title="Link to this definition">¶</a></dt>
+<dd><p>Destroy the obstacle actor (called when braking begins).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-cadet.sources.replay">Replay frame source (images folder or video file).</p>
+<dl class="simple">
+<dt>What this is for:</dt><dd><p>A <a class="reference internal" href="cadet.core.html#cadet.core.source.Source" title="cadet.core.source.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">cadet.core.source.Source</span></code></a> that replays recorded frames (a folder
+of images or a single video file) at a configured fps, optionally looping.
+This is the “Dataset / replay” source mode: deterministic, no simulator.</p>
+</dd>
+<dt>What it contains:</dt><dd><ul class="simple">
+<li><p><a class="reference internal" href="#cadet.sources.replay.FrameReader" title="cadet.sources.replay.FrameReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrameReader</span></code></a>: the seam that decides <em>where the next frame comes
+from</em>, and the two readers behind it - <a class="reference internal" href="#cadet.sources.replay.ImageFolderReader" title="cadet.sources.replay.ImageFolderReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageFolderReader</span></code></a> over a
+sorted list of image files, and <a class="reference internal" href="#cadet.sources.replay.CaptureReader" title="cadet.sources.replay.CaptureReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">CaptureReader</span></code></a> over an OpenCV
+<code class="docutils literal notranslate"><span class="pre">VideoCapture</span></code>, which takes a video path, a camera index or a stream URL
+alike.</p></li>
+<li><p><a class="reference internal" href="#cadet.sources.replay.ReplaySource" title="cadet.sources.replay.ReplaySource"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReplaySource</span></code></a>: open/next_frame/close/metadata over the frames.
+Everything that is not the reader lives here: the per-frame pacing, the
+frame counting and the stop condition.</p></li>
+</ul>
+</dd>
+<dt>How it fits into CADET:</dt><dd><p>Built from a <code class="docutils literal notranslate"><span class="pre">source</span></code> of <code class="docutils literal notranslate"><span class="pre">kind:</span> <span class="pre">replay</span></code> (see
+<a class="reference internal" href="cadet.config.html#cadet.config.schema.ReplaySource" title="cadet.config.schema.ReplaySource"><code class="xref py py-class docutils literal notranslate"><span class="pre">cadet.config.schema.ReplaySource</span></code></a>). Images are read with OpenCV
+(imported lazily). <code class="xref py py-class docutils literal notranslate"><span class="pre">cadet.sources.live.LiveSource</span></code> is this source
+with a different reader - a capture on a device or a stream instead of on a
+directory - so it inherits the pacing and the counting unchanged. The same
+app runs over any of them, or over
+<a class="reference internal" href="#cadet.sources.synthetic.SyntheticSource" title="cadet.sources.synthetic.SyntheticSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">cadet.sources.synthetic.SyntheticSource</span></code></a>, unchanged.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="cadet.sources.replay.FrameReader">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.sources.replay.</span></span><span class="sig-name descname"><span class="pre">FrameReader</span></span><a class="headerlink" href="#cadet.sources.replay.FrameReader" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Where the next frame comes from, and nothing else.</p>
+<p>A reader hands back raw BGR images in OpenCV’s own order; the pacing, the
+RGB conversion, the frame counting and the stop condition all belong to the
+source above it. <code class="docutils literal notranslate"><span class="pre">read</span></code> returning <code class="docutils literal notranslate"><span class="pre">None</span></code> means “no image this call” -
+what that means for the run is the source’s decision, not the reader’s.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.replay.FrameReader.open">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.replay.FrameReader.open" title="Link to this definition">¶</a></dt>
+<dd><p>Acquire the underlying frames, raising if there are none to acquire.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.replay.FrameReader.read">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.replay.FrameReader.read" title="Link to this definition">¶</a></dt>
+<dd><p>Return the next BGR image, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if there is none to return.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.replay.FrameReader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.replay.FrameReader.close" title="Link to this definition">¶</a></dt>
+<dd><p>Release whatever <a class="reference internal" href="#cadet.sources.replay.FrameReader.open" title="cadet.sources.replay.FrameReader.open"><code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code></a> acquired. Nothing to do by default.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.replay.FrameReader.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.replay.FrameReader.describe" title="Link to this definition">¶</a></dt>
+<dd><p>Reader-specific fields to fold into the source’s metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cadet.sources.replay.ImageFolderReader">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.sources.replay.</span></span><span class="sig-name descname"><span class="pre">ImageFolderReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.replay.ImageFolderReader" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#cadet.sources.replay.FrameReader" title="cadet.sources.replay.FrameReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrameReader</span></code></a></p>
+<p>Frames from a directory of image files, read in sorted order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>)</p></li>
+<li><p><strong>loop</strong> (<em>bool</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.replay.ImageFolderReader.open">
+<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.replay.ImageFolderReader.open" title="Link to this definition">¶</a></dt>
+<dd><p>Acquire the underlying frames, raising if there are none to acquire.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.replay.ImageFolderReader.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.replay.ImageFolderReader.read" title="Link to this definition">¶</a></dt>
+<dd><p>Return the next BGR image, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if there is none to return.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.replay.ImageFolderReader.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.replay.ImageFolderReader.describe" title="Link to this definition">¶</a></dt>
+<dd><p>Reader-specific fields to fold into the source’s metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cadet.sources.replay.CaptureReader">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.sources.replay.</span></span><span class="sig-name descname"><span class="pre">CaptureReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rewind_on_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.replay.CaptureReader" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#cadet.sources.replay.FrameReader" title="cadet.sources.replay.FrameReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">FrameReader</span></code></a></p>
+<p>Frames from an OpenCV capture: a video file, a camera index or a stream URL.</p>
+<p><code class="docutils literal notranslate"><span class="pre">target</span></code> is handed to <code class="docutils literal notranslate"><span class="pre">cv2.VideoCapture</span></code> as given, which is what makes
+the three cases one reader: an <code class="docutils literal notranslate"><span class="pre">int</span></code> is a capture device index, a <code class="docutils literal notranslate"><span class="pre">str</span></code>
+is a path or a URL. <code class="docutils literal notranslate"><span class="pre">rewind_on_end</span></code> seeks back to the first frame when a
+read comes up empty, which is how a finite recording loops; a device or a
+stream has nothing to seek back to, so it leaves it off.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rewind_on_end</strong> (<em>bool</em>)</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.replay.CaptureReader.open">
+<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.replay.CaptureReader.open" title="Link to this definition">¶</a></dt>
+<dd><p>Acquire the underlying frames, raising if there are none to acquire.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.replay.CaptureReader.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.replay.CaptureReader.read" title="Link to this definition">¶</a></dt>
+<dd><p>Return the next BGR image, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if there is none to return.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.replay.CaptureReader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.replay.CaptureReader.close" title="Link to this definition">¶</a></dt>
+<dd><p>Release whatever <a class="reference internal" href="#cadet.sources.replay.CaptureReader.open" title="cadet.sources.replay.CaptureReader.open"><code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code></a> acquired. Nothing to do by default.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.replay.CaptureReader.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.replay.CaptureReader.describe" title="Link to this definition">¶</a></dt>
+<dd><p>Reader-specific fields to fold into the source’s metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cadet.sources.replay.ReplaySource">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.sources.replay.</span></span><span class="sig-name descname"><span class="pre">ReplaySource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.replay.ReplaySource" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="cadet.core.html#cadet.core.source.Source" title="cadet.core.source.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a></p>
+<p>Replay frames from a folder of images or a video file.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.replay.ReplaySource.open">
+<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.replay.ReplaySource.open" title="Link to this definition">¶</a></dt>
+<dd><p>Acquire the backend (connect to sim, open file, start sensor).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.replay.ReplaySource.next_frame">
+<span class="sig-name descname"><span class="pre">next_frame</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.replay.ReplaySource.next_frame" title="Link to this definition">¶</a></dt>
+<dd><p>Return the next <code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if none is available now.</p>
+<p><code class="docutils literal notranslate"><span class="pre">None</span></code> is <strong>not</strong> by itself the end of the stream. A file or a
+generator has nothing left when it returns None, but a live source
+returns None whenever nothing has arrived yet - which is always true on
+the first tick, before its first sensor callback. Ask
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">exhausted()</span></code> to tell the two apart.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<a class="reference internal" href="cadet.core.html#cadet.core.source.Frame" title="cadet.core.source.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.replay.ReplaySource.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.replay.ReplaySource.close" title="Link to this definition">¶</a></dt>
+<dd><p>Release backend resources.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.replay.ReplaySource.metadata">
+<span class="sig-name descname"><span class="pre">metadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.replay.ReplaySource.metadata" title="Link to this definition">¶</a></dt>
+<dd><p>Return static source metadata (resolution, fps, map, …).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-cadet.sources.synthetic">Synthetic frame source (generated frames, for tests).</p>
+<dl class="simple">
+<dt>What this is for:</dt><dd><p>A <a class="reference internal" href="cadet.core.html#cadet.core.source.Source" title="cadet.core.source.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">cadet.core.source.Source</span></code></a> that generates frames in-process — no
+files, no hardware, no CARLA. Used by framework tests and as the simplest
+way to exercise an app end-to-end deterministically.</p>
+</dd>
+<dt>What it contains:</dt><dd><ul class="simple">
+<li><p><a class="reference internal" href="#cadet.sources.synthetic.SyntheticSource" title="cadet.sources.synthetic.SyntheticSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">SyntheticSource</span></code></a>: emits <code class="docutils literal notranslate"><span class="pre">count</span></code> frames (0 = unbounded) of a
+configured size, each stamped with its index, at an optional fps.</p></li>
+</ul>
+</dd>
+<dt>How it fits into CADET:</dt><dd><p>Built from a <code class="docutils literal notranslate"><span class="pre">source</span></code> of <code class="docutils literal notranslate"><span class="pre">kind:</span> <span class="pre">synthetic</span></code> (see
+<a class="reference internal" href="cadet.config.html#cadet.config.schema.SyntheticSource" title="cadet.config.schema.SyntheticSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">cadet.config.schema.SyntheticSource</span></code></a>). The same app runs over this or
+<a class="reference internal" href="#cadet.sources.replay.ReplaySource" title="cadet.sources.replay.ReplaySource"><code class="xref py py-class docutils literal notranslate"><span class="pre">cadet.sources.replay.ReplaySource</span></code></a> unchanged.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="cadet.sources.synthetic.SyntheticSource">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cadet.sources.synthetic.</span></span><span class="sig-name descname"><span class="pre">SyntheticSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.synthetic.SyntheticSource" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="cadet.core.html#cadet.core.source.Source" title="cadet.core.source.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a></p>
+<p>Generates <code class="docutils literal notranslate"><span class="pre">count</span></code> frames of size <code class="docutils literal notranslate"><span class="pre">width</span></code> x <code class="docutils literal notranslate"><span class="pre">height</span></code>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.synthetic.SyntheticSource.open">
+<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.synthetic.SyntheticSource.open" title="Link to this definition">¶</a></dt>
+<dd><p>Acquire the backend (connect to sim, open file, start sensor).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.synthetic.SyntheticSource.next_frame">
+<span class="sig-name descname"><span class="pre">next_frame</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.synthetic.SyntheticSource.next_frame" title="Link to this definition">¶</a></dt>
+<dd><p>Return the next <code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if none is available now.</p>
+<p><code class="docutils literal notranslate"><span class="pre">None</span></code> is <strong>not</strong> by itself the end of the stream. A file or a
+generator has nothing left when it returns None, but a live source
+returns None whenever nothing has arrived yet - which is always true on
+the first tick, before its first sensor callback. Ask
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">exhausted()</span></code> to tell the two apart.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<a class="reference internal" href="cadet.core.html#cadet.core.source.Frame" title="cadet.core.source.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.synthetic.SyntheticSource.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.synthetic.SyntheticSource.close" title="Link to this definition">¶</a></dt>
+<dd><p>Release backend resources.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cadet.sources.synthetic.SyntheticSource.metadata">
+<span class="sig-name descname"><span class="pre">metadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cadet.sources.synthetic.SyntheticSource.metadata" title="Link to this definition">¶</a></dt>
+<dd><p>Return static source metadata (resolution, fps, map, …).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="cadet.metrics.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">cadet.metrics</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="cadet.roles.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">cadet.roles</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">cadet.sources</a><ul>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource"><code class="docutils literal notranslate"><span class="pre">CarlaSource</span></code></a><ul>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.prepare"><code class="docutils literal notranslate"><span class="pre">CarlaSource.prepare()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.await_scene"><code class="docutils literal notranslate"><span class="pre">CarlaSource.await_scene()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.open"><code class="docutils literal notranslate"><span class="pre">CarlaSource.open()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.snapshot"><code class="docutils literal notranslate"><span class="pre">CarlaSource.snapshot()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.next_frame"><code class="docutils literal notranslate"><span class="pre">CarlaSource.next_frame()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.close"><code class="docutils literal notranslate"><span class="pre">CarlaSource.close()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.exhausted"><code class="docutils literal notranslate"><span class="pre">CarlaSource.exhausted()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.metadata"><code class="docutils literal notranslate"><span class="pre">CarlaSource.metadata()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.apply_control"><code class="docutils literal notranslate"><span class="pre">CarlaSource.apply_control()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.set_target_velocity"><code class="docutils literal notranslate"><span class="pre">CarlaSource.set_target_velocity()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.ego_is_alive"><code class="docutils literal notranslate"><span class="pre">CarlaSource.ego_is_alive()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.vehicle_location"><code class="docutils literal notranslate"><span class="pre">CarlaSource.vehicle_location()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.vehicle_speed_mps"><code class="docutils literal notranslate"><span class="pre">CarlaSource.vehicle_speed_mps()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.original_client_loop_poll"><code class="docutils literal notranslate"><span class="pre">CarlaSource.original_client_loop_poll()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.poll_control"><code class="docutils literal notranslate"><span class="pre">CarlaSource.poll_control()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.apply_walker_control"><code class="docutils literal notranslate"><span class="pre">CarlaSource.apply_walker_control()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.spawn_fixed_camera"><code class="docutils literal notranslate"><span class="pre">CarlaSource.spawn_fixed_camera()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.obstacle_location"><code class="docutils literal notranslate"><span class="pre">CarlaSource.obstacle_location()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.obstacle_speed_mps"><code class="docutils literal notranslate"><span class="pre">CarlaSource.obstacle_speed_mps()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.obstacle_velocity"><code class="docutils literal notranslate"><span class="pre">CarlaSource.obstacle_velocity()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.apply_obstacle_control"><code class="docutils literal notranslate"><span class="pre">CarlaSource.apply_obstacle_control()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.set_obstacle_target_velocity"><code class="docutils literal notranslate"><span class="pre">CarlaSource.set_obstacle_target_velocity()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.carla.CarlaSource.destroy_obstacle"><code class="docutils literal notranslate"><span class="pre">CarlaSource.destroy_obstacle()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cadet.sources.replay.FrameReader"><code class="docutils literal notranslate"><span class="pre">FrameReader</span></code></a><ul>
+<li><a class="reference internal" href="#cadet.sources.replay.FrameReader.open"><code class="docutils literal notranslate"><span class="pre">FrameReader.open()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.replay.FrameReader.read"><code class="docutils literal notranslate"><span class="pre">FrameReader.read()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.replay.FrameReader.close"><code class="docutils literal notranslate"><span class="pre">FrameReader.close()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.replay.FrameReader.describe"><code class="docutils literal notranslate"><span class="pre">FrameReader.describe()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cadet.sources.replay.ImageFolderReader"><code class="docutils literal notranslate"><span class="pre">ImageFolderReader</span></code></a><ul>
+<li><a class="reference internal" href="#cadet.sources.replay.ImageFolderReader.open"><code class="docutils literal notranslate"><span class="pre">ImageFolderReader.open()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.replay.ImageFolderReader.read"><code class="docutils literal notranslate"><span class="pre">ImageFolderReader.read()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.replay.ImageFolderReader.describe"><code class="docutils literal notranslate"><span class="pre">ImageFolderReader.describe()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cadet.sources.replay.CaptureReader"><code class="docutils literal notranslate"><span class="pre">CaptureReader</span></code></a><ul>
+<li><a class="reference internal" href="#cadet.sources.replay.CaptureReader.open"><code class="docutils literal notranslate"><span class="pre">CaptureReader.open()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.replay.CaptureReader.read"><code class="docutils literal notranslate"><span class="pre">CaptureReader.read()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.replay.CaptureReader.close"><code class="docutils literal notranslate"><span class="pre">CaptureReader.close()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.replay.CaptureReader.describe"><code class="docutils literal notranslate"><span class="pre">CaptureReader.describe()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cadet.sources.replay.ReplaySource"><code class="docutils literal notranslate"><span class="pre">ReplaySource</span></code></a><ul>
+<li><a class="reference internal" href="#cadet.sources.replay.ReplaySource.open"><code class="docutils literal notranslate"><span class="pre">ReplaySource.open()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.replay.ReplaySource.next_frame"><code class="docutils literal notranslate"><span class="pre">ReplaySource.next_frame()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.replay.ReplaySource.close"><code class="docutils literal notranslate"><span class="pre">ReplaySource.close()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.replay.ReplaySource.metadata"><code class="docutils literal notranslate"><span class="pre">ReplaySource.metadata()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cadet.sources.synthetic.SyntheticSource"><code class="docutils literal notranslate"><span class="pre">SyntheticSource</span></code></a><ul>
+<li><a class="reference internal" href="#cadet.sources.synthetic.SyntheticSource.open"><code class="docutils literal notranslate"><span class="pre">SyntheticSource.open()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.synthetic.SyntheticSource.next_frame"><code class="docutils literal notranslate"><span class="pre">SyntheticSource.next_frame()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.synthetic.SyntheticSource.close"><code class="docutils literal notranslate"><span class="pre">SyntheticSource.close()</span></code></a></li>
+<li><a class="reference internal" href="#cadet.sources.synthetic.SyntheticSource.metadata"><code class="docutils literal notranslate"><span class="pre">SyntheticSource.metadata()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/sidebar-scroll.js?v=a725cd90"></script>
+    </body>
+</html>

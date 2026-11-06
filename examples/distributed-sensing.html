@@ -1,0 +1,939 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Dataset-mode VLM serving" href="dataset-vlm.html"><link rel="prev" title="Examples Gallery" href="index.html">
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>Distributed Sensing - CADET</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../_static/cadet-table.css?v=25e5b53d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">CADET</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <span class="sidebar-brand-text">CADET</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/versions.html">Version Matrix</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research goals</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../research-goals/index.html">Choose Your Research Goal</a><input aria-label="Toggle navigation of Choose Your Research Goal" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/cooperative-driving.html">Cooperative Driving</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/computation-placement.html">Computation Placement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/communication.html">Communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/model-benchmarking.html">Model Benchmarking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../research-goals/distributed-sensing.html">Distributed Sensing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/cooperative-driving.html">Cooperative Driving</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/computation-placement.html">Computation Placement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/model-benchmarking.html">Model Benchmarking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research-goals/distributed-sensing.html">Distributed Sensing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Using CADET</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ways-to-use.html">Ways to Use CADET</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/01-first-experiment.html">Tutorial 1: First Experiment (Replay + Reference App + Delay Link)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/02-carla-braking.html">Tutorial 2: CARLA Braking Experiment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/03-backends.html">Tutorial 3: Comparing Network Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/04-multi-device.html">Tutorial 4: Multi-Device Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/05-sweeps.html">Tutorial 5: Sweeps and Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/06-write-an-app.html">Tutorial 6: Write an App Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/07-v2v-v2i.html">Tutorial 7: V2V and V2I Experiments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-to guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../howto/replay-source.html">Use the replay source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/synthetic-source.html">Use the synthetic source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/live-source.html">Live source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/model-registry.html">Register per-device model artifacts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/link-distributions.html">Configure link distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/wifi-cell.html">Wi-Fi cell</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/transport-tuning.html">Transport tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/sweeps.html">Run and resume sweeps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/dashboard.html">Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/outputs.html">Read outputs and run.json</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/cadet-down.html">Recovery with cadet down</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../config-reference.html">Config Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/cli.html">CLI Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/metrics.html">Metrics Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/output-format.html">Output Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/tested-configurations.html">Tested configurations</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/cadet.cli.html">cadet.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/cadet.config.html">cadet.config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/cadet.core.html">cadet.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/cadet.orchestrator.html">cadet.orchestrator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/cadet.network.html">cadet.network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/cadet.roles.html">cadet.roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/cadet.sources.html">cadet.sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/cadet.metrics.html">cadet.metrics</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/data-source-layer.html">Data Source Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/processing-core-layer.html">Processing Core Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/netwaggle-layer.html">NetWaggle Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/analysis-layer.html">Analysis Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/network-backends.html">Network Backend Semantics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/reproducibility.html">Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/design-goals.html">Design Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/dataset-mode.html">Dataset Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/requirements-and-scope.html">Requirements and scope</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Apps</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../apps.html">App Plugin Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Examples Gallery</a><input aria-label="Toggle navigation of Examples Gallery" checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Distributed Sensing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataset-vlm.html">Dataset-mode VLM serving</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dataset-vlm.html">Dataset-mode VLM serving</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Help</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../community/citing.html">Citing CADET</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community/contributing.html">Contributing</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/nesl/cadet/blob/main/docs/source/examples/distributed-sensing.rst?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/nesl/cadet/edit/main/docs/source/examples/distributed-sensing.rst" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="distributed-sensing">
+<h1>Distributed Sensing<a class="headerlink" href="#distributed-sensing" title="Link to this heading">¶</a></h1>
+<p>N sensor nodes stream frames over a contested access network into one gateway;
+the detector runs on each sensor, on the gateway, or in the cloud. The example
+measures what that placement choice costs in latency, age of information, and
+bytes on the access link.</p>
+<section id="what-it-measures">
+<h2>What it measures<a class="headerlink" href="#what-it-measures" title="Link to this heading">¶</a></h2>
+<p>Four quantities per run:</p>
+<ul class="simple">
+<li><p><strong>End-to-end latency</strong> — from a frame’s capture on a sensor to the detection
+result arriving back at it</p></li>
+<li><p><strong>Age of information</strong> — from a frame’s capture to its arrival at the node
+that processes it</p></li>
+<li><p><strong>Detection rate</strong> — fraction of frames whose result carried at least one box</p></li>
+<li><p><strong>Bytes per link</strong> — payload each sensor put on its uplink; the placement
+decides whether that payload is boxes or an encoded frame</p></li>
+</ul>
+<p>The fan-in is what the comparison turns on. Every sensor is its own process
+with its own connection, and the processing node holds one detector behind one
+queue, so N sensors share one compute budget while each sensor has its own.</p>
+</section>
+<section id="quick-run">
+<h2>Quick run<a class="headerlink" href="#quick-run" title="Link to this heading">¶</a></h2>
+<p>Two synthetic sensors, one gateway, no CARLA, no download:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cadet</span> <span class="n">run</span> <span class="n">examples</span><span class="o">/</span><span class="n">distributed_sensing</span><span class="o">/</span><span class="n">quick</span><span class="o">.</span><span class="n">yaml</span> <span class="o">--</span><span class="n">app</span><span class="o">-</span><span class="n">module</span> <span class="n">examples</span><span class="o">.</span><span class="n">distributed_sensing</span><span class="o">.</span><span class="n">app</span>
+</pre></div>
+</div>
+<p>Result : 40 of 40 frames answered, median
+end-to-end latency 88.9 ms, median age of information 42.2 ms, 2.4 s of worker
+time.</p>
+</section>
+<section id="the-full-matrix">
+<h2>The full matrix<a class="headerlink" href="#the-full-matrix" title="Link to this heading">¶</a></h2>
+<p>The configs split across two dimensions the sweep machinery cannot handle as a
+single axis: sensor count changes the node and link lists together (not a
+dotted-path axis), and placement changes the topology (the cloud placement adds
+a waypoint node). Each combination is its own file.</p>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Config</p></th>
+<th class="head"><p>Topology</p></th>
+<th class="head"><p>Sensors</p></th>
+<th class="head"><p>Sweeps</p></th>
+<th class="head"><p>Backend</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">quick.yaml</span></code></p></td>
+<td><p>sensors → gateway</p></td>
+<td><p>2</p></td>
+<td><p>none</p></td>
+<td><p>delay</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">edge_2/5/10.yaml</span></code></p></td>
+<td><p>sensors → gateway</p></td>
+<td><p>2, 5, 10</p></td>
+<td><p>placement × access quality (3)</p></td>
+<td><p>delay</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cloud_2/5/10.yaml</span></code></p></td>
+<td><p>sensors → gateway → cloud</p></td>
+<td><p>2, 5, 10</p></td>
+<td><p>access quality (3)</p></td>
+<td><p>delay</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">netem_5.yaml</span></code></p></td>
+<td><p>sensors → gateway</p></td>
+<td><p>5</p></td>
+<td><p>placement × access quality (3)</p></td>
+<td><p>netem (packet-level)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">queue_5.yaml</span></code></p></td>
+<td><p>sensors → gateway</p></td>
+<td><p>5</p></td>
+<td><p>placement × access quality (3)</p></td>
+<td><p>delay, freshness policy on</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">replay.yaml</span></code></p></td>
+<td><p>as <code class="docutils literal notranslate"><span class="pre">edge_5.yaml</span></code></p></td>
+<td><p>5</p></td>
+<td><p>as <code class="docutils literal notranslate"><span class="pre">edge_5.yaml</span></code></p></td>
+<td><p>delay</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">wifi_5.yaml</span></code></p></td>
+<td><p>Wi-Fi cell → gateway</p></td>
+<td><p>5</p></td>
+<td><p>none</p></td>
+<td><p>netwaggle, one Wi-Fi cell</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">emulated_5.yaml</span></code></p></td>
+<td><p>sensors → gateway</p></td>
+<td><p>5</p></td>
+<td><p>access quality (3)</p></td>
+<td><p>netwaggle wired (emulation container)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">netem_5.yaml</span></code> uses the same topology and swept axes as <code class="docutils literal notranslate"><span class="pre">edge_5.yaml</span></code> but
+shapes at the packet level (netem) rather than the message level. Comparing the
+two shows what TCP retransmit costs at each condition. <code class="docutils literal notranslate"><span class="pre">queue_5.yaml</span></code> adds a
+freshness policy on the gateway’s inbound queue; comparing it cell-by-cell with
+<code class="docutils literal notranslate"><span class="pre">edge_5.yaml</span></code> isolates the effect of letting stale frames queue.</p>
+<p>The edge configs below show the full topology and sweep definition:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Five-sensor edge sweep — <code class="docutils literal notranslate"><span class="pre">examples/distributed_sensing/edge_5.yaml</span></code></span><a class="headerlink" href="#id1" title="Link to this code">¶</a></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Detector placement at the edge of a 5-sensor cell: the detector runs on every</span>
+<span class="c1"># sensor, or on the gateway the sensors associate with. The sweep crosses those</span>
+<span class="c1"># two placements with three access-link qualities, so each run differs from its</span>
+<span class="c1"># neighbours along one axis and nothing else.</span>
+<span class="c1">#</span>
+<span class="c1"># The access links are declared one per sensor with identical parameters. The</span>
+<span class="c1"># cell is one access network, and the server runtime applies the path into the</span>
+<span class="c1"># gateway to every inbound connection, so a per-sensor parameter would not be</span>
+<span class="c1"># read. The swept value is therefore the whole `links` list: sweeping one link's</span>
+<span class="c1"># fields would leave the other entries stating a quality no run measured.</span>
+<span class="nt">extends</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_base.yaml</span>
+
+<span class="nt">experiment</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">sensing_edge_5</span><span class="p p-Indicator">,</span><span class="nt"> max_active_s</span><span class="p">:</span><span class="w"> </span><span class="nv">600.0</span><span class="p p-Indicator">}</span>
+
+<span class="nt">nodes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_1</span><span class="p p-Indicator">,</span><span class="nt"> host</span><span class="p">:</span><span class="w"> </span><span class="nv">localhost</span><span class="p p-Indicator">,</span><span class="nt"> role</span><span class="p">:</span><span class="w"> </span><span class="nv">client</span><span class="p p-Indicator">,</span><span class="nt"> device</span><span class="p">:</span><span class="w"> </span><span class="nv">cpu</span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_2</span><span class="p p-Indicator">,</span><span class="nt"> host</span><span class="p">:</span><span class="w"> </span><span class="nv">localhost</span><span class="p p-Indicator">,</span><span class="nt"> role</span><span class="p">:</span><span class="w"> </span><span class="nv">client</span><span class="p p-Indicator">,</span><span class="nt"> device</span><span class="p">:</span><span class="w"> </span><span class="nv">cpu</span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_3</span><span class="p p-Indicator">,</span><span class="nt"> host</span><span class="p">:</span><span class="w"> </span><span class="nv">localhost</span><span class="p p-Indicator">,</span><span class="nt"> role</span><span class="p">:</span><span class="w"> </span><span class="nv">client</span><span class="p p-Indicator">,</span><span class="nt"> device</span><span class="p">:</span><span class="w"> </span><span class="nv">cpu</span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_4</span><span class="p p-Indicator">,</span><span class="nt"> host</span><span class="p">:</span><span class="w"> </span><span class="nv">localhost</span><span class="p p-Indicator">,</span><span class="nt"> role</span><span class="p">:</span><span class="w"> </span><span class="nv">client</span><span class="p p-Indicator">,</span><span class="nt"> device</span><span class="p">:</span><span class="w"> </span><span class="nv">cpu</span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_5</span><span class="p p-Indicator">,</span><span class="nt"> host</span><span class="p">:</span><span class="w"> </span><span class="nv">localhost</span><span class="p p-Indicator">,</span><span class="nt"> role</span><span class="p">:</span><span class="w"> </span><span class="nv">client</span><span class="p p-Indicator">,</span><span class="nt"> device</span><span class="p">:</span><span class="w"> </span><span class="nv">cpu</span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">gateway</span><span class="p p-Indicator">,</span><span class="nt"> host</span><span class="p">:</span><span class="w"> </span><span class="nv">127.0.0.1</span><span class="p p-Indicator">,</span><span class="nt"> port</span><span class="p">:</span><span class="w"> </span><span class="nv">15110</span><span class="p p-Indicator">,</span><span class="nt"> role</span><span class="p">:</span><span class="w"> </span><span class="nv">server</span><span class="p p-Indicator">,</span><span class="nt"> device</span><span class="p">:</span><span class="w"> </span><span class="nv">cpu</span><span class="p p-Indicator">}</span>
+
+<span class="c1"># The access quality a plain run uses; the sweep below replaces the whole list.</span>
+<span class="nt">links</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uplink_sensor_1</span>
+<span class="w">    </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sensor_1</span>
+<span class="w">    </span><span class="nt">to</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway</span>
+<span class="w">    </span><span class="nt">direction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">both</span>
+<span class="w">    </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;good</span>
+<span class="w">      </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">delay</span>
+<span class="w">      </span><span class="nt">distribution</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="nv">lognormal</span><span class="p p-Indicator">,</span><span class="nt"> p50_ms</span><span class="p">:</span><span class="w"> </span><span class="nv">8.0</span><span class="p p-Indicator">,</span><span class="nt"> p99_ms</span><span class="p">:</span><span class="w"> </span><span class="nv">25.0</span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="nt">loss</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
+<span class="w">      </span><span class="nt">bandwidth_mbps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">24.0</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">uplink_sensor_2</span><span class="p p-Indicator">,</span><span class="nt"> from</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_2</span><span class="p p-Indicator">,</span><span class="nt"> to</span><span class="p">:</span><span class="w"> </span><span class="nv">gateway</span><span class="p p-Indicator">,</span><span class="nt"> direction</span><span class="p">:</span><span class="w"> </span><span class="nv">both</span><span class="p p-Indicator">,</span><span class="nt"> network</span><span class="p">:</span><span class="w"> </span><span class="nv">*good</span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">uplink_sensor_3</span><span class="p p-Indicator">,</span><span class="nt"> from</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_3</span><span class="p p-Indicator">,</span><span class="nt"> to</span><span class="p">:</span><span class="w"> </span><span class="nv">gateway</span><span class="p p-Indicator">,</span><span class="nt"> direction</span><span class="p">:</span><span class="w"> </span><span class="nv">both</span><span class="p p-Indicator">,</span><span class="nt"> network</span><span class="p">:</span><span class="w"> </span><span class="nv">*good</span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">uplink_sensor_4</span><span class="p p-Indicator">,</span><span class="nt"> from</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_4</span><span class="p p-Indicator">,</span><span class="nt"> to</span><span class="p">:</span><span class="w"> </span><span class="nv">gateway</span><span class="p p-Indicator">,</span><span class="nt"> direction</span><span class="p">:</span><span class="w"> </span><span class="nv">both</span><span class="p p-Indicator">,</span><span class="nt"> network</span><span class="p">:</span><span class="w"> </span><span class="nv">*good</span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">uplink_sensor_5</span><span class="p p-Indicator">,</span><span class="nt"> from</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_5</span><span class="p p-Indicator">,</span><span class="nt"> to</span><span class="p">:</span><span class="w"> </span><span class="nv">gateway</span><span class="p p-Indicator">,</span><span class="nt"> direction</span><span class="p">:</span><span class="w"> </span><span class="nv">both</span><span class="p p-Indicator">,</span><span class="nt"> network</span><span class="p">:</span><span class="w"> </span><span class="nv">*good</span><span class="p p-Indicator">}</span>
+
+<span class="nt">sweep</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">axes</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">app.params.placement</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">sensor</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">gateway</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">links</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">uplink_sensor_1</span><span class="p p-Indicator">,</span><span class="nt"> from</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_1</span><span class="p p-Indicator">,</span><span class="nt"> to</span><span class="p">:</span><span class="w"> </span><span class="nv">gateway</span><span class="p p-Indicator">,</span><span class="nt"> direction</span><span class="p">:</span><span class="w"> </span><span class="nv">both</span><span class="p p-Indicator">,</span><span class="nt"> network</span><span class="p">:</span><span class="w"> </span><span class="nv">*good</span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">uplink_sensor_2</span><span class="p p-Indicator">,</span><span class="nt"> from</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_2</span><span class="p p-Indicator">,</span><span class="nt"> to</span><span class="p">:</span><span class="w"> </span><span class="nv">gateway</span><span class="p p-Indicator">,</span><span class="nt"> direction</span><span class="p">:</span><span class="w"> </span><span class="nv">both</span><span class="p p-Indicator">,</span><span class="nt"> network</span><span class="p">:</span><span class="w"> </span><span class="nv">*good</span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">uplink_sensor_3</span><span class="p p-Indicator">,</span><span class="nt"> from</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_3</span><span class="p p-Indicator">,</span><span class="nt"> to</span><span class="p">:</span><span class="w"> </span><span class="nv">gateway</span><span class="p p-Indicator">,</span><span class="nt"> direction</span><span class="p">:</span><span class="w"> </span><span class="nv">both</span><span class="p p-Indicator">,</span><span class="nt"> network</span><span class="p">:</span><span class="w"> </span><span class="nv">*good</span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">uplink_sensor_4</span><span class="p p-Indicator">,</span><span class="nt"> from</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_4</span><span class="p p-Indicator">,</span><span class="nt"> to</span><span class="p">:</span><span class="w"> </span><span class="nv">gateway</span><span class="p p-Indicator">,</span><span class="nt"> direction</span><span class="p">:</span><span class="w"> </span><span class="nv">both</span><span class="p p-Indicator">,</span><span class="nt"> network</span><span class="p">:</span><span class="w"> </span><span class="nv">*good</span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">uplink_sensor_5</span><span class="p p-Indicator">,</span><span class="nt"> from</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_5</span><span class="p p-Indicator">,</span><span class="nt"> to</span><span class="p">:</span><span class="w"> </span><span class="nv">gateway</span><span class="p p-Indicator">,</span><span class="nt"> direction</span><span class="p">:</span><span class="w"> </span><span class="nv">both</span><span class="p p-Indicator">,</span><span class="nt"> network</span><span class="p">:</span><span class="w"> </span><span class="nv">*good</span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uplink_sensor_1</span>
+<span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sensor_1</span>
+<span class="w">          </span><span class="nt">to</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway</span>
+<span class="w">          </span><span class="nt">direction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">both</span>
+<span class="w">          </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;contested</span>
+<span class="w">            </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">delay</span>
+<span class="w">            </span><span class="nt">distribution</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="nv">lognormal</span><span class="p p-Indicator">,</span><span class="nt"> p50_ms</span><span class="p">:</span><span class="w"> </span><span class="nv">35.0</span><span class="p p-Indicator">,</span><span class="nt"> p99_ms</span><span class="p">:</span><span class="w"> </span><span class="nv">160.0</span><span class="p p-Indicator">}</span>
+<span class="w">            </span><span class="nt">loss</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.02</span>
+<span class="w">            </span><span class="nt">bandwidth_mbps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6.0</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">uplink_sensor_2</span><span class="p p-Indicator">,</span><span class="nt"> from</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_2</span><span class="p p-Indicator">,</span><span class="nt"> to</span><span class="p">:</span><span class="w"> </span><span class="nv">gateway</span><span class="p p-Indicator">,</span><span class="nt"> direction</span><span class="p">:</span><span class="w"> </span><span class="nv">both</span><span class="p p-Indicator">,</span><span class="nt"> network</span><span class="p">:</span><span class="w"> </span><span class="nv">*contested</span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">uplink_sensor_3</span><span class="p p-Indicator">,</span><span class="nt"> from</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_3</span><span class="p p-Indicator">,</span><span class="nt"> to</span><span class="p">:</span><span class="w"> </span><span class="nv">gateway</span><span class="p p-Indicator">,</span><span class="nt"> direction</span><span class="p">:</span><span class="w"> </span><span class="nv">both</span><span class="p p-Indicator">,</span><span class="nt"> network</span><span class="p">:</span><span class="w"> </span><span class="nv">*contested</span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">uplink_sensor_4</span><span class="p p-Indicator">,</span><span class="nt"> from</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_4</span><span class="p p-Indicator">,</span><span class="nt"> to</span><span class="p">:</span><span class="w"> </span><span class="nv">gateway</span><span class="p p-Indicator">,</span><span class="nt"> direction</span><span class="p">:</span><span class="w"> </span><span class="nv">both</span><span class="p p-Indicator">,</span><span class="nt"> network</span><span class="p">:</span><span class="w"> </span><span class="nv">*contested</span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">uplink_sensor_5</span><span class="p p-Indicator">,</span><span class="nt"> from</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_5</span><span class="p p-Indicator">,</span><span class="nt"> to</span><span class="p">:</span><span class="w"> </span><span class="nv">gateway</span><span class="p p-Indicator">,</span><span class="nt"> direction</span><span class="p">:</span><span class="w"> </span><span class="nv">both</span><span class="p p-Indicator">,</span><span class="nt"> network</span><span class="p">:</span><span class="w"> </span><span class="nv">*contested</span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uplink_sensor_1</span>
+<span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sensor_1</span>
+<span class="w">          </span><span class="nt">to</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway</span>
+<span class="w">          </span><span class="nt">direction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">both</span>
+<span class="w">          </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;severe</span>
+<span class="w">            </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">delay</span>
+<span class="w">            </span><span class="nt">distribution</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="nv">lognormal</span><span class="p p-Indicator">,</span><span class="nt"> p50_ms</span><span class="p">:</span><span class="w"> </span><span class="nv">90.0</span><span class="p p-Indicator">,</span><span class="nt"> p99_ms</span><span class="p">:</span><span class="w"> </span><span class="nv">500.0</span><span class="p p-Indicator">}</span>
+<span class="w">            </span><span class="nt">loss</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.08</span>
+<span class="w">            </span><span class="nt">bandwidth_mbps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.5</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">uplink_sensor_2</span><span class="p p-Indicator">,</span><span class="nt"> from</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_2</span><span class="p p-Indicator">,</span><span class="nt"> to</span><span class="p">:</span><span class="w"> </span><span class="nv">gateway</span><span class="p p-Indicator">,</span><span class="nt"> direction</span><span class="p">:</span><span class="w"> </span><span class="nv">both</span><span class="p p-Indicator">,</span><span class="nt"> network</span><span class="p">:</span><span class="w"> </span><span class="nv">*severe</span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">uplink_sensor_3</span><span class="p p-Indicator">,</span><span class="nt"> from</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_3</span><span class="p p-Indicator">,</span><span class="nt"> to</span><span class="p">:</span><span class="w"> </span><span class="nv">gateway</span><span class="p p-Indicator">,</span><span class="nt"> direction</span><span class="p">:</span><span class="w"> </span><span class="nv">both</span><span class="p p-Indicator">,</span><span class="nt"> network</span><span class="p">:</span><span class="w"> </span><span class="nv">*severe</span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">uplink_sensor_4</span><span class="p p-Indicator">,</span><span class="nt"> from</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_4</span><span class="p p-Indicator">,</span><span class="nt"> to</span><span class="p">:</span><span class="w"> </span><span class="nv">gateway</span><span class="p p-Indicator">,</span><span class="nt"> direction</span><span class="p">:</span><span class="w"> </span><span class="nv">both</span><span class="p p-Indicator">,</span><span class="nt"> network</span><span class="p">:</span><span class="w"> </span><span class="nv">*severe</span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">uplink_sensor_5</span><span class="p p-Indicator">,</span><span class="nt"> from</span><span class="p">:</span><span class="w"> </span><span class="nv">sensor_5</span><span class="p p-Indicator">,</span><span class="nt"> to</span><span class="p">:</span><span class="w"> </span><span class="nv">gateway</span><span class="p p-Indicator">,</span><span class="nt"> direction</span><span class="p">:</span><span class="w"> </span><span class="nv">both</span><span class="p p-Indicator">,</span><span class="nt"> network</span><span class="p">:</span><span class="w"> </span><span class="nv">*severe</span><span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+</div>
+<section id="one-command-placement-sweep">
+<h3>One-command placement sweep<a class="headerlink" href="#one-command-placement-sweep" title="Link to this heading">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">placement_sweep.py</span></code> runs the full three-placement comparison in one command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">examples</span><span class="o">/</span><span class="n">distributed_sensing</span><span class="o">/</span><span class="n">placement_sweep</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">sensors</span> <span class="mi">5</span>
+</pre></div>
+</div>
+<p>That shells out to <code class="docutils literal notranslate"><span class="pre">cadet</span> <span class="pre">sweep</span></code> for the edge and cloud configs, reduces
+every run to one row in <code class="docutils literal notranslate"><span class="pre">outputs/sensing_placement_5/summary.csv</span></code>, prints the
+table, and writes the crossover plot to
+<code class="docutils literal notranslate"><span class="pre">outputs/sensing_placement_5/crossover.png</span></code>. Takes about 75 s for five sensors.</p>
+<p>While it is running, open the dashboard in another terminal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cadet</span> <span class="n">dashboard</span> <span class="n">outputs</span><span class="o">/</span><span class="n">sensing_placement_5</span>
+</pre></div>
+</div>
+<p>The dashboard’s live view refreshes the sweep matrix as runs complete. After
+the sweep finishes, the same command shows the full matrix and crossover plot.</p>
+</section>
+<section id="manual-sweep">
+<h3>Manual sweep<a class="headerlink" href="#manual-sweep" title="Link to this heading">¶</a></h3>
+<p>To drive the two sweeps separately:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cadet</span> <span class="n">sweep</span> <span class="n">examples</span><span class="o">/</span><span class="n">distributed_sensing</span><span class="o">/</span><span class="n">edge_5</span><span class="o">.</span><span class="n">yaml</span>  <span class="o">--</span><span class="n">app</span><span class="o">-</span><span class="n">module</span> <span class="n">examples</span><span class="o">.</span><span class="n">distributed_sensing</span><span class="o">.</span><span class="n">app</span>
+<span class="n">cadet</span> <span class="n">sweep</span> <span class="n">examples</span><span class="o">/</span><span class="n">distributed_sensing</span><span class="o">/</span><span class="n">cloud_5</span><span class="o">.</span><span class="n">yaml</span> <span class="o">--</span><span class="n">app</span><span class="o">-</span><span class="n">module</span> <span class="n">examples</span><span class="o">.</span><span class="n">distributed_sensing</span><span class="o">.</span><span class="n">app</span>
+<span class="n">python</span> <span class="n">examples</span><span class="o">/</span><span class="n">distributed_sensing</span><span class="o">/</span><span class="n">summarise</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">write</span> <span class="n">outputs</span><span class="o">/</span><span class="n">sensing_edge_5</span><span class="o">/</span><span class="n">distributed_sensing</span><span class="o">/*-</span><span class="n">r0</span>
+<span class="n">cadet</span> <span class="n">dashboard</span> <span class="n">outputs</span><span class="o">/</span><span class="n">sensing_edge_5</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">summarise.py</span> <span class="pre">--write</span></code> writes <code class="docutils literal notranslate"><span class="pre">sensing_summary.json</span></code> into each run directory;
+the dashboard reads every <code class="docutils literal notranslate"><span class="pre">*_summary.json</span></code> under the tree and takes the first
+numeric field (<code class="docutils literal notranslate"><span class="pre">e2e_p50_ms</span></code>) as the headline metric.</p>
+<figure class="align-default" id="id2">
+<a class="reference internal image-reference" href="../_images/dashboard-sweep.png"><img alt="Dashboard sweep matrix and crossover plot — placement_sweep.py output, all three placements" src="../_images/dashboard-sweep.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Dashboard sweep view from <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">examples/distributed_sensing/placement_sweep.py</span> <span class="pre">--sensors</span>
+<span class="pre">5</span></code>: placement × access-quality matrix (9 cells, 2 reps each) and crossover
+plot. Cloud and sensor placements stay well below the gateway, which saturates
+at five sensors and holds its latency nearly flat as access quality degrades.</span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id3">
+<a class="reference internal image-reference" href="../_images/dashboard-run.png"><img alt="Dashboard per-run view — cloud placement, sensor → gateway → cloud topology" src="../_images/dashboard-run.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Per-run view for the cloud placement: node table (gateway as waypoint, cloud
+as server), per-sensor uplink and backhaul link table, and per-stage latency.
+The waypoint role is what distinguishes the cloud topology from the edge one
+in the dashboard.</span><a class="headerlink" href="#id3" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="results">
+<h2>Results<a class="headerlink" href="#results" title="Link to this heading">¶</a></h2>
+<p>Measured on a single host with the <code class="docutils literal notranslate"><span class="pre">delay</span></code> backend, 5 sensors, 20 generated
+frames per sensor at 10 fps. Latencies
+are the median over answered frames of all five sensors.</p>
+<p><strong>Placement × access quality, 5 sensors:</strong></p>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12.5%" />
+<col style="width: 13.3%" />
+<col style="width: 13.3%" />
+<col style="width: 13.3%" />
+<col style="width: 13.3%" />
+<col style="width: 13.3%" />
+<col style="width: 12.5%" />
+<col style="width: 8.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Placement</p></th>
+<th class="head"><p>e2e p50, good</p></th>
+<th class="head"><p>e2e, contested</p></th>
+<th class="head"><p>e2e, severe</p></th>
+<th class="head"><p>AoI p50, good</p></th>
+<th class="head"><p>AoI, contested</p></th>
+<th class="head"><p>AoI, severe</p></th>
+<th class="head"><p>Uplink</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>sensor</p></td>
+<td><p>138.0 ms</p></td>
+<td><p>202.3 ms</p></td>
+<td><p>415.5 ms</p></td>
+<td><p>128.9 ms</p></td>
+<td><p>158.7 ms</p></td>
+<td><p>234.6 ms</p></td>
+<td><p>16.3 KB</p></td>
+</tr>
+<tr class="row-odd"><td><p>gateway</p></td>
+<td><p>1097.8 ms</p></td>
+<td><p>1126.3 ms</p></td>
+<td><p>1217.8 ms</p></td>
+<td><p>1043.6 ms</p></td>
+<td><p>1012.6 ms</p></td>
+<td><p>1030.8 ms</p></td>
+<td><p>52.0 KB</p></td>
+</tr>
+<tr class="row-even"><td><p>cloud</p></td>
+<td><p>96.5 ms</p></td>
+<td><p>164.7 ms</p></td>
+<td><p>325.6 ms</p></td>
+<td><p>41.8 ms</p></td>
+<td><p>72.8 ms</p></td>
+<td><p>132.7 ms</p></td>
+<td><p>52.0 KB</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The gateway placement is over capacity: five sensors at 10 fps offer 50 frames
+per second; one gateway detector at 40 ms per frame serves 25 (both numbers from
+<code class="docutils literal notranslate"><span class="pre">_base.yaml</span></code>). The cloud detector at 12 ms per frame serves 83 and stays ahead
+of the offered load.</p>
+<p><strong>Placement × sensor count, good access quality:</strong></p>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Sensors</p></th>
+<th class="head"><p>sensor</p></th>
+<th class="head"><p>gateway</p></th>
+<th class="head"><p>cloud</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>140.7 ms</p></td>
+<td><p>69.0 ms</p></td>
+<td><p>89.5 ms</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>138.0 ms</p></td>
+<td><p>1097.8 ms</p></td>
+<td><p>96.5 ms</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>138.2 ms</p></td>
+<td><p>2688.3 ms</p></td>
+<td><p>377.5 ms</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The sensor placement is flat across all three counts: each sensor runs its own
+detector and its own source loop, so adding sensors adds independent workers
+rather than queue depth. At two sensors the gateway wins because detector cost
+dominates and the gateway’s is lower; by five sensors the gateway has saturated.</p>
+<p>The replay config (20 cached COCO images per sensor) sharpens the bytes
+comparison: sensor placement put 14.9 KB on the five uplinks, gateway placement
+put 6752 KB — a factor of 453 — and gateway median end-to-end latency at good
+access quality was 1301.2 ms vs the sensor run’s 138.5 ms.</p>
+</section>
+<section id="network-model">
+<h2>Network model<a class="headerlink" href="#network-model" title="Link to this heading">¶</a></h2>
+<p>Three access quality tiers:</p>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22.5%" />
+<col style="width: 18.8%" />
+<col style="width: 18.8%" />
+<col style="width: 15.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Quality</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">p50_ms</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">p99_ms</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">loss</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">bandwidth_mbps</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>good</p></td>
+<td><p>8</p></td>
+<td><p>25</p></td>
+<td><p>0</p></td>
+<td><p>24</p></td>
+</tr>
+<tr class="row-odd"><td><p>contested</p></td>
+<td><p>35</p></td>
+<td><p>160</p></td>
+<td><p>0.02</p></td>
+<td><p>6</p></td>
+</tr>
+<tr class="row-even"><td><p>severe</p></td>
+<td><p>90</p></td>
+<td><p>500</p></td>
+<td><p>0.08</p></td>
+<td><p>1.5</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Cloud configs add a fixed backhaul at <code class="docutils literal notranslate"><span class="pre">p50_ms:</span> <span class="pre">25</span></code>, <code class="docutils literal notranslate"><span class="pre">p99_ms:</span> <span class="pre">90</span></code>,
+<code class="docutils literal notranslate"><span class="pre">loss:</span> <span class="pre">0.005</span></code>, <code class="docutils literal notranslate"><span class="pre">bandwidth_mbps:</span> <span class="pre">50</span></code>, and sweep the access quality, so a
+cloud run and an edge run at the same quality differ in path and not in the
+swept axis.</p>
+<p>Detector cost is a config input (<code class="docutils literal notranslate"><span class="pre">app.params.detect_ms</span></code> in <code class="docutils literal notranslate"><span class="pre">_base.yaml</span></code>):
+120 ms per frame on the sensor, 40 ms on the gateway, 12 ms in the cloud. The
+shipped configs use <code class="docutils literal notranslate"><span class="pre">detector:</span> <span class="pre">stub</span></code>, which pays that cost and returns a box
+count derived from the frame’s bytes; set <code class="docutils literal notranslate"><span class="pre">detector:</span> <span class="pre">yolo</span></code> to resolve a real
+model through the model registry instead.</p>
+</section>
+<section id="metrics-and-output-files">
+<h2>Metrics and output files<a class="headerlink" href="#metrics-and-output-files" title="Link to this heading">¶</a></h2>
+<p>Each run writes to <code class="docutils literal notranslate"><span class="pre">outputs/&lt;experiment&gt;/distributed_sensing/&lt;run_id&gt;/</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sensor_&lt;id&gt;_events.csv</span></code> — one per sensor; columns: <code class="docutils literal notranslate"><span class="pre">capture_time</span></code>,
+<code class="docutils literal notranslate"><span class="pre">send_time</span></code>, <code class="docutils literal notranslate"><span class="pre">bytes_sent</span></code>, <code class="docutils literal notranslate"><span class="pre">sensor_detect_ms</span></code>, <code class="docutils literal notranslate"><span class="pre">remote_detect_ms</span></code>,
+<code class="docutils literal notranslate"><span class="pre">detections</span></code>, <code class="docutils literal notranslate"><span class="pre">aoi_ms</span></code>, <code class="docutils literal notranslate"><span class="pre">reply_time</span></code>, <code class="docutils literal notranslate"><span class="pre">e2e_latency_ms</span></code>,
+<code class="docutils literal notranslate"><span class="pre">round_trip_ms</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">arrivals_&lt;config_hash&gt;.csv</span></code> — one per run; columns: <code class="docutils literal notranslate"><span class="pre">arrival_time</span></code>,
+<code class="docutils literal notranslate"><span class="pre">aoi_ms</span></code>, <code class="docutils literal notranslate"><span class="pre">bytes_in</span></code>, <code class="docutils literal notranslate"><span class="pre">detections</span></code>, <code class="docutils literal notranslate"><span class="pre">detect_ms</span></code>, <code class="docutils literal notranslate"><span class="pre">detected_here</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">link_report_&lt;node&gt;.json</span></code> — written by the framework; configured link
+parameters beside per-message latencies</p></li>
+</ul>
+<p>Age of information needs no new collector. The sensor stamps its capture time
+into the payload; the processing node stamps arrival; the difference is written
+to <code class="docutils literal notranslate"><span class="pre">arrivals_&lt;config_hash&gt;.csv</span></code> and returned to the sensor. This holds because
+every role in one run shares the host clock. For runs spread across hosts, add
+<code class="docutils literal notranslate"><span class="pre">metrics.collectors:</span> <span class="pre">[clock_offset]</span></code> to correct the timestamps.</p>
+<p><code class="docutils literal notranslate"><span class="pre">examples/distributed_sensing/placement_sweep.py</span></code> writes <code class="docutils literal notranslate"><span class="pre">sensing_summary.json</span></code> into each
+run directory automatically. The dashboard reads every <code class="docutils literal notranslate"><span class="pre">*_summary.json</span></code>
+under the runs directory and takes the first numeric field (<code class="docutils literal notranslate"><span class="pre">e2e_p50_ms</span></code>)
+as the headline metric.</p>
+<p>To reduce runs from a manual sweep:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">examples</span><span class="o">/</span><span class="n">distributed_sensing</span><span class="o">/</span><span class="n">summarise</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">write</span> <span class="n">outputs</span><span class="o">/</span><span class="n">sensing_edge_5</span><span class="o">/</span><span class="n">distributed_sensing</span><span class="o">/*-</span><span class="n">r0</span>
+<span class="n">cadet</span> <span class="n">dashboard</span> <span class="n">outputs</span><span class="o">/</span><span class="n">sensing_edge_5</span>
+</pre></div>
+</div>
+<p>Stop the dashboard with <code class="docutils literal notranslate"><span class="pre">Ctrl-C</span></code>.</p>
+</section>
+<section id="two-machine-run">
+<h2>Two-machine run<a class="headerlink" href="#two-machine-run" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">examples/distributed_sensing/two_host.yaml</span></code> runs the same example across two machines:
+sensors stay on the local host (as processes), the gateway runs in a container
+on a second machine via the <code class="docutils literal notranslate"><span class="pre">ssh_docker</span></code> launcher. The three values that name
+the second machine are passed on the command line so the config itself stays
+environment-agnostic:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cadet</span> <span class="n">run</span> <span class="n">examples</span><span class="o">/</span><span class="n">distributed_sensing</span><span class="o">/</span><span class="n">two_host</span><span class="o">.</span><span class="n">yaml</span> <span class="o">--</span><span class="n">app</span><span class="o">-</span><span class="n">module</span> <span class="n">examples</span><span class="o">.</span><span class="n">distributed_sensing</span><span class="o">.</span><span class="n">app</span> \
+  <span class="o">--</span><span class="nb">set</span> <span class="n">nodes</span><span class="mf">.2</span><span class="o">.</span><span class="n">host</span><span class="o">=&lt;</span><span class="n">address</span><span class="o">&gt;</span> \
+  <span class="o">--</span><span class="nb">set</span> <span class="n">nodes</span><span class="mf">.2</span><span class="o">.</span><span class="n">user</span><span class="o">=&lt;</span><span class="n">account</span><span class="o">&gt;</span> \
+  <span class="o">--</span><span class="nb">set</span> <span class="n">nodes</span><span class="mf">.2</span><span class="o">.</span><span class="n">ssh_identity</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">private</span><span class="o">/</span><span class="n">key</span>
+</pre></div>
+</div>
+<p>Run from a host account, not from <code class="docutils literal notranslate"><span class="pre">scripts/cadet</span></code>: the orchestrator
+authenticates as the invoking account using that account’s own SSH key, and a
+key does not belong inside a container image.</p>
+<p>The second machine needs: a docker daemon its account can use, the <code class="docutils literal notranslate"><span class="pre">cadet:dev</span></code>
+image, and the orchestrator’s public key in that account’s <code class="docutils literal notranslate"><span class="pre">authorized_keys</span></code>.
+No repository checkout and no CADET install are required on the second machine.</p>
+<p><code class="docutils literal notranslate"><span class="pre">two_host.yaml</span></code> enables all five device collectors plus
+<code class="docutils literal notranslate"><span class="pre">clock_offset</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="p">:</span>
+  <span class="n">collectors</span><span class="p">:</span> <span class="p">[</span><span class="n">cpu</span><span class="p">,</span> <span class="n">gpu</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">bandwidth</span><span class="p">,</span> <span class="n">clock_offset</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">clock_offset</span></code> collector records the difference between the two hosts’
+clocks rather than correcting it, so a cross-machine interval can be read with
+that uncertainty carried.</p>
+<section id="dataset-for-replay">
+<h3>Dataset for replay<a class="headerlink" href="#dataset-for-replay" title="Link to this heading">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">examples/distributed_sensing/fetch_frames.py</span></code> downloads 20 COCO val2017 images into
+<code class="docutils literal notranslate"><span class="pre">datasets/distributed_sensing/coco-val2017</span></code> (excluded from git). The fetcher reads the
+archive in stream order and stops after enough images, so 20 images cost
+3.5 MB of the 778 MB archive:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">examples</span><span class="o">/</span><span class="n">distributed_sensing</span><span class="o">/</span><span class="n">fetch_frames</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">limit</span> <span class="mi">20</span>
+<span class="n">cadet</span> <span class="n">sweep</span> <span class="n">examples</span><span class="o">/</span><span class="n">distributed_sensing</span><span class="o">/</span><span class="n">replay</span><span class="o">.</span><span class="n">yaml</span> <span class="o">--</span><span class="n">app</span><span class="o">-</span><span class="n">module</span> <span class="n">examples</span><span class="o">.</span><span class="n">distributed_sensing</span><span class="o">.</span><span class="n">app</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="what-each-config-needs">
+<h2>What each config needs<a class="headerlink" href="#what-each-config-needs" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">wifi_5.yaml</span></code> needs the emulation container with the wireless stack:
+<code class="docutils literal notranslate"><span class="pre">mac80211_hwsim</span></code> loads into the host kernel (a global change on a shared
+machine). The topology is generated and validated correctly, but the wireless
+backend is topology-verified and not run; see the README.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">emulated_5.yaml</span></code> needs the emulation container too, but only for
+openvswitch and sch_netem (no wireless stack change). Run with
+<code class="docutils literal notranslate"><span class="pre">cadet</span> <span class="pre">emulate</span></code>; a plain <code class="docutils literal notranslate"><span class="pre">cadet</span> <span class="pre">run</span></code> applies no shaping.</p></li>
+<li><p>Composed routes do not model shared backhaul contention. <code class="docutils literal notranslate"><span class="pre">realise:</span> <span class="pre">compose</span></code>
+gives one end-to-end connection per sensor whose hops’ delays add; the N paths
+in a cloud config do not contend for one backhaul queue.</p></li>
+</ul>
+</section>
+<section id="features-used">
+<h2>Features used<a class="headerlink" href="#features-used" title="Link to this heading">¶</a></h2>
+<p>All features used by the single-host configs are marked Supported in
+<code class="docutils literal notranslate"><span class="pre">cadet/config/implemented.py</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">source.kind:</span> <span class="pre">synthetic</span></code> and <code class="docutils literal notranslate"><span class="pre">replay</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nodes.launcher:</span> <span class="pre">local</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">links.network.mode:</span> <span class="pre">delay</span></code> (sweeping configs); <code class="docutils literal notranslate"><span class="pre">netem</span></code> (<code class="docutils literal notranslate"><span class="pre">netem_5.yaml</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">netwaggle</span></code> with <code class="docutils literal notranslate"><span class="pre">medium:</span> <span class="pre">wifi</span></code> (<code class="docutils literal notranslate"><span class="pre">wifi_5.yaml</span></code>); wired medium
+(<code class="docutils literal notranslate"><span class="pre">emulated_5.yaml</span></code>, requires emulation container)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">routes.realise:</span> <span class="pre">compose</span></code> (cloud configs)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">transport.protocol:</span> <span class="pre">tcp</span></code>, <code class="docutils literal notranslate"><span class="pre">transport.mode:</span> <span class="pre">frame</span></code></p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">two_host.yaml</span></code> additionally uses <code class="docutils literal notranslate"><span class="pre">launcher:</span> <span class="pre">ssh_docker</span></code> for a real
+second machine.</p>
+</section>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../research-goals/distributed-sensing.html"><span class="doc">Distributed Sensing</span></a> — the research question and how
+to extend the example</p></li>
+<li><p><a class="reference internal" href="../tutorials/06-write-an-app.html"><span class="doc">Tutorial 6: Write an App Plugin</span></a> — writing an app plugin</p></li>
+<li><p><a class="reference internal" href="../explanation/netwaggle-layer.html"><span class="doc">NetWaggle Layer</span></a> — network backend reference</p></li>
+<li><p><a class="reference internal" href="../howto/link-distributions.html"><span class="doc">Configure link distributions</span></a> — loss and delay parameters</p></li>
+</ul>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="dataset-vlm.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Dataset-mode VLM serving</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Examples Gallery</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Distributed Sensing</a><ul>
+<li><a class="reference internal" href="#what-it-measures">What it measures</a></li>
+<li><a class="reference internal" href="#quick-run">Quick run</a></li>
+<li><a class="reference internal" href="#the-full-matrix">The full matrix</a><ul>
+<li><a class="reference internal" href="#one-command-placement-sweep">One-command placement sweep</a></li>
+<li><a class="reference internal" href="#manual-sweep">Manual sweep</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#results">Results</a></li>
+<li><a class="reference internal" href="#network-model">Network model</a></li>
+<li><a class="reference internal" href="#metrics-and-output-files">Metrics and output files</a></li>
+<li><a class="reference internal" href="#two-machine-run">Two-machine run</a><ul>
+<li><a class="reference internal" href="#dataset-for-replay">Dataset for replay</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#what-each-config-needs">What each config needs</a></li>
+<li><a class="reference internal" href="#features-used">Features used</a></li>
+<li><a class="reference internal" href="#see-also">See also</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/sidebar-scroll.js?v=a725cd90"></script>
+    </body>
+</html>
